@@ -4,7 +4,7 @@ title: Slim 4 Documentation
 
 <div class="alert alert-info">
     <p>
-        This documentation is for <strong>Slim 4</strong>. Looking for <a href="/docs/v3">Slim 3 Docs</a>?.
+        このドキュメントは<strong>Slim 4</strong>向けです。Slim3をお使いの場合は<a href="/docs/v3">こちら</a>
     </p>
 </div>
 

@@ -4,45 +4,38 @@ title: Slim 3 Documentation
 
 <div class="alert alert-info">
     <p>
-        This documentation is for <strong>Slim 3</strong>. Looking for <a href="/docs/v2">Slim 2 Docs</a>?.
+        このドキュメントは<strong>Slim 3</strong>向けです。Slim4をお使いの場合は<a href="/docs/v4">こちら</a>
     </p>
 </div>
 
 ## Welcome
 
-Slim is a PHP micro framework that helps you
-quickly write simple yet powerful web applications and APIs. At its core, Slim
-is a dispatcher that receives an HTTP request, invokes an appropriate callback
-routine, and returns an HTTP response. That's it.
+SlimフレームワークはWebアプリとAPIを素早くかつ強力に作成することができるマイクロフレームワークです。  
+その中心となるものは、HTTPリクエスト、割り当てられたコールバックルーティンの発動、HTTPレスポンスの 
+返却を管理することです。
 
 ## What's the point?
 
-Slim is an ideal tool to create APIs that consume, repurpose, or publish data. Slim is also
-a great tool for rapid prototyping. Heck, you can even build full-featured web
-applications with user interfaces. More importantly, Slim is super fast
-and has very little code. In fact, you can read and understand its source code
-in only an afternoon!
+Slimフレームワークはデータの使用、再利用、公開を行うAPIを作成する理想的なツールです。 
+また試作品を作ることにも適しています。またユーザーインターフェースを備えたフル機能の 
+Webアプリを作成することもできます。さらに重要なことはSlimは極めて軽く少量のコードで
+作成されています。事実、午後だけでソースコードを読んで理解することができるでしょう。
 
-> At its core, Slim
-is a dispatcher that receives an HTTP request, invokes an appropriate callback
-routine, and returns an HTTP response. That's it.
+> その中心となるものは、HTTPリクエスト、割り当てられたコールバックルーティンの発動、HTTPレスポンスの 
+  返却を管理することです。
 
-You don't always need a kitchen-sink solution like [Symfony][symfony] or [Laravel][laravel].
-These are great tools, for sure. But they are often overkill. Instead, Slim
-provides only a minimal set of tools that do what you need and nothing else.
+常にSymfonyやLaravellのようなフルスタックフレームワークは必要ないでしょう。確かにそれらは素晴らしいツールですが 
+ケースによっては機能が多すぎます。そのかわりSlimは必要とする最低限の機能を提供するだけです。
 
 ## How does it work?
 
-First, you need a web server like Nginx or Apache. You should [configure
-your web server](/docs/v3/start/web-servers.html) so that it sends all appropriate
-requests to one "front-controller" PHP file. You instantiate and run your Slim
-app in this PHP file.
+最初にApacheやNginXなどのWebサーバが必要です。フロントコントローラーの役割を行うPHPファイルに送信される全ての  
+リクエストを受け取るため [Webサーバの設定](/docs/v3/start/web-servers.html)を行ってください。このファイルで
+Slimアプリのインスタンス化と実行が行われます。
 
-A Slim app contains routes that respond to specific HTTP requests. Each route
-invokes a callback and returns an HTTP response. To get started, you first
-instantiate and configure the Slim application. Next, you define your application
-routes. Finally, you run the Slim application. It's that easy. Here's an
-example application:
+Slimアプリには特定のHTTPリクエストに応答するルータが含まれています。
+各ルータはコールバックを呼び出し、HTTPレスポンスの返却します。まず最初にSlimアプリのインスタンス化と設定を行います。 
+次にアプリケーションルートを定義します。最後にアプリを実行します。簡単ですね。以下に例を示します。
 
 <figure markdown="1">
 ```php
