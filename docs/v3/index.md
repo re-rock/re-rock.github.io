@@ -51,7 +51,7 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
     return $response->write("Hello " . $args['name']);
 });
 
-// Run app
+// アプリの実行
 $app->run();
 ```
 <figcaption>Figure 1: Example Slim application</figcaption>
@@ -78,12 +78,13 @@ Slimの標準機能に基づいて構築された[Slim-Csrf][csrf]、[Slim-HttpC
 
 Slimを初めて使用する場合は、このドキュメントを最初から最後まで読むことをお勧めします。すでにSlimに慣れている場合は、
 知りたいセクションを直接お読みください。  
-このドキュメントではリクエストとレスポンスの処理、ルーティング、エラー処理などの特定のトピックに進む前に、
+このドキュメントではリクエストとレスポンスの処理、ルーティング、エラー処理などの特定のトピックに進む前に
 Slimの概念とアーキテクチャを説明します。
 
 ## Documentation License
 <p style="text-align: left;">
     このWebサイトおよびドキュメントは以下のライセンスに属しています。  
+
     <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>
     <br />
     <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">

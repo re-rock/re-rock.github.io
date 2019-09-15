@@ -102,28 +102,28 @@ defaults:
       type: "pages"
     values:
       docs-v3:
-        - title: Get Started
+        - title: まず最初に
           items:
             - [/docs/v3, Home]
             - [/docs/v3/start/installation.md, Installation]
             - [/docs/v3/start/upgrade.md, Upgrade Guide]
             - [/docs/v3/start/web-servers.md, Web Servers]
             - [/docs/v3/deployment/deployment.md, Deployment]
-        - title: Tutorial
+        - title: チュートリアル
           items:
             - [/docs/v3/tutorial/first-app.md, First Application]
-        - title: Concepts
+        - title: コンセプト
           items:
             - [/docs/v3/concepts/life-cycle.md, Application Life Cycle]
             - [/docs/v3/concepts/value-objects.md, PSR-7]
             - [/docs/v3/concepts/middleware.md, Middleware]
             - [/docs/v3/concepts/di.md, Dependency Container]
-        - title: The Application
+        - title: アプリケーション
           items:
             - [/docs/v3/objects/application.md, Overview]
             - [/docs/v3/objects/application.md#application-configuration, Configuration]
             - [/docs/v3/objects/application.md#slim-default-settings, Default settings]
-        - title: The Request
+        - title: リクエスト
           items:
             - [/docs/v3/objects/request.md, Overview]
             - [/docs/v3/objects/request.md#the-request-method, Method]
@@ -133,14 +133,14 @@ defaults:
             - [/docs/v3/objects/request.md#request-helpers, Helpers]
             - [/docs/v3/objects/request.md#route-object, Route object]
             - [/docs/v3/objects/request.md#media-type-parsers, Media type parsers]
-        - title: The Response
+        - title: エスポンス
           items:
             - [/docs/v3/objects/response.md, Overview]
             - [/docs/v3/objects/response.md#the-response-status, Status]
             - [/docs/v3/objects/response.md#the-response-headers, Headers]
             - [/docs/v3/objects/response.md#the-response-body, Body]
             - [/docs/v3/objects/response.md#returning-json, JSON]
-        - title: Routing
+        - title: ルーティング
           items:
             - [/docs/v3/objects/router.md, Overview]
             - [/docs/v3/objects/router.md#how-to-create-routes, Create Routes]
@@ -151,13 +151,13 @@ defaults:
             - [/docs/v3/objects/router.md#route-groups, Groups]
             - [/docs/v3/objects/router.md#route-middleware, Middleware]
             - [/docs/v3/objects/router.md#container-resolution, Container Resolution]
-        - title: Error Handling
+        - title: エラー処理
           items:
             - [/docs/v3/handlers/error.md, Error Handlers]
             - [/docs/v3/handlers/not-found.md, 404 Not Found]
             - [/docs/v3/handlers/not-allowed.md, 405 Not Allowed]
             - [/docs/v3/handlers/php-error.md, PHP Runtime Error]
-        - title: Cook book
+        - title: クックブック
           items:
             - [/docs/v3/cookbook/route-patterns.md, Trailing / in routes]
             - [/docs/v3/cookbook/ip-address.md, Retrieving IP address]
@@ -169,17 +169,17 @@ defaults:
             - [/docs/v3/cookbook/environment.md, Getting and Mocking the Environment]
             - [/docs/v3/cookbook/uploading-files.md, Uploading Files using POST forms]
             - [/docs/v3/cookbook/action-domain-responder.md, Action-Domain-Responder with Slim]
-        - title: Add Ons
+        - title: アドオン
           items:
             - [/docs/v3/features/templates.md, Templates]
             - [/docs/v3/features/caching.md, HTTP Caching]
             - [/docs/v3/features/csrf.md, CSRF Protection]
             - [/docs/v3/features/flash.md, Flash Messages]
             - ['https://github.com/slimphp/Slim/wiki/Middleware-for-Slim-Framework-v3.x', 3rd Party]
-        - title: Contributing
+        - title: 開発への協力
           items:
-            - [/docs/v3/contributors/strategy.md, Branching Strategy]
-            - [/docs/v3/contributors/guidelines.md, Guidelines]
+            - [/docs/v3/contributors/strategy.md, ブランチング方針]
+            - [/docs/v3/contributors/guidelines.md, ガイドライン]
 
   - scope:
       path: "docs/v3"
