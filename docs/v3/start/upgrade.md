@@ -2,20 +2,19 @@
 title: Upgrade Guide
 ---
 
-If you are upgrading from version 2 to version 3, these are the significant changes that
-you need to be aware of.
+Slimのバージョンを2から3に更新する場合、重要な変更点に注意してください。you need to be aware of.
 
-## New PHP version
-Slim 3 requires PHP 5.5+
+## 必要とするPHPバージョン
+Slim3 : PHP5.5以上
 
-## Class \Slim\Slim renamed \Slim\App
-Slim 3 uses `\Slim\App` for the [Application](/docs/v3/objects/application.html) object usually named `$app`.
+## クラス名を\Slim\Slimから\Slim\Appに変更
+Slim3は通常`app`という名前のアプリケーションオブジェクトに\Slim\App`を使用します。
 
 ```php
 $app = new \Slim\App();
 ```
 
-## New Route Function Signature
+## 新しいルート機能シグネチャ
 
 ```php
 $app->get('/', function (Request $req,  Response $res, $args = []) {
@@ -23,10 +22,15 @@ $app->get('/', function (Request $req,  Response $res, $args = []) {
 });
 ```
 
-## Request and response objects are no longer accessible via the Application object
-As mentioned above, Slim 3 passes the `Request` and `Response` objects as arguments to the route handling function. Since they are now accessible directly in the body of a route function, `request` and `response` are no longer properties of the `/Slim/App` ([Application](/docs/v3/objects/application.html) object) instance.
+## リクエストおよびレスポンスオブジェクトは、アプリケーションオブジェクトを介してアクセスできなくなりました。
 
-## Getting _GET and _POST variables
+上記のようにSlim3はリクエストおよびレスポンスオブジェクトを引数としてルート処理関数に渡します。
+ルート関数の本体で直接アクセスできるようになったため、リクエストとレスポンスは
+ `/Slim/App` ([アプリケーション](/docs/v3/objects/application.html)オブジェクト)インスタンスの
+ プロパティではなくなりました。
+
+## GET、POST変数の取得
+
 ```php
 $app->get('/', function (Request $req,  Response $res, $args = []) {
     $myvar1 = $req->getParam('myvar'); //checks both _GET and _POST [NOT PSR-7 Compliant]
@@ -35,70 +39,75 @@ $app->get('/', function (Request $req,  Response $res, $args = []) {
 });
 ```
 
-
 ## Hooks
-Hooks are no longer part of Slim as of v3.  You should consider reimplementing any functionality associated with the [default hooks in Slim v2](http://docs.slimframework.com/hooks/defaults/) as [middleware](/docs/v3/concepts/middleware.html) instead.  If you need the ability to apply custom hooks at arbitrary points in your code (for example, within a route), you should consider a third-party package such as [Symfony's EventDispatcher](http://symfony.com/doc/current/components/event_dispatcher/introduction.html) or [Zend Framework's EventManager](https://zend-eventmanager.readthedocs.org/en/latest/).
 
-## Removal HTTP Cache
-In Slim v3 we have removed the HTTP-Caching into its own module [Slim\Http\Cache](https://github.com/slimphp/Slim-HttpCache).
+Slim3ではフックはフレームワークの一部ではなくなりました。。代わりに、Slim2のデフォルトフックに
+関連する機能を`middleware`として再実装することを検討する必要があります。
+コード内の任意のポイント（ルート内など）にカスタムフックを適用する機能が必要な場合は、
+[Symfony's EventDispatcher](http://symfony.com/doc/current/components/event_dispatcher/introduction.html) や
+[Zend Framework's EventManager](https://zend-eventmanager.readthedocs.org/en/latest/)などのサードパーティパッケージを検討する必要があります。
 
-## Removal of Stop/Halt
-Slim Core has removed Stop/Halt.
-In your applications, you should transition to using the withStatus() and withBody() methods.
+## HTTPキャッシュの削除
+Slim3はHTTPキャシュを[Slim\Http\Cache](https://github.com/slimphp/Slim-HttpCache)という独自の
+モジュールで削除します。
 
-## Removal of autoloader
-`Slim::registerAutoloader()` have been removed, we have fully moved to composer.
+## Stop/Haltの廃止
+SlimコアはStop / Haltを削除しました。アプリケーションではwithStatus（）メソッドとwithBody（）メソッドの使用に
+移行する必要があります。
 
-## Changes to container
-`$app->container->singleton(...)` is now `$container = $app->getContainer(); $container['...'] = function () {};` Please read Pimple docs for more info
+## autoloaderの廃止
+`Slim::registerAutoloader()` は廃止され, 完全にcomposerに移行しました。
 
-## Removal of configureMode()
-`$app->configureMode(...)` has been removed in v3.
+## コンテナの変更
+`$app->container->singleton(...)`は `$container = $app->getContainer(); $container['...'] = function () {};`
+に変更しました。詳細はPimpleのドキュメントをご覧ください。
 
-## Removal of PrettyExceptions
-PrettyExceptions cause lots of issues for many people, so these have been removed.
+## configureMode()の廃止
+`$app->configureMode(...)` はSlim3で廃止されました。
 
-## Route::setDefaultConditions(...) has been removed
-We have switched routers which enable you to keep the default conditions regex inside of the route pattern.
+## PrettyExceptionsの廃止
+多くの人たちの間で問題を引き起こすため廃止されました。
 
-## Changes to redirect
-In Slim v2.x one would use the helper function `$app->redirect();` to trigger a redirect request.
-In Slim v3.x one can do the same with using the Response class like so.
+## Route::setDefaultConditions(...) の削除
+ルートパターン内でデフォルト条件の正規表現を保持できるルータに切り替えました。
 
-Example:
+## リダイレクトの変更
+Slim2ではリダイレクトリクエストのトリガーにヘルパー関数の `$app->redirect();`を使用します。 
+Slim3ではレスポンスクラスを利用して同じことを行えます。
+
+例:
 
 ```php
 $app->get('/', function ($req, $res, $args) {
   return $res->withStatus(302)->withHeader('Location', 'your-new-uri');
 });
 ```
-
-Alternatively, if you want a route to redirect without any other handling, you
-can use the shortcut helper function `$app->redirect()` as the route
-definition:
+また、他の処理を行わずにルートをリダイレクトしたい場合は、ショートカットヘルパー関数 `$app->redirect()` を
+ルート定義として使用できます。
 
 ```php
 $app->redirect('/', 'your-new-uri');
 ```
 
-## Middleware Signature
+## ミドルウェアの機能
+ミドルウェアの機能がクラスから関数に変更されました。
 The middleware signature has changed from a class to a function.
 
-New signature:
+新機能:
 
 ```php
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 $app->add(function (Request $req,  Response $res, callable $next) {
-    // Do stuff before passing along
+    // 処理前に何かしら行う
     $newResponse = $next($req, $res);
-    // Do stuff after route is rendered
+    // ルートがレンダリングされたあとに何かしら行う
     return $newResponse; // continue
 });
 ```
 
-You can still use a class:
+引き続きクラスも使用できます。
 
 ```php
 namespace My;
@@ -109,9 +118,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 class Middleware
 {
     function __invoke(Request $req,  Response $res, callable $next) {
-        // Do stuff before passing along
+        // 処理前に何かしら行う
         $newResponse = $next($req, $res);
-        // Do stuff after route is rendered
+        // ルートがレンダリングされたあとに何かしら行う
         return $newResponse; // continue
     }
 }
@@ -125,22 +134,24 @@ $app->add(My\Middleware::class);
 ```
 
 
-## Middleware Execution
-Application middleware is executed as Last In First Executed (LIFE).
+## ミドルウェアの実行
+ミドルウェアは1番最後に取り込まれ、最初に実行されます。
 
 ## Flash Messages
-Flash messages are no longer a part of the Slim v3 core but instead have been moved to seperate [Slim Flash](/docs/v3/features/flash.html) package.
+Flash messagesはSlim3コアの一部ではなくなり、代わりに[Slim Flash](/docs/v3/features/flash.html) 
+パッケージとなりました。
 
 ## Cookies
-In v3.0 cookies has been removed from core. See [FIG Cookies](https://github.com/dflydev/dflydev-fig-cookies) for a PSR-7 compatible cookie component.
+Slim3ではクッキーがコアから削除されました。PSR-7互換のCookieコンポーネントについては
+[FIG Cookies](https://github.com/dflydev/dflydev-fig-cookies)を参照してください。
 
-## Removal of Crypto
-In v3.0 we have removed the dependency for crypto in core.
+## Cryptoの廃止
+Slim3コアではcrypto(暗号化)との依存関係を廃止しました。
 
 ## New Router
-Slim now utilizes [FastRoute](https://github.com/nikic/FastRoute), a new, more powerful router!
+Slimは現在、より強力な新しいルーターである[FastRoute](https://github.com/nikic/FastRoute)を利用しています！
 
-This means that the specification of route patterns has changed with named parameters now in braces and square brackets used for optional segments:
+これは、オプションのセグメントに使用される中括弧と角括弧内の名前付きパラメーターによって、ルートパターンの仕様が変更されたことを意味します。
 
 ```php
 // named parameter:
@@ -151,27 +162,24 @@ $app->get('/news[/{year}]', /*...*/);
 ```
 
 ## Route Middleware
-The syntax for adding route middleware has changed slightly.
-In v3.0:
+Slim3ではルートミドルウェアを追加するための構文がわずかに変更されました。
 
 ```php
 $app->get(…)->add($mw2)->add($mw1);
 ```
 
 ## Getting the current route
-The route is an attribute of the Request object in v3.0:
+Slim3ではルートはリクエストオブジェクトの属性になります。
 
 ```php
 $request->getAttribute('route');
 ```
+ミドルウェアで現在のルートを取得する場合、アプリケーション構成で`determineRouteBeforeAppMiddleware`の
+値を`true`に設定する必要があります。そうしないとgetAttributeコールは`null`を返します。
 
-When getting the current route in middleware, the value for
-`determineRouteBeforeAppMiddleware` must be set to `true` in the Application
-configuration, otherwise the getAttribute call returns `null`.
+## ルータのurlFor() がpathFor()に変更
 
-## urlFor() is now pathFor() in the router
-
-`urlFor()` has been renamed `pathFor()` and can be found in the `router` object:
+`urlFor()`は`pathFor()`に名称が変更され、`router`オブジェクトとして利用できます。
 
 ```php
 $app->get('/', function ($request, $response, $args) {
@@ -181,10 +189,10 @@ $app->get('/', function ($request, $response, $args) {
 })->setName('home');
 ```
 
-Also, `pathFor()` is base path aware.
+また、`pathFor()`はベースパスに対応しています。
 
 ## Container and DI ... Constructing
-Slim uses Pimple as a Dependency Injection Container.
+SlimはDIコンテナとしてPimpleを使用します。
 
 ```php
 
@@ -194,14 +202,13 @@ $app = new Slim\App(
         include '../config/container.config.php'
     )
 );
-
-// Slim will grab the Home class from the container defined below and execute its index method.
-// If the class is not defined in the container Slim will still contruct it and pass the container as the first arugment to the constructor!
+// Slimは、コンテナで定義されたHomeクラスを取得し、そのindexメソッドを実行します。 
+//クラスがコンテナ内で定義されていない場合でも、Slimはそれを構築し、最初の引数としてコンテナをコンストラクタに渡します！
 $app->get('/', Home::class . ':index');
 
 
 // In container.config.php
-// We are using the SlimTwig here
+// ここではSlimTwigを使用します。
 return [
     'settings' => [
         'viewTemplatesDirectory' => '../templates',
@@ -218,8 +225,8 @@ return [
                 'cache' => false // '../cache'
             ]
         );
-
-        // Instantiate and add Slim specific extension
+        
+        // インスタンス化とSlim固有の拡張機能
         $view->addExtension(
             new TwigExtension(
                 $c['router'],
@@ -242,17 +249,17 @@ return [
 
 ## PSR-7 Objects
 
-### Request, Response, Uri & UploadFile are immutable.
-This means that when you change one of these objects, the old instance is not updated.
+### リクエスト、レスポンス、URI、アップロードファイルは不変です。
+これらのオブジェクトのいずれかを変更しても、古いインスタンスは更新されないことを意味します。
 
 ```php
-// This is WRONG. The change will not pass through.
+// これは間違いです。この変更は適用されません。
 $app->add(function (Request $request, Response $response, $next) {
     $request->withAttribute('abc', 'def');
     return $next($request, $response);
 });
 
-// This is correct.
+// こちらが正解です。
 $app->add(function (Request $request, Response $response, $next) {
     $request = $request->withAttribute('abc', 'def');
     return $next($request, $response);
@@ -273,12 +280,12 @@ $response = (new Response())
 // ...
 ```
 
-For text:
+文字列の場合
 ```php
 // ...
 $response = (new Response())->getBody()->write('Hello world!')
 
-// Or Slim specific: Not PSR-7 compliant.
+// またはSlim固有の方法。PSR-7には準拠していません。
 $response = (new Response())->write('Hello world!');
 // ...
 ```

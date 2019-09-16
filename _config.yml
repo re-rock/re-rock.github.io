@@ -105,9 +105,9 @@ defaults:
         - title: まず最初に
           items:
             - [/docs/v3, Home]
-            - [/docs/v3/start/installation.md, Installation]
-            - [/docs/v3/start/upgrade.md, Upgrade Guide]
-            - [/docs/v3/start/web-servers.md, Web Servers]
+            - [/docs/v3/start/installation.md, インストール]
+            - [/docs/v3/start/upgrade.md, アップグレード ガイド]
+            - [/docs/v3/start/web-servers.md, Webサーバ]
             - [/docs/v3/deployment/deployment.md, Deployment]
         - title: チュートリアル
           items:
@@ -133,7 +133,7 @@ defaults:
             - [/docs/v3/objects/request.md#request-helpers, Helpers]
             - [/docs/v3/objects/request.md#route-object, Route object]
             - [/docs/v3/objects/request.md#media-type-parsers, Media type parsers]
-        - title: エスポンス
+        - title: レスポンス
           items:
             - [/docs/v3/objects/response.md, Overview]
             - [/docs/v3/objects/response.md#the-response-status, Status]
