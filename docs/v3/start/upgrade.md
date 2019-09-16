@@ -2,19 +2,19 @@
 title: Upgrade Guide
 ---
 
-Slimのバージョンを2から3に更新する場合、重要な変更点に注意してください。you need to be aware of.
+Slimのバージョンを2から3に更新する場合、重要な変更点に注意してください。
 
 ## 必要とするPHPバージョン
 Slim3 : PHP5.5以上
 
 ## クラス名を\Slim\Slimから\Slim\Appに変更
-Slim3は通常`app`という名前のアプリケーションオブジェクトに\Slim\App`を使用します。
+Slim3は通常`app`という名前のアプリケーションオブジェクトに`\Slim\App`を使用します。
 
 ```php
 $app = new \Slim\App();
 ```
 
-## 新しいルート機能シグネチャ
+## 新しいルータ機能の特徴
 
 ```php
 $app->get('/', function (Request $req,  Response $res, $args = []) {
@@ -24,12 +24,12 @@ $app->get('/', function (Request $req,  Response $res, $args = []) {
 
 ## リクエストおよびレスポンスオブジェクトは、アプリケーションオブジェクトを介してアクセスできなくなりました。
 
-上記のようにSlim3はリクエストおよびレスポンスオブジェクトを引数としてルート処理関数に渡します。
+Slim3はリクエストおよびレスポンスオブジェクトを引数としてルート処理関数に渡します。
 ルート関数の本体で直接アクセスできるようになったため、リクエストとレスポンスは
  `/Slim/App` ([アプリケーション](/docs/v3/objects/application.html)オブジェクト)インスタンスの
  プロパティではなくなりました。
 
-## GET、POST変数の取得
+## GET / POST変数の取得
 
 ```php
 $app->get('/', function (Request $req,  Response $res, $args = []) {
@@ -41,8 +41,8 @@ $app->get('/', function (Request $req,  Response $res, $args = []) {
 
 ## Hooks
 
-Slim3ではフックはフレームワークの一部ではなくなりました。。代わりに、Slim2のデフォルトフックに
-関連する機能を`middleware`として再実装することを検討する必要があります。
+Slim3ではフックはフレームワークの一部ではなくなりました。代わりに、Slim2のデフォルトフックに
+関連する機能を`middleware`として再実装することを検討してください。
 コード内の任意のポイント（ルート内など）にカスタムフックを適用する機能が必要な場合は、
 [Symfony's EventDispatcher](http://symfony.com/doc/current/components/event_dispatcher/introduction.html) や
 [Zend Framework's EventManager](https://zend-eventmanager.readthedocs.org/en/latest/)などのサードパーティパッケージを検討する必要があります。
@@ -52,15 +52,15 @@ Slim3はHTTPキャシュを[Slim\Http\Cache](https://github.com/slimphp/Slim-Htt
 モジュールで削除します。
 
 ## Stop/Haltの廃止
-SlimコアはStop / Haltを削除しました。アプリケーションではwithStatus（）メソッドとwithBody（）メソッドの使用に
-移行する必要があります。
+SlimコアはStop / Haltを削除しました。アプリケーションではwithStatus()メソッドとwithBody()メソッド
+の使用に移行する必要があります。
 
 ## autoloaderの廃止
 `Slim::registerAutoloader()` は廃止され, 完全にcomposerに移行しました。
 
 ## コンテナの変更
 `$app->container->singleton(...)`は `$container = $app->getContainer(); $container['...'] = function () {};`
-に変更しました。詳細はPimpleのドキュメントをご覧ください。
+に変更しました。詳細はPimpleのドキュメントをご覧ください。(Pimple : PHPで使えるシンプルな実装のDIコンテナ)
 
 ## configureMode()の廃止
 `$app->configureMode(...)` はSlim3で廃止されました。
@@ -91,9 +91,8 @@ $app->redirect('/', 'your-new-uri');
 
 ## ミドルウェアの機能
 ミドルウェアの機能がクラスから関数に変更されました。
-The middleware signature has changed from a class to a function.
 
-新機能:
+新機能
 
 ```php
 use Psr\Http\Message\RequestInterface as Request;
@@ -135,7 +134,7 @@ $app->add(My\Middleware::class);
 
 
 ## ミドルウェアの実行
-ミドルウェアは1番最後に取り込まれ、最初に実行されます。
+ミドルウェアは1番最後に取り込まれ、1番最初に実行されます。
 
 ## Flash Messages
 Flash messagesはSlim3コアの一部ではなくなり、代わりに[Slim Flash](/docs/v3/features/flash.html) 
@@ -149,9 +148,9 @@ Slim3ではクッキーがコアから削除されました。PSR-7互換のCook
 Slim3コアではcrypto(暗号化)との依存関係を廃止しました。
 
 ## New Router
-Slimは現在、より強力な新しいルーターである[FastRoute](https://github.com/nikic/FastRoute)を利用しています！
+Slimは現在、より強力な新しいルータである[FastRoute](https://github.com/nikic/FastRoute)を利用しています！
 
-これは、オプションのセグメントに使用される中括弧と角括弧内の名前付きパラメーターによって、ルートパターンの仕様が変更されたことを意味します。
+これは、オプションのセグメントに使用される中括弧と角括弧内の名前付きパラメーターによって、ルートパターンが変更されることを意味します。
 
 ```php
 // named parameter:
@@ -189,7 +188,7 @@ $app->get('/', function ($request, $response, $args) {
 })->setName('home');
 ```
 
-また、`pathFor()`はベースパスに対応しています。
+また、`pathFor()`はbase pathに対応しています。
 
 ## Container and DI ... Constructing
 SlimはDIコンテナとしてPimpleを使用します。
@@ -203,7 +202,7 @@ $app = new Slim\App(
     )
 );
 // Slimは、コンテナで定義されたHomeクラスを取得し、そのindexメソッドを実行します。 
-//クラスがコンテナ内で定義されていない場合でも、Slimはそれを構築し、最初の引数としてコンテナをコンストラクタに渡します！
+// クラスがコンテナ内で定義されていない場合でも、Slimはそれを構築し、最初の引数としてコンテナをコンストラクタに渡します！
 $app->get('/', Home::class . ':index');
 
 
@@ -249,7 +248,7 @@ return [
 
 ## PSR-7 Objects
 
-### リクエスト、レスポンス、URI、アップロードファイルは不変です。
+### リクエスト、レスポンス、URI、アップロードファイルは変更できません。
 これらのオブジェクトのいずれかを変更しても、古いインスタンスは更新されないことを意味します。
 
 ```php

@@ -7,7 +7,7 @@ title: Installation
 * URL書き換え可能なWebサーバ
 * PHP 5.5以上
 
-## インストール
+## Install
 
 Slimは[Composer](https://getcomposer.org/)からインストールすることをお勧めします。
 プロジェクトのルートディレクトリに移動し、以下に示すbashコマンドを実行します。このコマンドは、
@@ -18,7 +18,7 @@ Slimフレームワークとそのサードパーティの依存関係ライブ�
 composer require slim/slim "^3.12"
 ```
 
-あなたのプロジェクトにComposer autoloaderを含めたらSlimを始める準備が整いました。
+あなたのプロジェクトのソースにComposer autoloaderを含めたらSlimを始める準備が整いました。
 
 ```php
 <?php
