@@ -2,15 +2,15 @@
 title: First Application Walkthrough
 ---
 
-If you're looking for a tour through all the ingredients for setting up a very simple Slim application (this one doesn't use Twig, but does use Monolog and a PDO database connection) then you're in the right place.  Either walk through the tutorial to build the example application, or adapt each step for your own needs.
+もしあなたが非常にシンプルなスリムアプリケーション（Twigを使用せず、MonologとPDOデータベース接続を使用する）をセットアップする方法を探しているなら、このドキュメントは最適です。チュートリアルを進めてサンプルアプリケーションを構築するか、詳しく知りたい箇所が決まっているなら対象のステップを参照してください。
 
-Before you start: There is also a [skeleton project](https://github.com/slimphp/Slim-Skeleton) which will give you a quick-start for a sample application, so use that if you'd rather just have something working rather than exploring how all the moving parts work.
+始める前に：サンプルアプリで始められる[skeleton project](https://github.com/slimphp/Slim-Skeleton) が提供されています。そのため、すべての機能の詳細が知りたいのではなく、とりあえずSlimアプリを動かしたい場合はこちらがおすすめです。
 
-> This tutorial walks through building an example application.  The [code for the application is available](https://github.com/slimphp/Tutorial-First-Application) if you want to refer to it.
+> このチュートリアルでは一連のアプリケーションを構築する一連の作業を紹介します。Slimのソースコードを読みたい場合はこちらから参照できます。 [code for the application](https://github.com/slimphp/Tutorial-First-Application)
 
 ## Getting Set Up
 
-Start by making a folder for your project (mine is called `project`, because naming things is hard).  I like to reserve the top level for things-that-are-not-code and then have a folder for source code, and a folder inside that which is my webroot, so my initial structure looks like this:
+プロジェクトのフォルダを作成することから始めます（ここではプロジェクトと名付けます。名前を付けるのって難しいですよね）。私はトップレベルにはコードではないもを配置します。そしてソースコード用のフォルダーとその中にWebルートとなるソースコードを配置します。最初のディレクトリ配置は以下です。
 
 ```
 .
@@ -19,29 +19,31 @@ Start by making a folder for your project (mine is called `project`, because nam
 │       └── public
 ```
 
-### Installing Slim Framework
+### Installing Slim
 
-[Composer](https://getcomposer.org) is the best way to install Slim Framework.  If you don't have it already, you can follow the [installation instructions](https://getcomposer.org/download/), in my project I've just downloaded the `composer.phar` into my `src/` directory and I'll use it locally.  So my first command looks like this (I'm in the `src/` directory):
+[Composer](https://getcomposer.org)は、Slim Frameworkをインストールする最良の方法です。まだインストールしていない場合は、[インストール手順](https://getcomposer.org/download/)に参考にしてください。私のプロジェクトでは、`composer.phar`を`src/`ディレクトリにダウンロードしローカルで使用します。したがって、最初のコマンドは次のようになります（`src/`ディレクトリに移動してください）。
 
     php composer.phar require slim/slim
 
-This does two things:
+これは2つのことを行います。
 
-* Add the Slim Framework dependency to `composer.json` (in my case it creates the file for me as I don't already have one, it's safe to run this if you do already have a `composer.json` file)
-* Run `composer install` so that those dependencies are actually available to use in your application
+- Slimフレームワークの依存関係を`composer.json`に追加します（私の場合、まだ持っていないのでcomposer.jsonファイルが作成されます。既にある状態でも実行して問題ありません）。
 
-If you look inside the project directory now, you'll see that you have a `vendor/` folder with all the library code in it.  There are also two new files: `composer.json` and `composer.lock`.  This would be a great time to get our source control setup correct as well: when working with composer, we always exclude the `vendor/` directory, but both `composer.json` and `composer.lock` should be included under source control.  Since I'm using `composer.phar` in this directory I'm going to include it in my repo as well; you could equally install the `composer` command on all the systems that need it.
+- `composer install`を実行して、それらの依存関係がアプリケーションで実際に使用できるようにします
 
-To set up the git ignore correctly, create a file called `src/.gitignore` and add the following single line to the file:
+ここでプロジェクトディレクトリ内を見ると、すべてのライブラリコードを含む`vendor/`フォルダーがあることがわかります。 また`composer.json`と`composer.lock`の2つのファイルも作成されています。
+これでソースコントロールのセットアップを正しく行えているようになります。composerを使用する際は常に`vendor/`ディレクトリを除きますが、`composer.json`と`composer.lock`はソースコントロールに含める必要があります。
+このディレクトリでは`composer.phar`を使用しているのでリポジトリにも追加します。これにより`composer`コマンドを扱える他のシステムに同じようにインストールすることができます。
+
+`git ignore`を正しく設定するには、`src/.gitignore`というファイルを作成し、次の1行をファイルに追加します。
 
     vendor/*
 
-
-Now git won't prompt you to add the files in `vendor/` to the repository - we don't want to do this because we're letting composer manage these dependencies rather than including them in our source control repository.
+gitは`vendor/`のファイルをリポジトリに追加することを推奨していません。依存関係はリポジトリによる管理ではなくcomposerに管理させるべきだからです。
 
 ### Create The Application
 
-There's a really excellent and minimal example of an `index.php` for Slim Framework on the [project homepage](http://www.slimframework.com) so we'll use that as our starting point.  Put the following code into `src/public/index.php`:
+Slimの[サイト](http://www.slimframework.com)には、Slimフレームワークのシンプルかつ優れた`index.php`の例があるため、これをスタートとして使用します。次のコードを`src/public/index.php`に追加します。
 
 ```php
 <?php
@@ -58,18 +60,17 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
     return $response;
 });
 $app->run();
-
 ```
 
-We just pasted a load of code ... let's take a look at what it does.
+この大量のコードをコピペするだけです... どのように処理されるか見てみましょう。
 
-The `use` statements at the top of the script are just bringing the `Request` and `Response` classes into our script so we don't have to refer to them by their long-winded names.  Slim framework supports PSR-7 which is the PHP standard for HTTP messaging, so you'll notice as you build your application that the `Request` and `Response` objects are something you see often.  This is a modern and excellent approach to writing web applications.
+スクリプトの先頭にある`use`文で、スクリプトに`Request`クラスと`Response`クラスを取り込んでいるので、以降は完全参照でそれらを記述する必要はありません。 Slimフレームワークは、HTTPメッセージングのPHP標準であるPSR-7をサポートしているので、アプリケーションをビルドすると、`Request`オブジェクトと`Response`オブジェクトが頻繁に表示されることに気付くでしょう。 これは、Webアプリケーションを作成するための最新の優れたアプローチです。
 
-Next we include the `vendor/autoload.php` file - this is created by Composer and allows us to refer to the Slim and other related dependencies we installed earlier.  Look out that if you're using the same file structure as me then the `vendor/` directory is one level up from your `index.php` and you may need to adjust the path as I did above.
+次に`vendor/autoload.php`ファイルをインクルードします。これはComposerによって作成され、Slimおよび事前にインストールした関連する依存関係を参照できるようになります。私と同じファイル構造を使用している場合、`vendor/`ディレクトリは`index.php`より上の階層にあり、上記のようにパスを調整する必要があるので注意してください。
 
-Finally we create the `$app` object which is the start of the Slim goodness.  The `$app->get()` call is our first "route" - when we make a GET request to `/hello/someone` then this is the code that will respond to it.  **Don't forget** you need that final `$app->run()` line to tell Slim that we're done configuring and it's time to get on with the main event.
+最後に、Slimの恩恵を受けるスタートとなる`$app`オブジェクトを作成します。`$app->get()`は最初のルートです。`/hello/someone`にGETリクエストを送ると、これが反応することになります。最後の`$app->run()`の行が必要であることを忘れないでください。Slimに設定が完了し、メインイベントに取り掛かる時間であることを伝えます。
 
-Now we have an application, we'll need to run it.  I'll cover two options: the built-in PHP webserver, and an Apache virtual host setup.
+これでアプリケーションができまたので実行してみましょう。PHPのビルドインWebサーバーとApacheバーチャルホストのセットアップの2つのオプションについて説明します。
 
 ### Run Your Application With PHP's Webserver
 
