@@ -43,7 +43,7 @@ gitは`vendor/`のファイルをリポジトリに追加することを推奨�
 
 ### Create The Application
 
-Slimの[サイト](http://www.slimframework.com)には、Slimフレームワークのシンプルかつ優れた`index.php`の例があるため、これをスタートとして使用します。次のコードを`src/public/index.php`に追加します。
+Slimの[サイト](http://www.slimframework.com)には、Slimフレームワークのシンプルかつ優れた`index.php`の例があるため、これをスタートとして使用します。次のコードを`src/public/index.php`に追加してください。
 
 ```php
 <?php
@@ -64,29 +64,33 @@ $app->run();
 
 この大量のコードをコピペするだけです... どのように処理されるか見てみましょう。
 
-スクリプトの先頭にある`use`文で、スクリプトに`Request`クラスと`Response`クラスを取り込んでいるので、以降は完全参照でそれらを記述する必要はありません。 Slimフレームワークは、HTTPメッセージングのPHP標準であるPSR-7をサポートしているので、アプリケーションをビルドすると、`Request`オブジェクトと`Response`オブジェクトが頻繁に表示されることに気付くでしょう。 これは、Webアプリケーションを作成するための最新の優れたアプローチです。
+スクリプトの先頭にある`use`文で、スクリプトに`Request`クラスと`Response`クラスを取り込んでいるので、以降はクラスパスでそれらを記述する必要はありません。 Slimフレームワークは、HTTPメッセージングのPHP標準であるPSR-7をサポートしているので、アプリケーションをビルドすると、`Request`オブジェクトと`Response`オブジェクトが頻繁に表示されることに気付くでしょう。 これは、Webアプリケーションを作成するための最新の優れたアプローチです。
 
-次に`vendor/autoload.php`ファイルをインクルードします。これはComposerによって作成され、Slimおよび事前にインストールした関連する依存関係を参照できるようになります。私と同じファイル構造を使用している場合、`vendor/`ディレクトリは`index.php`より上の階層にあり、上記のようにパスを調整する必要があるので注意してください。
+次に`vendor/autoload.php`ファイルをインクルードします。これはComposerによって作成され、Slimおよび事前にインストールした関連する依存関係を参照できるようになります。私と同じファイル構造を使用している場合、`vendor/`ディレクトリは`index.php`より上の階層にあり、上記のようにパスを修正する必要があるので注意してください。
 
-最後に、Slimの恩恵を受けるスタートとなる`$app`オブジェクトを作成します。`$app->get()`は最初のルートです。`/hello/someone`にGETリクエストを送ると、これが反応することになります。最後の`$app->run()`の行が必要であることを忘れないでください。Slimに設定が完了し、メインイベントに取り掛かる時間であることを伝えます。
+最後に、Slimの恩恵を受けるスタートとなる`$app`オブジェクトを作成します。`$app->get()`は最初のルートです。`/hello/someone`にGETリクエストを送ると、これが反応することになります。最後の`$app->run()`の行が必要であることを忘れないでください。Slimに設定が完了し、メインイベントに取り掛かるタイミングであることを伝えます。
 
 これでアプリケーションができまたので実行してみましょう。PHPのビルドインWebサーバーとApacheバーチャルホストのセットアップの2つのオプションについて説明します。
 
-### Run Your Application With PHP's Webserver
+### PHPのWebサーバーでアプリケーションを実行
 
-This is my preferred "quick start" option because it doesn't rely on anything else!  From the `src/public` directory run the command:
+これは、他の何にも依存しないため、私の優先する「クイックスタート」オプションです。 src / publicディレクトリから次のコマンドを実行します。
+これは私が好む”クイックスタート”の方法です。なぜなら他の何にも依存しないからです。`src/public`ディレクトリからこのコマンドを実行してください。
 
     php -S localhost:8080
 
-This will make your application available at http://localhost:8080 (if you're already using port 8080 on your machine, you'll get a warning.  Just pick a different port number, PHP doesn't care what you bind it to).
+これにより、アプリケーションがhttp://localhost:8080で利用可能になります（マシンで既に8080ポートを使用している場合は警告が表示されます。
+どのポートでも良いので空いている別のポート番号を選択してください）。
 
-**Note** you'll get an error message about "Page Not Found" at this URL - but it's an error message **from** Slim, so this is expected.  Try http://localhost:8080/hello/joebloggs instead :)
+**注意** このURLだと「ページが見つかりません」というエラーメッセージが表示されるでしょう。ただしこれはSlimからのエラーメッセージであるため
+心配する必要はありません。代わりにhttp://localhost:8080/hello/joebloggsを試してください)
 
-### Run Your Application With Apache or nginx
+### Apacheまたはnginxでアプリケーションを実行
 
-To get this set up on a standard LAMP stack, we'll need a couple of extra ingredients: some virtual host configuration, and one rewrite rule.
+これらを標準のLAMPスタックでセットアップするには、いくつか追加の設定が必要になります。バーチャルホストの設定と書き換えルールです。
 
-The vhost configuration should be fairly straightforward; we don't need anything special here.  Copy your existing default vhost configuration and set the `ServerName` to be how you want to refer to your project.  For example you can set:
+バーチャルホストの設定はかなり簡単です。ここでは特別なものは必要ありません。既存のデフォルトのvhost設定をコピーし
+`ServerName`を参照させたいあなたのプロジェクト名にセットしてください。たとえば次をように設定できます。
 
     ServerName slimproject.test
 
@@ -94,7 +98,7 @@ The vhost configuration should be fairly straightforward; we don't need anything
 
     server_name slimproject.test;
 
-Then you'll also want to set the `DocumentRoot` to point to the `public/` directory of your project, something like this (edit the existing line):
+次にプロジェクトの`/public`ディレクトリを指すようにDocumentRootを設定します（既存の行を編集します）。
 
     DocumentRoot    /home/lorna/projects/slim/project/src/public/
 
@@ -102,10 +106,10 @@ Then you'll also want to set the `DocumentRoot` to point to the `public/` direct
 
     root    /home/lorna/projects/slim/project/src/public/
 
+設定を変更したら、サーバを**再起動**することを忘れないでください。
 
-**Don't forget** to restart your server process now you've changed the configuration!
-
-I also have a `.htaccess` file in my `src/public` directory; this relies on Apache's rewrite module being enabled and simply makes all web requests go to index.php so that Slim can then handle all the routing for us.  Here's my `.htaccess` file:
+また私は`src/public`ディレクトリに`.htaccess`ファイルを作成しました。これはApacheの書き換えモジュールが有効になっていることに由来し、
+わたしたちの代わりにSlimがルーティングを行いすべてのWebリクエストを`index.php`に転送してくれます。これが私の`.htaccess`ファイルです。
 
 ```
 RewriteEngine on
@@ -114,7 +118,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
 ```
 
-nginx does not use `.htaccess` files, so you will need to add the following to your server configuration in the `location` block:
+nginxは`.htaccess`ファイルを使用しないため、`location`ブロックのサーバー設定に次を追加してください。
 
 ```
 if (!-e $request_filename){
@@ -122,19 +126,24 @@ if (!-e $request_filename){
 }
 ```
 
-*NOTE:* If you want your entry point to be something other than index.php you will need your config to change as well. `api.php` is also commonly used as an entry point, so your set up should match accordingly. This example assumes you are using index.php.
+*注意*: エントリポイントをindex.php以外のものにしたい場合は、設定も変更する必要があります。
+`api.php`は一般にエントリポイントとしても使用されるため、それに応じて設定を一致させる必要があります。
+この例では、index.phpを使用していることを前提としています。
 
-With this setup, just remember to use http://slimproject.test instead of http://localhost:8080 in the other examples in this tutorial.  The same health warning as above applies: you'll see an error page at http://slimproject.test but crucially it's *Slim's* error page.  If you go to http://slimproject.test/hello/joebloggs then something better should happen.
+この設定では、他の例でよく使われるhttp://localhost:8080を、このチュートリアルでは代わりにhttp://slimproject.testを使用
+していることを忘れないでください。どちらも同じ警告が適用されます。http://slimproject.testにアクセスするとエラーページが表示されますが、
+大切なのはSlimのエラーページだということです。 http://slimproject.test/hello/joebloggsにアクセスすると良い結果が見れるはずです。
 
 ## Configuration and Autoloaders
 
-Now we've set up the platform, we can start getting everything we need in place in the application itself.
+これでプラットフォームのセットアップが完了し、必要なものすべてをアプリケーションに配置できるようになりました。
 
 ### Add Config Settings to Your Application
 
-The initial example uses all the Slim defaults, but we can easily add configuration to our application when we create it.  There are a few options but here I've just created an array of config options and then told Slim to take its settings from here when I create it.
+最初の例では、すべてSlimのデフォルトを使用していますが、作成時にアプリケーションに設定を簡単に追加できます。
+いくつかの選択肢がありますが、ここでは設定オプションの配列を作成し、Slimがここから設定オプションを取得するにしました。
 
-First the configuration itself:
+これが初期設定です
 
 ```php
 $config['displayErrorDetails'] = true;
@@ -145,19 +154,21 @@ $config['db']['user']   = 'user';
 $config['db']['pass']   = 'password';
 $config['db']['dbname'] = 'exampleapp';
 ```
-These string should be added into `src/public/index.php` before the `$app = new \Slim\App` line.
 
-The first line is the most important!  Turn this on in development mode to get information about errors (without it, Slim will at least log errors so if you're using the built in PHP webserver then you'll see them in the console output which is helpful). The second line allows the web server to set the Content-Length header which makes Slim behave more predictably.
+これらのコードは、`$app = new \Slim\App`の行の前に`src/public/index.php`に追加する必要があります。
+最初の行が最も重要です！開発環境ではこれをオンにして、エラーに関する情報を取得します（これをしない場合、Slimは少なくともエラーを
+ログに記録するため、PHPのビルドインWebサーバーを使用している場合は有益な情報がコンソールに出力されます）。
+2行目では、WebサーバがContent-Lengthヘッダーを設定して、Slimの振る舞いを予測しやすくします。
 
-The other settings here are not specific keys/values, they're just some data that I want to be able to access later.
+他の設定は特定のキー/バリューの仕様ではなく、後で利用できるようにしたいデータです。
 
-Now to feed this into Slim, we need to *change* where we create the `Slim/App` object so that it now looks like this:
+これをSlimに反映するには、以下のようにSlim/Appオブジェクトを作成する場所を次のように変更する必要があります。
 
 ```php
 $app = new \Slim\App(['settings' => $config]);
 ```
 
-We'll be able to access any settings we put into that `$config` array from our application later on.
+`$config`配列に入れた設定には後でアプリケーションからアクセスできるようになります。
 
 ## Set up Autoloading for Your Own Classes
 
