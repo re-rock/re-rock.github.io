@@ -1,50 +1,38 @@
 ---
 title: Deployment
 ---
-Congratulations! if you have made it this far, that means you have successfully built something 
-awesome using Slim. However, the time to party has not come yet. We still have to push our 
-application to the production server.
+おめでとうございます！ここに到達したということは、Slimを使用して素晴らしいものを作ることができたことになります。しかし、パーティーの時間はまだ来ていません。アプリケーションを運用サーバーにプッシュする必要があります。
 
-There are many ways to do this that are beyond the scope of this documentation. In 
-this section, we provide some notes for various set-ups.
+デプロイにはこのドキュメントで紹介する以外にも多くの方法があります。このセクションでは、さまざまなセットアップに関する注意事項を提供します。
 
-### Disable error display in production
+### 本番環境でエラー表示を無効にする
 
-The first thing to do is to tweak your settings (`src/settings.php` in the 
-skeleton application) and ensure that you do not display full error details to the
-public.
+最初に行うことは、設定（skeletonから作成した場合の`src/settings.php`）を調整し、完全なエラー詳細を公開しないようにすることです。
 
 ```php
   'displayErrorDetails' => false, // set to false in production
 ```
 
-You should also ensure that your PHP installation is configured to not display
-errors with the `php.ini` setting:
+また、PHPインストールがエラーを表示しないように`php.ini`で設定されていることを確認してください。
 
 ```ini
 display_errors = 0
 ```
 
+## サーバにデプロイ
 
-
-## Deploying to your own server
-
-If you control your server, then you should set up a deployment process using any 
-one of the many deployment system such as:
+あなたがサーバを設定できる立場の場合は、次のようなたくさんのデプロイメント・システムのいずれかを使用してデプロイメント・プロセスを設定する必要があります。
 
 * Deploybot
 * Capistrano
 * Script controlled with Phing, Make, Ant, etc.
 
+[Web Servers](/docs/v3/start/web-servers.html)のドキュメントを確認してWebサーバの設定を行ってください。
 
-Review the [Web Servers](/docs/v3/start/web-servers.html) documentation to configure your webserver.
 
+## 共有サーバにデプロイ
 
-## Deploying to a shared server
-
-If your shared server runs Apache, then you need to create a `.htaccess` file 
-in your web server root directory (usually named `htdocs`, `public`, `public_html`
-or `www`) with the following content:
+共有サーバーでApacheを実行している場合、Webサーバーのルートディレクトリ（通常は`htdocs`、`public`、`public_html`または`www`）に以下の内容の`.htaccess`ファイルを作成する必要があります。
 
 ```apache
 <IfModule mod_rewrite.c>
@@ -54,9 +42,6 @@ or `www`) with the following content:
 </IfModule>
 ```
 
-(replace 'public' with the correct name of your domain name e.g. example.com/$1)
+('public'をあなたのドメイン名に置き換えてください。例）example.com/$1)
 
-Now upload all the files that make up your Slim project to the webserver. As you
-are on shared hosting, this is probably done via FTP and you can use any FTP client, 
-such as Filezilla to do this.
-
+次に、Slimプロジェクトを構成するすべてのファイルをWebサーバーにアップロードします。共有ホストの場合はおそらくFTP経由で行われると思いますが、FilezillaなどのFTPクライアントを使用してこれを行うことができます。
