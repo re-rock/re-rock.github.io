@@ -2,26 +2,27 @@
 title: Web Servers
 ---
 
-It is typical to use the front-controller pattern to funnel appropriate HTTP
-requests received by your web server to a single PHP file. The instructions
-below explain how to tell your web server to send HTTP requests to your PHP
-front-controller file if no matching static files or directories exist.
+通常、フロントコントローラーパターンを使用してWebサーバが受信した適切なHTTPリクエストを単一の
+PHPファイルにまとめます。通常、フロントコントローラーパターンを使用して、Webサーバーが受信した適切な
+HTTPリクエストを単一のPHPファイルに転送します。
+以下の手順では、URLに一致するファイルやディレクトリが存在しない場合、PHPフロントコントローラーファイルに
+HTTPリクエストを送信するようにWebサーバーに指示する方法を説明します。
 
-## PHP built-in server
+## PHPビルトインサーバ
 
-Run the following command in terminal to start localhost web server,
-assuming `./public/` is public-accessible directory with `index.php` file:
+ターミナルで次のコマンドを実行してlocalhost Webサーバを起動します。
+サーバは`./public/`が`index.php`ファイルを持つパブリックアクセス可能なディレクトリであると想定してアクセスします。
 
 ```bash
 php -S localhost:8888 -t public public/index.php
 ```
 
-If you are not using `index.php` as your entry point then change appropriately.
+`index.php`をエントリポイントとして使用していない場合も適切に変更されます。
 
-## Apache configuration
+## Apacheの設定
 
-Ensure your `.htaccess` and `index.php` files are in the same
-public-accessible directory. The `.htaccess` file should contain this code:
+`.htaccess`ファイルと`index.php`ファイルが同じパブリックアクセス可能なディレクトリにあることを確認してください。
+`.htaccess`ファイルには次のコードが含まれている必要があります。
 
 ```
 RewriteEngine On
@@ -30,20 +31,21 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
 ```
 
-This `.htaccess` file requires URL rewriting. Make sure to enable Apache's mod_rewrite module and your virtual host is configured with the `AllowOverride` option so that the `.htaccess` rewrite rules can be used:
+この`.htaccess`ファイルには、URLの書き換えが必要です。 Apacheのhttpd.confで`mod_rewrite`モジュールを有効にし、
+`VirtualHost`に`AllowOverride`オプションが設定されていることを確認してください。
+これにより、`.htaccess`書き換えルールを使用できます。
 
 ```
 AllowOverride All
 ```
 
-## Nginx configuration
+## Nginxの設定
 
-This is an example Nginx virtual host configuration for the domain `example.com`.
-It listens for inbound HTTP connections on port 80. It assumes a PHP-FPM server
-is running on port 9000. You should update the `server_name`, `error_log`,
-`access_log`, and `root` directives with your own values. The `root` directive
-is the path to your application's public document root directory; your Slim app's
-`index.php` front-controller file should be in this directory.
+これは、`example.com`ドメインのNginバーチャルホスト設定の例です。ポート80でHTTP接続を受け付けています。
+PHP-FPMサーバがポート9000で実行されていることを前提としています。
+`server_name`、`error_log`、`access_log`および`root`ディレクティブをあなたの環境に合わせて設定してください。
+`root`ディレクティブは、アプリケーションの公開ルートディレクトリへのパスです。Slimアプリの`index.php`フロントコントローラーファイルは
+このディレクトリになければなりません。
 
 ```
 server {
@@ -72,7 +74,9 @@ server {
 
 ## HipHop Virtual Machine
 
-Your HipHop Virtual Machine configuration file should contain this code (along with other settings you may need). Be sure you change the `SourceRoot` setting to point to your Slim app's document root directory.
+HipHopバーチャルマシンの設定ファイルには、以下のコードが含まれている必要があります（その他必要な設定と一緒に）。
+`SourceRoot`設定を変更して、Slimアプリのドキュメントルートディレクトリを指すようにしてください。
+(HHVM : C++で実装されたPHP実行環境)
 
 ```
 Server {
@@ -99,7 +103,8 @@ VirtualHost {
 
 ## IIS
 
-Ensure the `Web.config` and `index.php` files are in the same public-accessible directory. The `Web.config` file should contain this code:
+同じ公開ディレクトリに`Web.config`と`index.php` ファイルがあることを確認してください。
+`Web.config`は以下のコードが含まれている必要があります。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -123,10 +128,11 @@ Ensure the `Web.config` and `index.php` files are in the same public-accessible 
 
 ## lighttpd
 
-Your lighttpd configuration file should contain this code (along with other settings you may need). This code requires lighttpd >= 1.4.24.
+lighttpdの設定ファイルには、以下のコードが含まれている必要があります（その他必要な設定と一緒に）。
+またlighttpdのバージョンは`1.4.24.`以上である必要があります。
 
 ```
 url.rewrite-if-not-file = ("(.*)" => "/index.php/$0")
 ```
 
-This assumes that Slim's `index.php` is in the root folder of your project (www root).
+以上からわかるように、Slimのindex.phpがプロジェクトのルートフォルダ(wwwルート)にあることが前提となります。
