@@ -6,11 +6,11 @@ title: First Application Walkthrough
 
 始める前に：サンプルアプリで始められる[skeleton project](https://github.com/slimphp/Slim-Skeleton) が提供されています。そのため、すべての機能の詳細が知りたいのではなく、とりあえずSlimアプリを動かしたい場合はこちらがおすすめです。
 
-> このチュートリアルでは一連のアプリケーションを構築する一連の作業を紹介します。Slimのソースコードを読みたい場合はこちらから参照できます。 [code for the application](https://github.com/slimphp/Tutorial-First-Application)
+> このチュートリアルでは一連のアプリケーションを構築する一連の作業を紹介します。Slimのソースコードを読みたい場合は[こちら](https://github.com/slimphp/Tutorial-First-Application)から参照できます。
 
 ## Getting Set Up
 
-プロジェクトのフォルダを作成することから始めます（ここではプロジェクトと名付けます。名前を付けるのって難しいですよね）。私はトップレベルにはコードではないもを配置します。そしてソースコード用のフォルダーとその中にWebルートとなるソースコードを配置します。最初のディレクトリ配置は以下です。
+プロジェクトのフォルダを作成することから始めます（ここではプロジェクトと名付けます。名前を付けるのって難しいですよね）。私はトップレベルにはコードではないもを配置します。そしてソースコード用のフォルダーとその中にWebのルートとなるソースコードを配置します。最初のディレクトリ配置は以下です。
 
 ```
 .
@@ -21,21 +21,21 @@ title: First Application Walkthrough
 
 ### Installing Slim
 
-[Composer](https://getcomposer.org)は、Slim Frameworkをインストールする最良の方法です。まだインストールしていない場合は、[インストール手順](https://getcomposer.org/download/)に参考にしてください。私のプロジェクトでは、`composer.phar`を`src/`ディレクトリにダウンロードしローカルで使用します。したがって、最初のコマンドは次のようになります（`src/`ディレクトリに移動してください）。
+[Composer](https://getcomposer.org)は、Slim Frameworkをインストールする最良の方法です。まだインストールしていない場合は、[インストール手順](https://getcomposer.org/download/)を参考にしてください。私のプロジェクトでは、`composer.phar`を`src/`ディレクトリにダウンロードしローカルで使用します。したがって、最初のコマンドは次のようになります（`src/`ディレクトリに移動してください）。
 
     php composer.phar require slim/slim
 
 これは2つのことを行います。
 
-- Slimフレームワークの依存関係を`composer.json`に追加します（私の場合、まだ持っていないのでcomposer.jsonファイルが作成されます。既にある状態でも実行して問題ありません）。
+- Slimフレームワークの依存関係を`composer.json`に追加します（私の場合、まだ持っていないのでcomposer.jsonファイルが作成されます。既にある状態で実行しても問題ありません）。
 
-- `composer install`を実行して、それらの依存関係がアプリケーションで実際に使用できるようにします
+- `composer install`を実行して、それらの依存関係があるライブラリがアプリケーションで実際に使用できるようにします。
 
 ここでプロジェクトディレクトリ内を見ると、すべてのライブラリコードを含む`vendor/`フォルダーがあることがわかります。 また`composer.json`と`composer.lock`の2つのファイルも作成されています。
-これでソースコントロールのセットアップを正しく行えているようになります。composerを使用する際は常に`vendor/`ディレクトリを除きますが、`composer.json`と`composer.lock`はソースコントロールに含める必要があります。
+これはソースコントロールのセットアップが正しく行えていることになります。composerを使用する際は常に`vendor/`ディレクトリを除きますが、`composer.json`と`composer.lock`はソースコントロールに含める必要があります。
 このディレクトリでは`composer.phar`を使用しているのでリポジトリにも追加します。これにより`composer`コマンドを扱える他のシステムに同じようにインストールすることができます。
 
-`git ignore`を正しく設定するには、`src/.gitignore`というファイルを作成し、次の1行をファイルに追加します。
+git ignoreを正しく設定するには、`src/.gitignore`というファイルを作成し、次の1行をファイルに追加します。
 
     vendor/*
 
