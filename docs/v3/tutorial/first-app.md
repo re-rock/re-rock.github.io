@@ -171,9 +171,9 @@ $app = new \Slim\App(['settings' => $config]);
 
 ## Set up Autoloading for Your Own Classes
 
-Composer can handle the autoloading of your own classes just as well as the vendored ones. For an in-depth guide, take a look at [using Composer to manage autoloading rules](https://getcomposer.org/doc/04-schema.md#autoload).
+Composerはvendorのクラスだけでなく、独自に作成したクラスのオートロードも処理できます。詳細なガイドについては、[Composerのオートローディングルールの管理](https://getcomposer.org/doc/04-schema.md#autoload)をご覧ください。
 
-My setup is pretty simple. I have a few extra classes and the files are in the `src/classes/` directory.  So to autoload them, I add this `autoload` section to my `composer.json` file:
+私のセットアップはとてもシンプルです。いくつか追加したクラスのファイルが`src/classes/`ディレクトリにあります。それらをオートロードするには、この`autoload`セクションを`composer.json`ファイルに追加します。
 
 ```javascript
 {
@@ -193,21 +193,22 @@ My setup is pretty simple. I have a few extra classes and the files are in the `
 
 ## Add Dependencies
 
-Most applications will have some dependencies, and Slim handles them nicely using a DIC (Dependency Injection Container) built on [Pimple](http://pimple.sensiolabs.org/).  This example will use both [Monolog](https://github.com/Seldaek/monolog) and a [PDO](http://php.net/manual/en/book.pdo.php) connection to MySQL.
+ほとんどのアプリケーションにはいくつかの依存関係を持ち、Slimは[Pimple](http://pimple.sensiolabs.org/)に構築されたDIC（Dependency Injection Container）を利用して適切に処理します。今回の例では、[Monolog](https://github.com/Seldaek/monolog)と[PDO](http://php.net/manual/en/book.pdo.php)でのMySQL接続を紹介します。
 
-The idea of the dependency injection container is that you configure the container to be able to load the dependencies that your application needs, when it needs them.  Once the DIC has created/assembled the dependencies, it stores them and can supply them again later if needed.
+DIコンテナの考え方は、アプリケーションが必要した依存関係を、必要なときに読み込めるようにコンテナを構成することです。
+DICは、1度作成/構築されると、それらを保存し必要に応じて後で再度使用できます。
 
-To get the container, we can add the following after the line where we create `$app` and before we start to register the routes in our application:
+コンテナを取得するには、以下のコードを`$app`を作成する行の後、かつアプリケーションをルートに登録する前のタイミングで追加できます。
 
 ```php
 $container = $app->getContainer();
 ```
 
-Now we have the `Slim\Container` object, we can add our services to it.
+これで`Slim\Container`オブジェクトができたのでサービスに追加できます。
 
 ### Use Monolog In Your Application
 
-If you're not already familiar with Monolog, it's an excellent logging framework for PHP applications, which is why I'm going to use it here.  First of all, get the Monolog library installed via Composer:
+Monologを知らない人にもいると思いますが、なぜSlimがMonologを使用するかというと、それがPHPアプリケーションの優れたロギングフレームワークであるためです。まず、まず最初にComposerでMonologをインストールしましょう。
 
     php composer.phar require monolog/monolog
 
