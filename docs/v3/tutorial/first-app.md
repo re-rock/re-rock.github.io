@@ -208,11 +208,11 @@ $container = $app->getContainer();
 
 ### Use Monolog In Your Application
 
-Monologを知らない人にもいると思いますが、なぜSlimがMonologを使用するかというと、それがPHPアプリケーションの優れたロギングフレームワークであるためです。まず、まず最初にComposerでMonologをインストールしましょう。
+Monologをよく知らない人もいると思いますが、なぜSlimがMonologを採用したかというと、それがPHPアプリケーションの優れたロギングフレームワークであるためです。まず、まず最初にComposerでMonologをインストールしましょう。
 
     php composer.phar require monolog/monolog
 
-The dependency is named `logger` and the code to add it looks like this:
+次のようにdependencyへは`logger`という名前で追加します。
 
 ```php
 $container['logger'] = function($c) {
@@ -223,23 +223,23 @@ $container['logger'] = function($c) {
 };
 ```
 
-We're adding an element to the container, which is itself an anonymous function (the `$c` that is passed in is the container itself so you can access other dependencies if you need to).  This will be called when we try to access this dependency for the first time; the code here does the setup of the dependency.  Next time we try to access the same dependency, the same object that was created the first time will be used the next time.
+無名関数である要素をコンテナに追加します。（渡される`$c`はコンテナ本体なので、必要に応じて他のdependencyにアクセスできます）。そしてこの要素は初めてアクセスしようとしたときに呼び出されます。このコードは依存関係のセットアップを行います。次に同じdependencyにアクセスしようとすると、最初に作成された同じオブジェクトが使用されます。
 
-My Monolog config here is fairly light; just setting up the application to log all errors to a file called `logs/app.log` (remember this path is from the point of view of where the script is running, i.e. `index.php`).
+ここでの私のMonologの設定はかなり簡易的です。すべてのエラーを`logs/app.log`というファイルに記録するように設定しているだけです（このパスは、スクリプトが実行されている場所、つまり`index.php`の観点からであることを注意してください）。
 
-With the logger in place, I can use it from inside my route code with a line like this:
+loggerを設定したら、ルート内から次のようなコードで使用できます。
 
 ```php
     $this->logger->addInfo('Something interesting happened');
 ```
 
-Having good application logging is a really important foundation for any application so I'd always recommend putting something like this in place.  This allows you to add as much or as little debugging as you want, and by using the appropriate log levels with each message, you can have as much or as little detail as is appropriate for what you're doing in any one moment.
+優れたロギングは、あらゆるアプリケーションにとって非常に重要になるため、このように常にlogを記録することをお勧めします。これにより、必要なだけデバッグを追加できます。また各メッセージで適切なログレベルを使用することで、あらゆる時点で何をしているのかについて詳細を取得できます。
 
 ### Add A Database Connection
 
-There are many database libraries available for PHP, but this example uses PDO - this is available in PHP as standard so it's probably useful in every project, or you can use your own libraries by adapting the examples below.
+PHPで使用できるDBライブラリは多数ありますが、この例ではPDOを使用します。これはPHPで標準として使用できるため、おそらくすべてのプロジェクトで役立ちます。もしくは独自のライブラリを以下の例のように適用して使用できます
 
-Exactly as we did for adding Monolog to the DIC, we'll add an anonymous function that sets up the dependency, in this case called `db`:
+MonologをDICに追加した場合と同じように、無名関数（この場合は`db`と名付けます）をdependencyに追加します。
 
 ```php
 $container['db'] = function ($c) {
