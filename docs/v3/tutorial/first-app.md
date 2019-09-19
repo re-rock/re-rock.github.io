@@ -252,21 +252,28 @@ $container['db'] = function ($c) {
 };
 ```
 
-Remember the config that we added into our app earlier?  Well, this is where we use it - the container knows how to access our settings, and so we can grab our configuration very easily from here.  With the config, we create the `PDO` object (remember this will throw a `PDOException` if it fails and you might like to handle that here) so that we can connect to the database.  I've included two `setAttribute()` calls that really aren't necessary but I find these two settings make PDO itself much more usable as a library so I left the settings in this example so you can use them too!  Finally, we return our connection object.
+以前にアプリに追加した設定を覚えていますか？これに私たちは設定を行いました。コンテナは設定したデータにアクセスする方法を知っているので、
+ここから設定を簡単に取得できます。設定によりPDOオブジェクトを作成してデータベースに接続できるようになります。
+（覚えておきたいのは、DB接続に失敗してPDOExceptionがスローされた場合はここで修正を行う必要があることです）。
+必須ではないですが、2つの`setAttribute()`を設定に加えましたが。これら2つの設定によりPDO自体がライブラリとしてとても使いやすくなる
+ので、この設定を例のように追加することをお勧めします。これでコネクションオブジェクトを取得できます。
 
-Again, we can access our dependencies with just `$this->` and then the name of the dependency we want which in this case is `$this->db`, so there is code in my application that looks something like:
+繰り返しますが、`$this->`だけでdependenciesにアクセスでき必要な依存関係の名前（この場合は`$this->db`）を使用できます。
+したがって次のようなコードになります。
 
 ```php
     $mapper = new TicketMapper($this->db);
 ```
 
-This will fetch the `db` dependency from the DIC, creating it if necessary, and in this example just allows me to pass the `PDO` object straight into my mapper class.
+これによりDICから`db`dependencyを取得し、必要に応じて作成されます。この例では`PDO`オブジェクトをマッパークラスに直接渡すことができます。
 
 ## Create Routes
 
-"Routes" are the URL patterns that we'll describe and attach functionality to.  Slim doesn't use any automatic mapping or URL formulae so you can make any route pattern you like map onto any function you like, it's very flexible.  Routes can be linked to a particular HTTP verb (such as GET or POST), or more than one verb.
+「ルート」は、機能を伝達してURLに添付するURLパターンです。 SlimはオートマッピングやURL変換式を使用しないため、好きなルートパターンを
+好きな機能にマッピングでき非常に柔軟です。ルートは、特定のHTTPメソッド（GETやPOSTなど）または複数のメソッドにリンクできます。
 
-As a first example, here's the code for making a GET request to `/tickets` which lists the tickets in my bug tracker example application.  It just spits out the variables since we haven't added any views to our application yet:
+最初の例として、バグトラッカーサンプルアプリケーションのチケット一覧を取得する`/tickets`にGETリクエストのコードを示します。
+アプリケーションはまだ画面を追加していないため、ただ変数を返却します。
 
 ```php
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -279,19 +286,27 @@ $app->get('/tickets', function (Request $request, Response $response) {
 });
 ```
 
-The use of `$app->get()` here means that this route is only available for GET requests; there's an equivalent `$app->post()` call that also takes the route pattern and a callback for POST requests.  There are also [methods for other verbs](http://www.slimframework.com/docs/v3/objects/router.html) - and also the `map()` function for situations where more than one verb should use the same code for a particular route.
+ここで`$app->get()`を使用すると、このルートはGETリクエストのみ利用可能になります。同等の`$app->post()`呼び出しもあり、
+これもルートパターンとPOSTリクエストのコールバックを受け取ります。
+他HTTPメソッドのための[メソッド](http://www.slimframework.com/docs/v3/objects/router.html)もありますし、
+複数のメソッドが同じルートで同じコードを使用する必要がある場合の`map()`メソッドもあります。
 
-Slim routes match in the order they are declared, so if you have a route which could overlap another route, you need to put the most specific one first.  Slim will throw an exception if there's a problem, for example in this application I have both `/ticket/new` and `/ticket/{id}` and they need to be declared in that order otherwise the routing will think that "new" is an ID!
+Slimのルートは上からパターンに一致するため、別のルートと重複する可能性がある場合は、詳細なルートパターンを最初に配置する必要があります。
+なにか問題がある場合Slimは例外をスローします。たとえば`/ticket/new`と`/ticket/{id}`の2つのパターンが設定されている場合、この順序で宣言する必要があります。
+もし逆だったらSlimのルーティングは"new"がIDであると見なしてしまいます!
 
-In this example application, all the routes are in `index.php` but in practice this can make for a rather long and unwieldy file!  It's fine to refactor your application to put routes into a different file or files, or just register a set of routes with callbacks that are actually declared elsewhere.
+このサンプルでは、すべてのルートがindex.phpに設定していますが、実際でもこれをしてしまうと、かなり大きくて扱いにくいファイルになってしまいます！
+ルートを別のファイルに配置するようにリファクタリングするか、実際には別の場所で定義されている場所へのコールバックを設定したルートだけを登録するなどしてください。
 
-All route callbacks accept three parameters (the third one is optional):
+すべてのルートコールバックは3つのパラメーターを受け入れます（3番目のパラメーターはオプションです）。
 
- * Request: this contains all the information about the incoming request, headers, variables, etc.
- * Response: we can add output and headers to this and, once complete, it will be turned into the HTTP response that the client receives
- * Arguments: the named placeholders from the URL (more on those in just a moment), this is optional and is usually omitted if there aren't any
+ - Request: これには受信したリクエスト、ヘッダー、変数などに関するすべての情報が含まれます。
+ - Response: レスポンスにはアウトプットとヘッダーを追加できます。完了するとクライアントが受信するHTTPレスポンスに変換されます。
+ - Arguments: URLからの名前付きプレースホルダー（詳細は後ほど）、これはオプションであり、必要ない場合は通常省略されます。
 
-This emphasis on Request and Response illustrates Slim 3 being based on the PSR-7 standard for HTTP Messaging.  Using the Request and Response object also makes the application more testable as we don't need to make **actual** requests and responses, we can just set up the objects as desired.
+リクエストとレスポンスの重要な点は、Slim3がPSR-7標準のHTTPメッセージングに基づいていることです。
+リクエストとレスポンスオブジェクトを使用すると、実際のリクエストとレスポンスを作成する必要がないため、
+テストが容易になります。必要に応じてオブジェクトを設定するだけです。
 
 ### Routes with Named Placeholders
 
