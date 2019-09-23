@@ -310,8 +310,9 @@ Slimのルートは上からパターンに一致するため、別のルート�
 
 ### Routes with Named Placeholders
 
-Sometimes, our URLs have variables in them that we want to use in our application.  In my bug tracking example, I want to have URLs like `/ticket/42` to refer to the ticket - and Slim has an easy way of parsing out the "42" bit and making it available for easy use in the code.  Here's the route that does exactly that:
-
+URLには、アプリケーションで使用するための変数が含まれている場合があります。
+私のバグトラッカーを例とすると、チケットを参照するために'/ticket/42'などのURLが必要になります。Slimにはこの「42」を抽出してコードで
+使用できるようにする簡単な方法があります。以下がそれを行うルーティングになります。
 ```php
 $app->get('/ticket/{id}', function (Request $request, Response $response, $args) {
     $ticket_id = (int)$args['id'];
@@ -323,24 +324,30 @@ $app->get('/ticket/{id}', function (Request $request, Response $response, $args)
 });
 ```
 
-Look at where the route itself is defined: we write it as `/ticket/{id}`.  When we do this, the route will take the portion of the URL from where the `{id}` is declared, and it becomes available as `$args['id']` inside the callback.
+`/ticket/{id}`と書かれたルート定義を見てください。こうするとルートは`{id}`と宣言されているURLの部分を取得し、
+コールバック内で`$args['id']`として使用可能になります。
 
 ### Using GET Parameters
 
-Since GET and POST send data in such different ways, then the way that we get that data from the Request object differs hugely in Slim.
+GETとPOSTでは全く異なる方法でデータが送信されるため、SlimではRequestオブジェクトからそのデータを取得する方法も大きく異なります。
 
-It is possible to get all the query parameters from a request by doing `$request->getQueryParams()` which will return an associative array.  So for the URL `/tickets?sort=date&order=desc` we'd get an associative array like:
+連想配列を返す`$request->getQueryParams()`を実行することで、リクエストからすべてのクエリパラメータを取得できます。
+したがって、URL`/tickets？sort=date＆order=desc`の場合、次のような連想配列を取得します。
 
     ['sort' => 'date', 'order' => 'desc']
 
-These can then be used (after validating of course) inside your callback.
-
+これらは、コールバック内で（パラメータの検証はもちろん行ってください）使用できます。
 
 ### Working with POST Data
 
-When working with incoming data, we can find this in the body.  We've already seen how we can parse data from the URL and how to obtain the GET variables by doing `$request->getQueryParams()` but what about POST data?  The POST request data can be found in the body of the request, and Slim has some good built in helpers to make it easier to get the information in a useful format.
+受信したデータを処理したい場合、これはbodyで見つけることができます。 すでにURLからデータを解析する方法、および`$request->getQueryParams()`を
+使用してGETリクエストから変数を取得する方法については説明しましたが、POSTデータについてはどうでしょうか。
+POSTリクエストのデータはリクエストのbodyにあります。Slimには便利な形式で情報を取得しやすくするための優れたヘルパーが
+組み込まれています。
 
-For data that comes from a web form, Slim will turn that into an array.  My tickets example application has a form for creating new tickets that just sends two fields: "title" and "description".  Here is the first part of the route that receives that data, note that for a POST route use `$app->post()` rather than `$app->get()`:
+Webフォームからのデータの場合、Slimはそれを配列に変換します。チケットのサンプルアプリケーションには、`title`と`description`の2つの
+フィールドを送信するだけの新しいチケットを作成するためのフォームがあります。
+そのデータを受け取るルートの最初の部分は次のとおりです。POSTルートでは`$app->get()`ではなく`$app->post()`を使用することに注意してください。
 
 ```php
 $app->post('/ticket/new', function (Request $request, Response $response) {
@@ -351,9 +358,16 @@ $app->post('/ticket/new', function (Request $request, Response $response) {
     // ...
 ```
 
-The call to `$request->getParsedBody()` asks Slim to look at the request and the `Content-Type` headers of that request, then do something smart and useful with the body.  In this example it's just a form post and so the resulting `$data` array looks very similar to what we'd expect from `$_POST` - and we can go ahead and use the [filter](https://php.net/manual/en/book.filter.php) extension to check the value is acceptable before we use it.  A huge advantage of using the built in Slim methods is that we can test things by injecting different request objects - if we were to use `$_POST` directly, we aren't able to do that.
+`$request->getParsedBody()`は、bodyのデータを処理する際に、Slimにリクエストとそのヘッダーの`Content-Type`を調べるように
+要求します。この例では単なるフォームのPOSTであるため、結果の`$data`配列は`$ _POST`を使用して取得されるものと非常によく似ています。
+そして、[filter](https://php.net/manual/en/book.filter.php) の拡張機能を使用してこのデータを使用してよいものかを事前に確認できます。
 
-What's really neat here is that if you're building an API or writing AJAX endpoints, for example, it's super easy to work with data formats that arrive by POST but which aren't a web form.  As long as the `Content-Type` header is set correctly, Slim will parse a JSON payload into an array and you can access it exactly the same way: by using `$request->getParsedBody()`.
+Slimの組み込みメソッドを使用する大きな利点は、異なるリクエストオブジェクトを注入してテストできることです。
+`$_ POST`を直接使用する場合、それを行うことができません。
+
+本当に便利なのは、たとえばAPIを構築している場合やAJAXエンドポイントを作成した場合など、WebフォームからではないPOSTリクエストを受信した
+ときもそのデータ形式を扱うのは非常に簡単だということです。 `Content-Type`ヘッダーが正しく設定されている限り、SlimはJSONペイロードを
+解析して配列にし、`$request->getParsedBody()`を使用してまったく同じ方法でデータにアクセスできます。
 
 ## Views and Templates
 
