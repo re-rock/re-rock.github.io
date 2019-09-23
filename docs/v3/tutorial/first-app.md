@@ -371,13 +371,20 @@ Slimの組み込みメソッドを使用する大きな利点は、異なるリ�
 
 ## Views and Templates
 
-Slim doesn't have an opinion on the views that you should use, although there are some options that are ready to plug in.  Your best choices are either Twig or plain old PHP.  Both options have pros and cons: if you're already familiar with Twig then it offers lots of excellent features and functionality such as layouts - but if you're not already using Twig, it can be a large learning curve overhead to add to a microframework project.  If you're looking for something dirt simple then the PHP views might be for you!  I picked PHP for this example project, but if you're familiar with Twig then feel free to use that; the basics are mostly the same.
+Slimには、使用するビューについて指定はありませんが、プラグインを使用するための準備ができているオプションがいくつかあります。
+最良の選択は、Twigまたは標準のPHPのいずれかですが両者には長所と短所があります。
+Twigに既に精通している場合、レイアウトなどの優れた機能を多数提供します。一方、Twigをよく知らない場合、
+マイクロフレームワークプロジェクトに追加さらる学習曲線のオーバーヘッドが大きくなる可能性があります
+単純な方法を探しているなら、PHPの標準ビューがあなたにぴったりかもしれません！このサンプルプロジェクトではPHPを選択しましたが、
+Twigに慣れている場合はそちらを使用してください。基本はほとんど同じです。
 
-Since we'll be using the PHP views, we'll need to add this dependency to our project via Composer.  The command looks like this (similar to the ones you've already seen):
+PHPビューを使用するため、Composerを使用してこのDIをプロジェクトに追加する必要があります。コマンドは次のようになります
+（すでに前にやりましたね）
 
     php composer.phar require slim/php-view
 
-In order to be able to render the view, we'll first need to create a view and make it available to our application; we do that by adding it to the DIC.  The code we need goes with the other DIC additions near the top of `src/public/index.php` and it looks like this:
+ビューをレンダリングを利用するには、まずビューを作成してDICに追加しアプリケーションで使用できるようにする必要があります。
+必要なコードは`src/public/index.php`の上部近くにある他のDICが追加されている場所で、次のようになります。
 
 ```php
 $container['view'] = new \Slim\Views\PhpRenderer('../templates/');
