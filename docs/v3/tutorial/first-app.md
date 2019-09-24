@@ -387,7 +387,9 @@ PHPビューを使用するため、Composerを使用してこのDIをプロジ�
 $container['view'] = new \Slim\Views\PhpRenderer('../templates/');
 ```
 
-Now we have a `view` element in the DIC, and by default it will look for its templates in the `src/templates/` directory.  We can use it to render templates in our actions - here's the ticket list route again, this time including the call to pass data into the template and render it:
+これでDICに`view`要素が定義され、デフォルトではSlimは`src/templates/`ディレクトリのテンプレートを探します。
+これを使用してテンプレートをレンダリングできます。
+チケットリストのルートをもう一度見てみましょう。今回はレンダリングするテンプレートの呼び出しがデータをに含まれています。
 
 ```php
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -400,11 +402,10 @@ $app->get('/tickets', function (Request $request, Response $response) {
 });
 ```
 
-The only new part here is the penultimate line where we set the `$response` variable.  Now that the `view` is in the DIC, we can refer to it as `$this->view`.  Calling `render()` needs us to supply three arguments: the `$response` to use, the template file (inside the default templates directory), and any data we want to pass in.  Response objects are *immutable* which means that the call to `render()` won't update the response object; instead it will return us a new object which is why it needs to be captured like this.  This is always true when you operate on the response object.
-
-When passing the data to templates, you can add as many elements to the array as you want to make available in the template.  The keys of the array are the variables that the data will exist in once we get to the template itself.
-
-As an example, here's a snippet from the template that displays the ticket list (i.e. the code from `src/templates/tickets.phtml` - which uses [Pure.css](http://purecss.io/) to help cover my lack of frontend skills):
+ここでの新しい部分は最後から2番目の行の`$response`変数を設定する行だけです。`view`がDICにあるので`$this->view`として参照できます。`render()`を呼び出すには、使用する`$response`、テンプレートファイル（既定のテンプレートディレクトリ内の）、および渡したいデータの3つの引数を指定する必要があります。
+レスポンスオブジェクトは不変です。つまり、`render()`を呼び出してもレスポンスオブジェクトは更新されません。代わりに新しいオブジェクトが返されるため、例のようにキャプチャする必要があります。レスポンスオブジェクトを操作する場合、これは常に当てはまります。
+データをテンプレートに渡すときに、テンプレートで使用したいだけ要素を配列に追加できます。配列のキーは、テンプレート自体に到達したときにデータが存在する変数です。
+例として、チケットリストを表示するテンプレートの一部を次に示します（`src/templates/tickets.phtml`のコードです。私のフロントエンドのスキル不足をカバーするため[Pure.css](http://purecss.io/) を使用しています。）。
 
 ```php
 <h1>All Tickets</h1>
@@ -434,9 +435,9 @@ As an example, here's a snippet from the template that displays the ticket list 
 </table>
 ```
 
-In this case, `$tickets` is actually a `TicketEntity` class with getters and setters, but if you passed in an array, you'd be able to access it using array rather than object notation here.
+このケースだと`$tickets`は実際にはゲッターとセッターを持つ`TicketEntity`クラスですが、配列を渡した場合、オブジェクトとしてアクセスするより、むしろ配列としてアクセスすることができます。
 
-Did you notice something fun going on with `$router->pathFor()` right at the end of the example?  Let's talk about named routes next :)
+例の最後で`$router->pathFor()`で面白いことが起こっていることに気づきましたか？次に名前付きルートについて話しましょう。
 
 ### Easy URL Building with Named Routes
 
