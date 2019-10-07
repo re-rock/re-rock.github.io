@@ -2,31 +2,16 @@
 title: PSR-7 and Value Objects
 ---
 
-Slim supports [PSR-7](https://github.com/php-fig/http-message) interfaces for
-its Request and Response objects. This makes Slim flexible because it can
-use _any_ PSR-7 implementation. For example, a Slim application
-route does not _have_ to return an instance of `\Slim\Http\Response`. It could,
-for example, return an instance of `\GuzzleHttp\Psr7\CachingStream` or any instance
-returned by the `\GuzzleHttp\Psr7\stream_for()` function.
+Slimのレクエストおよびレスポンスオブジェクトは[PSR-7](https://github.com/php-fig/http-message) インターフェイスをサポートします。そのためPSR-7の実装を使用でき柔軟に実装できます。たとえばSlimアプリケーションルートは`\Slim\Http\Response`インスタンスを返す必要はありません。
+`\GuzzleHttp\Psr7\CachingStream`のインスタンスや`\GuzzleHttp\Psr7\stream_for()`関数によって返されたインスタンスなどを返すことができます。
 
-Slim provides its own PSR-7 implementation so that it works out of the box. However,
-you are free to replace Slim's default PSR-7 objects with a third-party implementation.
-Just override the application container's `request` and `response` services so
-they return an instance of `\Psr\Http\Message\ServerRequestInterface` and
-`\Psr\Http\Message\ResponseInterface`, respectively.
+Slimは簡単に利用できるよう独自のPSR-7実装を提供しています。ただし、SlimのデフォルトのPSR-7オブジェクトをサードパーティの実装に自由に置き換えることもできます。アプリケーションコンテナのリクエストおよびレスポンスサービスをオーバーライドするだけで、`\Psr\Http\Message\ServerRequestInterface`および`\Psr\Http\Message\ResponseInterface`のインスタンスをそれぞれ返します。
 
 ## Value objects
 
-Slim's Request and Response objects are [_immutable value objects_](http://en.wikipedia.org/wiki/Value_object).
-They can be "changed" only by requesting a cloned version that has updated
-property values. Value objects have a nominal overhead because they must be
-cloned when their properties are updated. This overhead does not affect
-performance in any meaningful way.
+SlimのRequestおよびResponseオブジェクトは[不変オブジェクト](http://en.wikipedia.org/wiki/Value_object)です。プロパティ値をアップデートするためのクローンバージョンをリクエストすることによってのみ変更できます。バリューオブジェクトは、プロパティの更新時に複製する必要があるため、わずかなオーバーヘッドがあります。ただこのオーバーヘッドがパフォーマンスに影響を与えることはありません。
 
-You can request a copy of a value object by invoking any of its PSR-7
-interface methods (these methods typically have a `with` prefix). For example,
-a PSR-7 Response object has a `withHeader($name, $value)` method that returns a
-cloned value object with the new HTTP header.
+バリューオブジェクトのコピーをレクエストするには、PSR-7インターフェイスメソッドを呼び出します（これらのメソッドには通常`with`プレフィックスが付いています）。たとえば、PSR-7レスポンスオブジェクトには、新しいHTTPヘッダーを持つクローンバリューオブジェクトを返す`withHeader($name、$value)`メソッドがあります。
 
 ```php
 <?php
@@ -40,8 +25,7 @@ $app->get('/foo', function ($req, $res, $args) {
 $app->run();
 ```
 
-The PSR-7 interface provides these methods to transform Request and Response
-objects:
+PSR-7インターフェースは、リクエストオブジェクトとレスポンスオブジェクトを変換するために次のメソッドを提供します。
 
 * `withProtocolVersion($version)`
 * `withHeader($name, $value)`
@@ -49,7 +33,7 @@ objects:
 * `withoutHeader($name)`
 * `withBody(StreamInterface $body)`
 
-The PSR-7 interface provides these methods to transform Request objects:
+PSR-7インターフェースは、リクエストオブジェクトを変換するために次のメソッドを提供します。
 
 * `withMethod($method)`
 * `withUri(UriInterface $uri, $preserveHost = false)`
@@ -60,7 +44,7 @@ The PSR-7 interface provides these methods to transform Request objects:
 * `withAttribute($name, $value)`
 * `withoutAttribute($name)`
 
-The PSR-7 interface provides these methods to transform Response objects:
+PSR-7インターフェイスは、レスポンスオブジェクトを変換するために次のメソッドを提供します。
 
 * `withStatus($code, $reasonPhrase = '')`
 
