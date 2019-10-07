@@ -6,7 +6,8 @@ title: Lifecycle
 
 ### 1. Instantiation
 
-最初に、`\Slim\App`クラスをインスタンス化します。これは、Slimアプリケーションオブジェクトです。インスタンス化している間は、Slimはアプリケーションの各依存関係をデフォルトのサービスに登録します。アプリケーションコンストラクターは、アプリケーションの動作を構成するオプション設定の配列を受け入れます。
+最初に、`\Slim\App`クラスをインスタンス化します。これは、Slimアプリケーションオブジェクトです。
+インスタンス化する際に、Slimはアプリケーションの各依存関係をデフォルトのサービスに登録します。アプリケーションコンストラクターは、アプリケーションの動作を構成するオプション設定の配列を受け入れます。
 
 ### 2. Route Definitions
 
@@ -27,8 +28,10 @@ Slimアプリケーションは、集中管理ミドルウェア構造のもっ�
 
 #### C. Exit Middleware Stack
 
-After the application dispatch process completes, each middleware layer reclaims control outwardly, beginning from the inner-most layer.
+アプリケーションのディスパッチプロセスが完了すると、各ミドルウェアレイヤーは、最も内側のレイヤーから外側に向かって制御を回収します。
 
 #### D. Send HTTP Response
 
-After the outer-most middleware layer cedes control, the application instance prepares, serializes, and returns the HTTP response. The HTTP response headers are set with PHP's native `header()` method, and the HTTP response body is output to the current output buffer.
+最外部のミドルウェアレイヤーが制御を開放したあと、アプリケーションインスタンスはHTTPレスポンスを準備し、シリアル化を行ったあと返却します。 
+HTTPレスポンスヘッダーはPHPのネイティブ`header()`メソッドで設定され、HTTPレスポンスボディは実行中のアウトプットバッファーに出力されます。
+
