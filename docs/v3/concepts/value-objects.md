@@ -48,4 +48,4 @@ PSR-7インターフェイスは、レスポンスオブジェクトを変換す
 
 * `withStatus($code, $reasonPhrase = '')`
 
-Refer to the [PSR-7 documentation](http://www.php-fig.org/psr/psr-7/) for more information about these methods.
+これらの方法の詳細については[PSR-7ドキュメント](http://www.php-fig.org/psr/psr-7/)を参照してください。
