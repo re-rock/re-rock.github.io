@@ -21,22 +21,19 @@ title: Middleware
 
 ## How does middleware work?
 
-Different frameworks use middleware differently. Slim adds middleware as concentric
-layers surrounding your core application. Each new middleware layer surrounds
-any existing middleware layers. The concentric structure expands outwardly as
-additional middleware layers are added.
+フレームワークが異なれば、ミドルウェアの使用方法も異なります。 
+Slimはミドルウェアをコアアプリケーションを囲む同心円層として追加しています。新しいミドルウェア層はそれぞれ
+既存のミドルウェア層を囲んでいます。同心円構造は、ミドルウェアレイヤーが追加されると外側に拡張します。
 
-The last middleware layer added is the first to be executed.
+最後に追加されたミドルウェア層が最初に実行されます。
 
-When you run the Slim application, the Request and Response objects traverse the
-middleware structure from the outside in. They first enter the outer-most middleware,
-then the next outer-most middleware, (and so on), until they ultimately arrive
-at the Slim application itself. After the Slim application dispatches the
-appropriate route, the resultant Response object exits the Slim application and
-traverses the middleware structure from the inside out. Ultimately, a final
-Response object exits the outer-most middleware, is serialized into a raw HTTP
-response, and is returned to the HTTP client. Here's a diagram that illustrates
-the middleware process flow:
+Slimアプリケーションを実行すると、RequestオブジェクトとResponseオブジェクトは外部からミドルウェア構造を通過します。
+最初に最も外側のミドルウェアを通過した後、次に最も外側のミドルウェアを通過するという様に繰り返し、最終的にSlimアプリケーション本体に到着します。
+
+Slimアプリケーションが対象のルートに処理を送り出した後、Slimアプリケーションは処理結果のResponseオブジェクトを保持しながら、
+ミドルウェア構造を内側から外側へと横断します。
+最終的に、Responseオブジェクトは、最も外側のミドルウェアを出て、生のHTTPレスポンスにシリアル化され、
+HTTPクライアントに返されます。ミドルウェアのプロセスフローを示す図を次に示します。
 
 <div style="padding: 2em 0; text-align: center">
     <img src="/docs/v3/images/middleware.png" alt="Middleware architecture" style="max-width: 80%;"/>
