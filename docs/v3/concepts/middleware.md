@@ -2,24 +2,22 @@
 title: Middleware
 ---
 
-You can run code _before_ and _after_ your Slim application to manipulate the
-Request and Response objects as you see fit. This is called _middleware_.
-Why would you want to do this? Perhaps you want to protect your app
-from cross-site request forgery. Maybe you want to authenticate requests
-before your app runs. Middleware is perfect for these scenarios.
+必要に応じてSlimアプリケーションの実行前後に、RequestオブジェクトとResponseオブジェクトを操作できます。
+これをミドルウェアと呼びます。なぜこれが必要でしょうか。たとえばクロスサイトリクエストフォージェリから
+アプリを保護する必要がある場合だったり、アプリを実行する前にリクエストを認証したい場合などです。
+ミドルウェアはこれらのケースにとても有用です。
 
 ## What is middleware?
 
-Technically speaking, a middleware is a _callable_ that accepts three arguments:
+技術的に言えば、ミドルウェアは3つの引数を受け入れるcallableオブジェクトです。
 
-1. `\Psr\Http\Message\ServerRequestInterface` - The PSR7 request object
-2. `\Psr\Http\Message\ResponseInterface` - The PSR7 response object
-3. `callable` - The next middleware callable
+1. `\Psr\Http\Message\ServerRequestInterface` - PSR7 リクエストオブジェクト
+2. `\Psr\Http\Message\ResponseInterface` - PSR 7レスポンスオブジェクト
+3. `callable` - 新たなミドルウェアcallable
 
-It can do whatever is appropriate with these objects. The only hard requirement
-is that a middleware **MUST** return an instance of `\Psr\Http\Message\ResponseInterface`.
-Each middleware **SHOULD** invoke the next middleware and pass it Request and
-Response objects as arguments.
+これらのオブジェクトに則していれば、いろんなことができます。
+絶対条件は、ミドルウェアが`\Psr\Http\Message\ResponseInterface`のインスタンスを**必ず**返さなければならないことです。
+また各ミドルウェアが次のミドルウェアを呼び出す際に、RequestおよびResponseオブジェクトを引数として渡すことが推奨されます。
 
 ## How does middleware work?
 
