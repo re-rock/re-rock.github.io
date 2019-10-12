@@ -28,11 +28,11 @@ Slimはミドルウェアをコアアプリケーションを囲む同心円層�
 最後に追加されたミドルウェア層が最初に実行されます。
 
 Slimアプリケーションを実行すると、RequestオブジェクトとResponseオブジェクトは外部からミドルウェア構造を通過します。
-最初に最も外側のミドルウェアを通過した後、次に最も外側のミドルウェアを通過するという様に繰り返し、最終的にSlimアプリケーション本体に到着します。
+最初にもっとも外側のミドルウェアを通過した後、次に外側のミドルウェアを通過するという様に繰り返し、最終的にSlimアプリケーション本体に到着します。
 
 Slimアプリケーションが対象のルートに処理を送り出した後、Slimアプリケーションは処理結果のResponseオブジェクトを保持しながら、
 ミドルウェア構造を内側から外側へと横断します。
-最終的に、Responseオブジェクトは、最も外側のミドルウェアを出て、生のHTTPレスポンスにシリアル化され、
+最終的にResponseオブジェクトは、もっとも外側のミドルウェアを出て、生のHTTPレスポンスにシリアル化され、
 HTTPクライアントに返されます。ミドルウェアのプロセスフローを示す図を次に示します。
 
 <div style="padding: 2em 0; text-align: center">
@@ -41,11 +41,11 @@ HTTPクライアントに返されます。ミドルウェアのプロセスフ�
 
 ## How do I write middleware?
 
-Middleware is a callable that accepts three arguments: a Request object, a Response object, and the next middleware. Each middleware **MUST** return an instance of `\Psr\Http\Message\ResponseInterface`.
+ミドルウェアは、リクエストオブジェクト、レスポンスオブジェクト、および次のミドルウェアオブジェクトの3つの引数を受け入れる、callbleオブジェクトです。各ミドルウェアは、`\Psr\Http\Message\ResponseInterface`のインスタンスを**必ず**返さなければなりません。
 
 ### Closure middleware example.
 
-This example middleware is a Closure.
+このサンプルのミドルウェアはクロージャーです。
 
 ```php
 <?php
@@ -68,6 +68,8 @@ function ($request, $response, $next) {
 ```
 
 ### Invokable class middleware example
+
+このサンプルのミドルウェアは、`__invoke()`メソッドを実装する呼び出し可能クラスです。
 
 This example middleware is an invokable class that implements the magic `__invoke()` method.
 
@@ -95,7 +97,7 @@ class ExampleMiddleware
 }
 ```
 
-To use this class as a middleware, you can use `->add( new ExampleMiddleware() );` function chain after the `$app`, `Route`,  or `group()`, which in the code below, any one of these, could represent $subject.
+このクラスをミドルウェアとして使用する場合、以下のコードのように`$subject`として表すことができる`$app`、`Route`、または`group()`の後に`->add(new ExampleMiddleware());`メソッドを使用できます。
 
 ```php
 $subject->add( new ExampleMiddleware() );
@@ -103,11 +105,11 @@ $subject->add( new ExampleMiddleware() );
 
 ## How do I add middleware?
 
-You may add middleware to a Slim application, to an individual Slim application route or to a route group. All scenarios accept the same middleware and implement the same middleware interface.
+ミドルウェアは、Slimアプリケーションの別々のアプリケーションルート、またはルートグループに追加できます。すべてのシナリオで同じミドルウェアを受け入れ、同じミドルウェアインターフェイスを実装します。
 
 ### Application middleware
 
-Application middleware is invoked for every *incoming* HTTP request. Add application middleware with the Slim application instance's `add()` method. This example adds the Closure middleware example above:
+アプリケーションミドルウェアは、受信したHTTPリクエストごとに呼び出されます。 Slimアプリケーションインスタンスの`add()`メソッドでアプリケーションミドルウェアを追加します。この例では、上記の例で紹介したClosureミドルウェアの追加しています。
 
 ```php
 <?php
@@ -130,9 +132,11 @@ $app->get('/', function ($request, $response, $args) {
 $app->run();
 ```
 
+この場合、次のHTTPレスポンス本文が出力されます。
+
 This would output this HTTP response body:
 
-    BEFORE Hello AFTER
+    `BEFORE Hello AFTER`
 
 ### Route middleware
 
@@ -165,9 +169,11 @@ This would output this HTTP response body:
 
 ### Group Middleware
 
-In addition to the overall application, and standard routes being able to accept middleware, the `group()` multi-route definition functionality, also allows individual routes internally. Route group middleware is invoked _only if_ its route matches one of the defined HTTP request methods and URIs from the group. To add middleware within the callback, and entire-group middleware to be set by chaining `add()` after the `group()` method.
+アプリケーション全体、およびミドルウェアを受け入れることができる標準ルートに加えて、`group()`マルチルート定義機能は、個々のルートを内部的に許可します。
+ルートグループミドルウェアは、そのルートがグループから定義されたHTTPリクエストメソッドおよびURIのいずれかに一致する場合にのみ呼び出されます。 
+コールバック内にミドルウェアを追加し、`group()`メソッドの後に`add()`をチェーンして設定するグループ全体のミドルウェアを追加します。
 
-Sample Application, making use of callback middleware on a group of url-handlers
+以下はURLハンドラーのグループでコールバックミドルウェアを使用するサンプルアプリケーションです。
 ```php
 <?php
 
@@ -194,30 +200,27 @@ $app->group('/utils', function () use ($app) {
     return $response;
 });
 ```
+`/utils/date`メソッドを呼び出すと、次のような文字列が出力されます
 
-When calling the `/utils/date` method, this would output a string similar to the below
+    `It is now 2015-07-06 03:11:01. Enjoy!`
 
-    It is now 2015-07-06 03:11:01. Enjoy!
+`/utils/time`にアクセスすると、次のような文字列が出力されます
 
-visiting `/utils/time` would output a string similar to the below
+    `It is now 1436148762. Enjoy!`
 
-    It is now 1436148762. Enjoy!
+しかし`/`*(domain-root)*にアクセスすると、ミドルウェアが割り当てられていないため、次の出力が生成されます。
 
-but visiting `/` *(domain-root)*, would be expected to generate the following output as no middleware has been assigned
-
-    Hello World
+    `Hello World`
 
 ### Passing variables from middleware
-The easiest way to pass attributes from middleware is to use the request's
-attributes.
+ミドルウェアから属性を渡すもっとも簡単な方法は、リクエストの属性を使用することです。
 
-Setting the variable in the middleware:
-
+ミドルウェアで変数を設定する：
 ```php
 $request = $request->withAttribute('foo', 'bar');
 ```
 
-Getting the variable in the route callback:
+ルートコールバックで変数を取得する：
 
 ```php
 $foo = $request->getAttribute('foo');
@@ -225,7 +228,7 @@ $foo = $request->getAttribute('foo');
 
 ## Finding available middleware
 
-You may find a PSR-7 Middleware class already written that will satisfy your needs. Here are a few unofficial lists to search.
+ニーズに合ったPSR-7ミドルウェアクラスがすでに作成されている場合があります。非公式ですが参考になるリストを次に示します。
 
 * [oscarotero/psr7-middlewares](https://github.com/oscarotero/psr7-middlewares)
 * [Middleware for Slim Framework v3.x wiki](https://github.com/slimphp/Slim/wiki/Middleware-for-Slim-Framework-v3.x)
