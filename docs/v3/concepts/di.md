@@ -15,7 +15,7 @@ $container = new \Slim\Container;
 $app = new \Slim\App($container);
 ```
 
-Add a service to Slim container:
+Slimコンテナにサービスを追加する
 
 ```php
 $container = $app->getContainer();
@@ -25,9 +25,7 @@ $container['myService'] = function ($container) {
 };
 ```
 
-You can fetch services from your container explicitly or implicitly.
-You can fetch an explicit reference to the container instance from inside a Slim
-application route like this:
+コンテナから明示的または暗黙的にサービスを取得できます。次のように、Slimアプリケーションルート内からコンテナインスタンスへの明示的な参照を取得できます。
 
 ```php
 /**
@@ -46,7 +44,7 @@ $app->get('/foo', function ($req, $res, $args) {
 });
 ```
 
-You can implicitly fetch services from the container like this:
+下記は、コンテナから暗黙的にサービスを取得しています。
 
 ```php
 /**
@@ -65,7 +63,7 @@ $app->get('/foo', function ($req, $res, $args) {
 });
 ```
 
-To test if a service exists in the container before using it, use the `has()` method, like this:
+使用する前にコンテナにサービスが存在するかどうかをテストするには、次のように`has()`メソッドを使用します。
 
 ```php
 /**
@@ -86,16 +84,14 @@ $app->get('/foo', function ($req, $res, $args) {
 });
 ```
 
-
-Slim uses `__get()` and `__isset()` magic methods that defer to the application's
-container for all properties that do not already exist on the application instance.
+Slimは`__get()` および `__isset()` マジックメソッドを使用します。これらのメソッドは、アプリケーションインスタンスにまだ存在しないすべてのプロパティに対して、アプリケーションコンテナに従います。
 
 ## Required services
 
-Your container MUST implement these required services. If you use Slim's built-in container, these are provided for you. If you choose a third-party container, you must define these required services on your own.
+コンテナはこれらの必要なサービスを実装する必要があります。 Slimの組み込みコンテナを使用する場合はこれらがデフォルトで提供されます。サードパーティのコンテナを選択する場合、これらの必要なサービスを独自に定義する必要があります。
 
 settings
-:   Associative array of application settings, including keys:
+:   キーを含むアプリケーション設定の連想配列:
     
     * `httpVersion`
     * `responseChunkSize`
@@ -105,47 +101,47 @@ settings
     * `addContentLengthHeader`.
     * `routerCacheFile`.
 
-environment
-:   Instance of `\Slim\Http\Environment`.
+環境
+:   `\Slim\Http\Environment`インスタンス.
 
-request
-:   Instance of `\Psr\Http\Message\ServerRequestInterface`.
+リクエスト
+:   `\Psr\Http\Message\ServerRequestInterface`インスタンス.
 
-response
-:   Instance of `\Psr\Http\Message\ResponseInterface`.
+レスポンス
+:   `\Psr\Http\Message\ResponseInterface`インスタンス.
 
-router
-:   Instance of `\Slim\Interfaces\RouterInterface`.
+ルータ
+:   `\Slim\Interfaces\RouterInterface`インスタンス.
 
-foundHandler
-:   Instance of `\Slim\Interfaces\InvocationStrategyInterface`.
+ハンドラー
+:   `\Slim\Interfaces\InvocationStrategyInterface`インスタンス.
 
 phpErrorHandler
-:   Callable invoked if a PHP 7 Error is thrown. The callable **MUST** return an instance of `\Psr\Http\Message\ResponseInterface` and accept three arguments:
+:   PHP7エラーがスローされた場合に呼び出されるCallable。 Callableは`\Psr\Http\Message\ResponseInterface`のインスタンスを返さなければならず、下記の3つの引数を受け入れます      :
 
 1. `\Psr\Http\Message\ServerRequestInterface`
 2. `\Psr\Http\Message\ResponseInterface`
 3. `\Error`
 
 errorHandler
-:   Callable invoked if an Exception is thrown. The callable **MUST** return an instance of `\Psr\Http\Message\ResponseInterface` and accept three arguments:
+:   例外がスローされた場合に呼び出されるCallable。 Callableは `\Psr\Http\Message\ResponseInterface` のインスタンスを返さなければならず、下記の3つの引数を受け入れます :
 
 1. `\Psr\Http\Message\ServerRequestInterface`
 2. `\Psr\Http\Message\ResponseInterface`
 3. `\Exception`
 
 notFoundHandler
-:   Callable invoked if the current HTTP request URI does not match an application route. The callable **MUST** return an instance of `\Psr\Http\Message\ResponseInterface` and accept two arguments:
+:   現在のHTTPリクエストURIがアプリケーションルートと一致しない場合に呼び出されるCallable。呼び出し可能オブジェクトは、`\Psr\Http\Message\ResponseInterface`のインスタンスを返さなければならず、下記の2つの引数を受け入れなければなりません :
 
 1. `\Psr\Http\Message\ServerRequestInterface`
 2. `\Psr\Http\Message\ResponseInterface`
 
 notAllowedHandler
-:   Callable invoked if an application route matches the current HTTP request path but not its method. The callable **MUST** return an instance of `\Psr\Http\Message\ResponseInterface` and accept three arguments:
+: アプリケーションルートが現在のHTTPリクエストパスには一致するが、メソッドが一致していない場合に呼び出されるCallable。 callableは`\Psr\Http\Message\ResponseInterface` のインスタンスを返さなければならず、下記の3つの引数を受け入れます：
 
 1. `\Psr\Http\Message\ServerRequestInterface`
 2. `\Psr\Http\Message\ResponseInterface`
 3. Array of allowed HTTP methods
 
 callableResolver
-:   Instance of `\Slim\Interfaces\CallableResolverInterface`.
+:   `\Slim\Interfaces\CallableResolverInterface`のインスタンス.
