@@ -2,7 +2,7 @@
 title: Application
 ---
 
-The Application, (or `Slim\App`) is the entry point to your Slim application and is used to register the routes that link to your callbacks or controllers.
+アプリケーション（または `Slim\App`）は、Slimアプリケーションへのエントリポイントであり、コールバックまたはコントローラーにリンクするルートを登録するために使用されます。
 
 ```php
 // instantiate the App object
@@ -19,14 +19,11 @@ $app->run();
 
 ## Application Configuration
 
-The Application accepts just one argument. This can be either a [Container](/docs/v3/concepts/di.html) instance or
-an array to configure the default container that is created automatically.
+アプリケーションは引数を1つだけ受け入れます。これは、自動的に作成されるデフォルトの[コンテナー](/docs/v3/concepts/di.html) を設定するコンテナインスタンスまたは配列のいずれかです。
 
-There are also a number of settings that are used by Slim. These are stored in the `settings`
-configuration key. You can also add your application-specific settings.
+Slimで使用される設定もいくつかあります。これらは、`settings`構成キーに保存されます。アプリケーション固有の設定を追加することもできます。
 
-For example, we can set the Slim setting `displayErrorDetails` to true and also configure
-Monolog like this:
+たとえば、Slim設定の`displayErrorDetails`をtrueに設定し、Monologを次のように構成することもできます。
 
 ```php
 $config = [
@@ -46,13 +43,13 @@ $app = new \Slim\App($config);
 
 ### Retrieving Settings
 
-As the settings are stored in the DI container so you can access them via the `settings` key in container factories. For example:
+設定はDIコンテナに保存されるため、コンテナファクトリの設定キーを使用してアクセスできます。
 
 ```php
 $loggerSettings = $container->get('settings')['logger'];
 ```
 
-You can also access them in route callables via `$this`:
+また、`$this`を介してルートcallableでそれらにアクセスできます
 
 ```php
 $app->get('/', function ($request, $response, $args) {
@@ -63,8 +60,7 @@ $app->get('/', function ($request, $response, $args) {
 
 ### Updating Settings
 
-If you need to add or update settings stored in the DI container *after* the container is initialized,
-you can use the `replace` method on the settings container. For example:
+コンテナの初期化後にDIコンテナに保存されている設定を追加または更新する必要がある場合は、設定コンテナで`replace`メソッドを使用できます。
 
 ```php
 $settings = $container->get('settings');
@@ -76,39 +72,31 @@ $settings->replace([
 
 ## Slim Default Settings
 
-Slim has the following default settings that you can override:
+Slimには上書き可能な以下のデフォルト設定があります。
 
 <dl>
 <dt><code>httpVersion</code></dt>
-    <dd>The protocol version used by the <a href="/docs/v3/objects/response.html">Response</a>
-        object.
+Responseオブジェクトが使用するプロトコルバージョン。
+
+    <dd><a href="/docs/v3/objects/response.html">レスポンス</a>オブジェクトが使用するプロトコルバージョン
         <br>(Default: <code>'1.1'</code>)</dd>
 <dt><code>responseChunkSize</code></dt>
-    <dd>Size of each chunk read from the Response body when sending to the
-        browser.
+    <dd>ブラウザーに送信したときのレスポンスボディから読み取られる各チャンクのサイズ。
         <br>(Default: <code>4096</code>)</dd>
 <dt><code>outputBuffering</code></dt>
-    <dd>If <code>false</code>, then no output buffering is enabled. If <code>'append'</code>
-        or <code>'prepend'</code>, then any <code>echo</code> or <code>print</code>
-        statements are captured and are either appended or prepended to the Response
-        returned from the route callable.
+<code>false</code>の場合、出力バッファリングは有効になりません。
+    <dd><code>'append'</code>または<code>'prepend'</code>の場合、echoまたはprintステートメントがキャプチャされ、ルートcallableから返されたレスポンスに追加または追加されます。
         <br>(Default: <code>'append'</code>)</dd>
 <dt><code>determineRouteBeforeAppMiddleware</code></dt>
-    <dd>When true, the route is calculated before any middleware is executed. This
-    means that you can inspect route parameters in middleware if you need to.
+    <dd>trueの場合、ミドルウェアが実行される前にルートが計算されます。これは、必要に応じてミドルウェアでルートパラメーターを検査できることを意味します。
     <br>(Default: <code>false</code>)</dd>
 <dt><code>displayErrorDetails</code></dt>
-    <dd>When true, additional information about exceptions are displayed by the
-    <a href="/docs/v3/handlers/error.html">default error handler</a>.
+    <dd>trueの場合、例外に関する追加情報が<a href="/docs/v3/handlers/error.html">デフォルトのエラーハンドラー</a>によって表示されます。
     <br>(Default: <code>false</code>)</dd>
 <dt><code>addContentLengthHeader</code></dt>
-    <dd>When true, Slim will add a <code>Content-Length</code> header to the response.
-    If you are using a runtime analytics tool, such as New Relic, then this should be disabled.
+<dd>trueの場合、Slimは<code>Content-Length</code> ヘッダーを応答に追加します。 New Relicなどのランタイム分析ツールを使用している場合は、これを無効にする必要があります。
     <br>(Default: <code>true</code>)</dd>
 <dt><code>routerCacheFile</code></dt>
-    <dd>Filename for caching the FastRoute routes. Must be set to to a valid filename within
-    a writeable directory. If the file does not exist, then it is created with the correct cache
-    information on first run.<br>
-    Set to <code>false</code> to disable the FastRoute cache system.
+<dd>FastRouteルートをキャッシュするためのファイル名。書き込み可能なディレクトリ内の有効なファイル名に設定する必要があります。ファイルが存在しない場合は、最初の実行時に正しいキャッシュ情報で作成されます。<br> <code>false</code>に設定すると、FastRouteキャッシュシステムが無効になります。
     <br>(Default: <code>false</code>)</dd>
 </dl>

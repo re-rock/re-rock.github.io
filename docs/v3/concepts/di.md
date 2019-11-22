@@ -144,4 +144,4 @@ notAllowedHandler
 3. Array of allowed HTTP methods
 
 callableResolver
-:   `\Slim\Interfaces\CallableResolverInterface`のインスタンス.
+:   `\Slim\Interfaces\CallableResolverInterface`インスタンス.
