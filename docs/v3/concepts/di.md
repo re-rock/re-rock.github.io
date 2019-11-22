@@ -2,15 +2,13 @@
 title: Dependency Container
 ---
 
-Slim uses a dependency container to prepare, manage, and inject application
-dependencies. Slim supports containers that implement [PSR-11](http://www.php-fig.org/psr/psr-11/) or the [Container-Interop](https://github.com/container-interop/container-interop) interface. You can use Slim's built-in container (based on [Pimple](http://pimple.sensiolabs.org/))
-or third-party containers like [Acclimate](https://github.com/jeremeamia/acclimate-container)
-or [PHP-DI](http://php-di.org/doc/frameworks/slim.html).
+Slimは依存関係コンテナを使用して、アプリケーションの依存関係を準備、管理、および注入を行います。
+Slimは、[PSR-11](http://www.php-fig.org/psr/psr-11/)または[Container-Interop](https://github.com/container-interop/container-interop)インターフェイスを実装するコンテナをサポートします。
+Slimの組み込みコンテナ（[Pimple](http://pimple.sensiolabs.org/)をベース）または[Acclimate](https://github.com/jeremeamia/acclimate-container)や[PHP-DI](http://php-di.org/doc/frameworks/slim.htmlなどのサードパーティコンテナーを使用できます。
 
 ## How to use the container
 
-You don't _have_ to provide a dependency container. If you do, however, you must
-inject the container instance into the Slim application's constructor.
+依存関係コンテナを自分で用意する必要はありません。もし自分で用意した場合は、コンテナインスタンスをSlimアプリケーションのコンストラクタに注入する必要があります。
 
 ```php
 $container = new \Slim\Container;
