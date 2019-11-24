@@ -2,8 +2,15 @@
 title: Request
 ---
 
+Your Slim app's routes and middleware are given a PSR-7 request object that
+represents the current HTTP request received by your web server. The request
+object implements the [PSR-7 ServerRequestInterface][psr7] with which you can
+inspect and manipulate the HTTP request method, headers, and body.
+[psr7]: http://www.php-fig.org/psr/psr-7/#3-2-1-psr-http-message-serverrequestinterface
+
 Slimアプリのルートとミドルウェアには、Webサーバーが受信したHTTPリクエストを表すPSR-7リクエストオブジェクトが与えられます。
 リクエストオブジェクトは、HTTPリクエストメソッド、ヘッダー、およびボディを検査および操作できる [PSR-7 ServerRequestInterface][psr7] を実装します。
+
 [psr7]: http://www.php-fig.org/psr/psr-7/#3-2-1-psr-http-message-serverrequestinterface
 
 ## How to get the Request object
