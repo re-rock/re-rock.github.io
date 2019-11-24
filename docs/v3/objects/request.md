@@ -111,13 +111,9 @@ X-Http-Method-Override: PUT
 
 `getOriginalMethod()`というPSR-7 Requestオブジェクトのメソッドを使用して、元の（オーバーライドされていない）HTTPメソッドを取得できます。
 
-You can fetch the _original_ (non-overridden) HTTP method with the PSR-7 Request
-object's method named `getOriginalMethod()`.
-
 ## The Request URI
 
-Every HTTP request has a URI that identifies the requested application
-resource. The HTTP request URI has several parts:
+すべてのHTTPリクエストには、要求されたアプリケーションリソースを識別するURIがあります。 HTTPリクエストURIにはいくつかのパーツを持ちます。
 
 * Scheme (e.g. `http` or `https`)
 * Host (e.g. `example.com`)
@@ -125,7 +121,7 @@ resource. The HTTP request URI has several parts:
 * Path (e.g. `/users/1`)
 * Query string (e.g. `sort=created&dir=asc`)
 
-You can fetch the PSR-7 Request object's [URI object][psr7_uri] with its `getUri()` method:
+PSR-7リクエストオブジェクトの [URI object][psr7_uri] を`getUri()`メソッドで取得できます：
 
 [psr7_uri]: http://www.php-fig.org/psr/psr-7/#3-5-psr-http-message-uriinterface
 
@@ -133,8 +129,7 @@ You can fetch the PSR-7 Request object's [URI object][psr7_uri] with its `getUri
 $uri = $request->getUri();
 ```
 
-The PSR-7 Request object's URI is itself an object that provides the following
-methods to inspect the HTTP request's URL parts:
+PSR-7リクエストオブジェクトのURIは、それ自体がHTTPリクエストのURL部分を検査する次のメソッドを提供するオブジェクトです。
 
 * `getScheme()`
 * `getAuthority()`
@@ -147,31 +142,24 @@ methods to inspect the HTTP request's URL parts:
 * `getFragment()`
 * `getBaseUrl()`
 
-You can get the query parameters as an associative array on the Request object using `getQueryParams()`.
+`getQueryParams()`を使用して、Requestオブジェクトの連想配列としてクエリパラメータを取得できます。
 
+ `getQueryParam($key, $default = null)`を使用して、パラメーターが欠落している場合にオプションのデフォルト値を使用して、単一のクエリパラメーター値を取得することもできます。
 You can also get a single query parameter value, with optional default value if the parameter is missing, using `getQueryParam($key, $default = null)`.
 
 <div class="alert alert-info">
     <div><strong>Base Path</strong></div>
-    If your Slim application's front-controller lives in a physical subdirectory
-    beneath your document root directory, you can fetch the HTTP request's physical
-    base path (relative to the document root) with the Uri object's <code>getBasePath()</code>
-    method. This will be an empty string if the Slim application is installed
-    in the document root's top-most directory.
+    Slimアプリケーションのフロントコントローラーがドキュメントルートディレクトリ配下の物理サブディレクトリにある場合、Uriオブジェクトの<code>getBasePath()</code>メソッドを使用して、HTTPリクエストの（ドキュメントルートに対する）物理ベースパスを取得できます。 Slimアプリケーションがドキュメントルートの最上位ディレクトリにインストールされている場合、これは空の文字列になります。
 </div>
 
 ## The Request Headers
 
-Every HTTP request has headers. These are metadata that describe the HTTP
-request but are not visible in the request's body. Slim's PSR-7
-Request object provides several methods to inspect its headers.
+すべてのHTTPリクエストにはヘッダーがあります。これらはHTTPリクエストを記述するメタデータですが、リクエストのボディには表示されません。 SlimのPSR-7 Requestオブジェクトは、ヘッダーを検査するためのいくつかのメソッドを提供します。
 
 ### Get All Headers
 
-You can fetch all HTTP request headers as an associative array with the PSR-7
-Request object's `getHeaders()` method. The resultant associative array's keys
-are the header names and its values are themselves a numeric array of string
-values for their respective header name.
+PSR-7 Requestオブジェクトの `getHeaders()`メソッドを使用して、すべてのHTTPリクエストヘッダーを連想配列として取得できます。
+結果の連想配列のキーはヘッダー名であり、それらの値は、ヘッダー名の文字列型の値が数値型の配列として設定されています。
 
 <figure markdown="1">
 ```php
@@ -185,8 +173,8 @@ foreach ($headers as $name => $values) {
 
 ### Get One Header
 
-You can get a single header's value(s) with the PSR-7 Request object's `getHeader($name)` method. This returns an array of values for the given header name. Remember, _a single
-HTTP header may have more than one value!_
+PSR-7 Requestオブジェクトの `getHeader($name)` メソッドを使用して、単一のヘッダーの値を取得できます。これは、指定されたヘッダー名の値の配列を返します。
+単一のHTTPヘッダーに複数の値がある場合もあることに注意してください。
 
 <figure markdown="1">
 ```php
@@ -195,9 +183,8 @@ $headerValueArray = $request->getHeader('Accept');
 <figcaption>Figure 6: Get values for a specific HTTP header.</figcaption>
 </figure>
 
-You may also fetch a comma-separated string with all values for a given header
-with the PSR-7 Request object's `getHeaderLine($name)` method. Unlike the
-`getHeader($name)` method, this method returns a comma-separated string.
+また、PSR-7Requestオブジェクトの`getHeaderLine($name)`メソッドを使用して、特定のヘッダーのすべての値を含むコンマ区切りの文字列を取得することもできます。
+`getHeader($name)`メソッドとは異なり、このメソッドはコンマ区切りの文字列を返します。
 
 <figure markdown="1">
 ```php
@@ -208,8 +195,7 @@ $headerValueString = $request->getHeaderLine('Accept');
 
 ### Detect Header
 
-You can test for the presence of a header with the PSR-7 Request object's
-`hasHeader($name)` method.
+PSR-7Requestオブジェクトの`hasHeader($name)`メソッドを使用して、ヘッダーの存在をテストできます。
 
 <figure markdown="1">
 ```php
@@ -222,10 +208,8 @@ if ($request->hasHeader('Accept')) {
 
 ## The Request Body
 
-Every HTTP request has a body. If you are building a Slim application that
-consumes JSON or XML data, you can use the PSR-7 Request object's
-`getParsedBody()` method to parse the HTTP request body into a native PHP format.
-Slim can parse JSON, XML, and URL-encoded data out of the box.
+すべてのHTTPリクエストにはボディがあります。 JSONまたはXMLデータを受け入れるSlimアプリケーションを構築している場合、PSR-7リクエストオブジェクトの`getParsedBody()`メソッドを使用して、
+HTTPリクエストのボティ値をネイティブPHP形式に解析できます。 Slimは、JSON、XML、およびURLエンコードされたデータをすぐに解析できます。
 
 <figure markdown="1">
 ```php
@@ -234,17 +218,15 @@ $parsedBody = $request->getParsedBody();
 <figcaption>Figure 9: Parse HTTP request body into native PHP format</figcaption>
 </figure>
 
-* JSON requests are converted into associative arrays with `json_decode($input, true)`.
-* XML requests are converted into a `SimpleXMLElement` with `simplexml_load_string($input)`.
-* URL-encoded requests are converted into a PHP array with `parse_str($input)`.
+* JSONリクエストは、`json_decode($input, true)を使用して連想配列に変換されます。
+* XMLリクエストは、`simplexml_load_string($input)`を使用して`SimpleXMLElement`に変換されます。
+* URLエンコードされたリクエストは、`parse_str($input)`を使用してPHP配列に変換されます。
 
-For URL-encoded requests, you can also get a single parameter value, with optional default value if the parameter is missing, using `getParsedBodyParam($key, $default = null)`.
+URLエンコードされたリクエストでパラメーターが欠落している場合、オプションのデフォルト値である`getParsedBodyParam($key, $default = null)`を使用して、単一のパラメーター値を取得することもできます。
 
-Technically speaking, Slim's PSR-7 Request object represents the HTTP request
-body as an instance of `\Psr\Http\Message\StreamInterface`. You can get
-the HTTP request body `StreamInterface` instance with the PSR-7 Request object's
-`getBody()` method. The `getBody()` method is preferable if the incoming HTTP
-request size is unknown or too large for available memory.
+技術的に言えば、SlimのPSR-7リクエストオブジェクトは、HTTPリクエストのボディを`\Psr\Http\Message\StreamInterface`のインスタンスとして表します。 
+PSR-7リクエストオブジェクトの`getBody()`メソッドを使用して、HTTPリクエストボディの`StreamInterface`インスタンスを取得できます。
+受信したHTTPリクエストのサイズが不明であるか、使用可能なメモリに対して大きすぎる場合は、`getBody()`メソッドを勧めします。
 
 <figure markdown="1">
 ```php
@@ -253,8 +235,7 @@ $body = $request->getBody();
 <figcaption>Figure 10: Get HTTP request body</figcaption>
 </figure>
 
-The resultant `\Psr\Http\Message\StreamInterface` instance provides the following
-methods to read and iterate its underlying PHP `resource`.
+取得結果の`\Psr\Http\Message\StreamInterface`インスタンスは、ベースとなるPHPリソースの読み取り、反復を行える次のメソッドを提供します。
 
 * `getSize()`
 * `tell()`
@@ -271,17 +252,13 @@ methods to read and iterate its underlying PHP `resource`.
 
 ### Reparsing the body
 
-When calling `getParsedBody` on the Request object multiple times, the body is
-only parsed once, even if the Request body is modified in the meantime.
+Requestオブジェクトで`getParsedBody`を複数回呼び出した場合に、その間にRequestボディが変更されても、ボディは一度しか解析されません。
 
-To ensure the body is reparsed, the Request object's method `reparseBody` can be
-used.
+ボディが確実に再解析されるようにするには、Requestオブジェクトのメソッドの`reparseBody`を使用できます。
 
 ## Uploaded Files
 
-The file uploads in `$_FILES` are available from the Request object's
-`getUploadedFiles()` method. This returns an array keyed by the name of the
-`<input>` element.
+`$_FILES`のファイルアップロードは、Requestオブジェクトの`getUploadedFiles()`メソッドから利用できます。これは、`<input>` 要素の名前をキーとする配列を返します。
 
 <figure markdown="1">
 ```php
@@ -290,8 +267,7 @@ $files = $request->getUploadedFiles();
 <figcaption>Figure 11: Get uploaded files</figcaption>
 </figure>
 
-Each object in the `$files` array is a instance of
-`\Psr\Http\Message\UploadedFileInterface` and supports the following methods:
+`$files`配列の各オブジェクトは、`\Psr\Http\Message\UploadedFileInterface`のインスタンスであり、次のメソッドをサポートしています。
 
 * `getStream()`
 * `moveTo($targetPath)`
@@ -300,18 +276,16 @@ Each object in the `$files` array is a instance of
 * `getClientFilename()`
 * `getClientMediaType()`
 
-See the [cookbook](/docs/v3/cookbook/uploading-files.html) on how to upload files using a POST form.
+POSTフォームを使用してファイルをアップロードする方法については、[cookbook](/docs/v3/cookbook/uploading-files.html)を参照してください。
 
 ## Request Helpers
 
-Slim's PSR-7 Request implementation provides these additional proprietary methods
-to help you further inspect the HTTP request.
+SlimのPSR-7リクエストの実装には、以下に紹介する追加の独自のメソッドを提供され、HTTPリクエストをさらに調査するのに役立ちます。
 
 ### Detect XHR requests
 
-You can detect XHR requests with the Request object's `isXhr()` method. This
-method detects the presence of the `X-Requested-With` HTTP request header and
-ensures its value is `XMLHttpRequest`.
+Requestオブジェクトの`isXhr()`メソッドでXHRリクエストを検出できます。このメソッドは、`X-Requested-With`HTTPリクエストヘッダーの存在を検出し、その値が`XMLHttpRequest`であることを確認します。
+※　XMLHttpRequest (XHR) は、JavaScriptなどのウェブブラウザ搭載のスクリプト言語でサーバとのHTTP通信を行うための、組み込みオブジェクト（API）。
 
 <figure markdown="1">
 ```
@@ -334,7 +308,8 @@ if ($request->isXhr()) {
 
 ### Content Type
 
-You can fetch the HTTP request content type with the Request object's `getContentType()` method. This returns the `Content-Type` header's full value as provided by the HTTP client.
+HTTPリクエストのコンテンツタイプは、Requestオブジェクトの`getContentType()`メソッドで取得できます。
+これは、HTTPクライアントによって提供される`Content-Type`ヘッダーの完全な値を返します。
 
 ```php
 $contentType = $request->getContentType();
@@ -342,13 +317,14 @@ $contentType = $request->getContentType();
 
 ### Media Type
 
-You may not want the complete `Content-Type` header. What if, instead, you only want the media type? You can fetch the HTTP request media type with the Request object's `getMediaType()` method.
+完全な`Content-Type`ヘッダーは必要ない場合があります。たとえばメディアタイプのみ必要な場合などです。
+その場合はRequestオブジェクトの`getMediaType()`メソッドを使用して、HTTPリクエストのメディアタイプを取得できます。
 
 ```php
 $mediaType = $request->getMediaType();
 ```
 
-You can fetch the appended media type parameters as an associative array with the Request object's `getMediaTypeParams()` method.
+Requestオブジェクトの`getMediaTypeParams()`メソッドを使用して、追加されたメディアタイプパラメーターを連想配列として取得できます。
 
 ```php
 $mediaParams = $request->getMediaTypeParams();
@@ -356,7 +332,7 @@ $mediaParams = $request->getMediaTypeParams();
 
 ### Character Set
 
-One of the most common media type parameters is the HTTP request character set. The Request object provides a dedicated method to retrieve this media type parameter.
+最も一般的なメディアタイプパラメータの1つは、HTTPリクエストの`character set`です。 Requestオブジェクトは、このメディアタイプパラメーターを取得する専用のメソッドを提供します。
 
 ```php
 $charset = $request->getContentCharset();
@@ -364,7 +340,7 @@ $charset = $request->getContentCharset();
 
 ### Content Length
 
-You can fetch the HTTP request content length with the Request object's `getContentLength()` method.
+HTTPリクエストコンテンツの長さは、Requestオブジェクトの`getContentLength()`メソッドで取得できます。
 
 ```php
 $length = $request->getContentLength();
@@ -372,9 +348,10 @@ $length = $request->getContentLength();
 
 ### Request Parameter
 
-To fetch single request parameter value, use methods: `getParam()`, `getQueryParam()`, `getParsedBodyParam()`, `getCookieParam()`, `getServerParam()`, counterparts of PSR-7's plural form get*Params() methods.
+単一のリクエストパラメーター値を取得するには次のメソッドがあります。`getParam()`, `getQueryParam()`, `getParsedBodyParam()`, `getCookieParam()`, `getServerParam()`。
+これらはPSR-7標準メソッドの`get*Params()`メソッドと同等のものとして提供されています。
 
-For example, to get a single Server Parameter:
+たとえば、単一のサーバーパラメーターを取得するには
 
 ```php
 $foo = $request->getServerParam('HTTP_NOT_EXIST', 'default_value_here');
@@ -382,9 +359,9 @@ $foo = $request->getServerParam('HTTP_NOT_EXIST', 'default_value_here');
 
 ## Route Object
 
-Sometimes in middleware you require the parameter of your route.
+ミドルウェアでは、ルートのパラメーターが必要になる場合があります。
 
-In this example we are checking first that the user is logged in and second that the user has permissions to view the particular video they are attempting to view.
+この例では、まずユーザーがログインしていることを確認し、次にユーザーが表示しようとしている特定のビデオを表示する権限を持っていることを確認しています。
 
 ```php
     $app->get('/course/{id}', Video::class.":watch")->add(Permission::class)->add(Auth::class);
@@ -397,19 +374,19 @@ In this example we are checking first that the user is logged in and second that
 
 ## Media Type Parsers
 
-Slim looks as the request's media type and if it recognises it, will parse it into structured data available via ``$request->getParsedBody()``. This is usually an array, but is an object for XML media types.
+Slimはリクエストのメディアタイプを認識した場合、``$request->getParsedBody()``を介して利用可能な構造化データに解析します。これは通常配列ですが、XMLメディアタイプのオブジェクトです。
 
-The following media types are recognised and parsed:
+次のメディアタイプを認識して解析します。
 
 * application/x-www-form-urlencoded
 * application/json
 * application/xml & text/xml
 
-If you want Slim to parse content from a different media type then you need to either parse the raw body yourself or register a new media parser. Media parsers are simply callables that accept an ``$input`` string and return a parsed object or array.
+Slimに異なるメディアタイプのコンテンツを解析させたい場合は、素のボディを自分で解析するか、新しいメディアパーサーを登録する必要があります。
+メディアパーサーは、 ``$input``文字列を受け取り、解析されたオブジェクトまたは配列を返すシンプルな呼び出しオブジェクトです。
 
-Register a new media parser in an application or route middleware. Note that you must register the parser before you try to access the parsed body for the first time.
-
-For example, to automatically parse JSON that is sent with a ``text/javascript`` content type, you register a media type parser in middleware like this:
+新しいメディアパーサーをアプリケーションに登録するか、ミドルウェアをルーティングします。解析されたボディへはじめてアクセスする前に、パーサーを登録する必要があることに注意してください。
+たとえば、``text/javascript``コンテンツタイプで送信されるJSONを自動的に解析するには、次のようにミドルウェアにメディアタイプパーサーを登録します。
 
 ```php
 // Add the middleware
@@ -428,9 +405,10 @@ $app->add(function ($request, $response, $next) {
 
 ## Attributes
 
-With PSR-7 it is possible to inject objects/values into the request object for further processing. In your applications middleware often need to pass along information to your route closure and the way to do is it is to add it to the request object via an attribute.
+PSR-7では、追加処理をするために、`objects/values`をリクエストオブジェクトに挿入できます。
+アプリケーションミドルウェアはルートクロージャーに情報を渡す必要がある場合も多く、その方法は属性を介してリクエストオブジェクトに追加することです。
 
-Example, Setting a value on your request object.
+例）リクエストオブジェクトに値を設定する。
 
 ```php
 $app->add(function ($request, $response, $next) {
@@ -439,8 +417,7 @@ $app->add(function ($request, $response, $next) {
 });
 ```
 
-
-Example, how to retrieve the value.
+例）値を取得する方法
 
 ```php
 $app->get('/test', function ($request, $response, $args) {
@@ -450,4 +427,4 @@ $app->get('/test', function ($request, $response, $args) {
 });
 ```
 
-The request object also has bulk functions as well. `$request->getAttributes()` and `$request->withAttributes()`
+リクエストオブジェクトにはバルク機能もあります。 `$request->getAttributes()` と `$request->withAttributes()`
