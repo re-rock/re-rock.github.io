@@ -3,7 +3,7 @@ title: Request
 ---
 
 Slimアプリのルートとミドルウェアには、Webサーバーが受信したHTTPリクエストを表すPSR-7リクエストオブジェクトが与えられます。
-リクエストオブジェクトは、HTTPリクエストメソッド、ヘッダー、およびボディを検査および操作できる[PSR-7 ServerRequestInterface][psr7]を実装します。
+リクエストオブジェクトは、HTTPリクエストメソッド、ヘッダー、およびボディを検査および操作できる [PSR-7 ServerRequestInterface][psr7] を実装します。
 [psr7]: http://www.php-fig.org/psr/psr-7/#3-2-1-psr-http-message-serverrequestinterface
 
 ## How to get the Request object
@@ -27,7 +27,7 @@ $app->run();
 <figcaption>Figure 1: Inject PSR-7 request into application route callback.</figcaption>
 </figure>
 
-PSR-7リクエストオブジェクトは、次のようにミドルウェアcallableの最初の引数としてSlimアプリケーションミドルウェアに注入されます。
+PSR-7リクエストオブジェクトは、次のように`middleware callble`の最初の引数としてSlimアプリケーションミドルウェアに注入されます。
 
 <figure markdown="1">
 ```php
@@ -113,7 +113,7 @@ X-Http-Method-Override: PUT
 
 ## The Request URI
 
-すべてのHTTPリクエストには、要求されたアプリケーションリソースを識別するURIがあります。 HTTPリクエストURIにはいくつかのパーツを持ちます。
+すべてのHTTPリクエストには、要求されたアプリケーションリソースを識別するURIがあります。 HTTPリクエストURIはいくつかの要素を持ちます。
 
 * Scheme (e.g. `http` or `https`)
 * Host (e.g. `example.com`)
@@ -145,7 +145,6 @@ PSR-7リクエストオブジェクトのURIは、それ自体がHTTPリクエ�
 `getQueryParams()`を使用して、Requestオブジェクトの連想配列としてクエリパラメータを取得できます。
 
  `getQueryParam($key, $default = null)`を使用して、パラメーターが欠落している場合にオプションのデフォルト値を使用して、単一のクエリパラメーター値を取得することもできます。
-You can also get a single query parameter value, with optional default value if the parameter is missing, using `getQueryParam($key, $default = null)`.
 
 <div class="alert alert-info">
     <div><strong>Base Path</strong></div>
@@ -195,7 +194,7 @@ $headerValueString = $request->getHeaderLine('Accept');
 
 ### Detect Header
 
-PSR-7Requestオブジェクトの`hasHeader($name)`メソッドを使用して、ヘッダーの存在をテストできます。
+PSR-7Requestオブジェクトの`hasHeader($name)`メソッドを使用して、ヘッダーの存在を確認できます。
 
 <figure markdown="1">
 ```php
@@ -427,4 +426,4 @@ $app->get('/test', function ($request, $response, $args) {
 });
 ```
 
-リクエストオブジェクトにはバルク機能もあります。 `$request->getAttributes()` と `$request->withAttributes()`
+リクエストオブジェクトにはバルク機能もあります。 `$request->getAttributes()`、 `$request->withAttributes()`
