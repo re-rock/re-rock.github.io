@@ -2,17 +2,14 @@
 title: Response
 ---
 
-Your Slim app's routes and middleware are given a PSR-7 response object that
-represents the current HTTP response to be returned to the client. The response
-object implements the [PSR-7 ResponseInterface][psr7] with which you can
-inspect and manipulate the HTTP response status, headers, and body.
+Slimアプリのルートとミドルウェアには、クライアントに返却されるHTTPレスポンスを表すPSR-7レスポンスオブジェクトが与えられます。
+レスポンスオブジェクトは、HTTPレスポンスステータス、ヘッダー、およびボディを検査および操作できる [PSR-7 ResponseInterface][psr7] を実装します。
 
 [psr7]: http://www.php-fig.org/psr/psr-7/#3-2-1-psr-http-message-responseinterface
 
 ## How to get the Response object
 
-The PSR-7 response object is injected into your Slim application routes as the
-second argument to the route callback like this:
+PSR-7レスポンスオブジェクトは、次のようにルートコールバックの2番目の引数としてSlimアプリケーションルートに挿入されます。
 
 <figure markdown="1">
 ```php
@@ -30,6 +27,8 @@ $app->run();
 ```
 <figcaption>Figure 1: Inject PSR-7 response into application route callback.</figcaption>
 </figure>
+
+PSR-7レスポンスオブジェクトは、次のように呼び出し可能なミドルウェアの2番目の引数としてSlimアプリケーションミドルウェアに注入されます。
 
 The PSR-7 response object is injected into your Slim application _middleware_
 as the second argument of the middleware callable like this:
@@ -54,10 +53,8 @@ $app->run();
 
 ## The Response Status
 
-Every HTTP response has a numeric [status code][statuscodes]. The status code
-identifies the _type_ of HTTP response to be returned to the client. The PSR-7
-Response object's default status code is `200` (OK). You can get the PSR-7
-Response object's status code with the `getStatusCode()` method like this.
+すべてのHTTPレスポンスには、数値型の [status code][statuscodes] があります。ステータスコードは、クライアントに返されるHTTPレスポンスの _type_ を識別します。
+PSR-7レスポンスオブジェクトのデフォルトのステータスコードは`200` (OK)です。 `getStatusCode()`メソッドを使用して、PSR-7レスポンスオブジェクトのステータスコードを取得できます。
 
 [statuscodes]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 
@@ -68,7 +65,7 @@ $status = $response->getStatusCode();
 <figcaption>Figure 3: Get response status code.</figcaption>
 </figure>
 
-You can copy a PSR-7 Response object and assign a new status code like this:
+PSR-7レスポンスオブジェクトをコピーして、次のような新しいステータスコードを割り当てることができます。
 
 <figure markdown="1">
 ```php
@@ -79,16 +76,13 @@ $newResponse = $response->withStatus(302);
 
 ## The Response Headers
 
-Every HTTP response has headers. These are metadata that describe the HTTP
-response but are not visible in the response's body. Slim's PSR-7
-Response object provides several methods to inspect and manipulate its headers.
+すべてのHTTPレスポンスにはヘッダーがあります。これらはHTTPレスポンスを記述するメタデータですが、レスポンスのボディには表示されません。
+SlimのPSR-7レスポンスオブジェクトは、ヘッダーを検査および操作するためのいくつかのメソッドを提供します。
 
 ### Get All Headers
 
-You can fetch all HTTP response headers as an associative array with the PSR-7
-Response object's `getHeaders()` method. The resultant associative array's keys
-are the header names and its values are themselves a numeric array of string
-values for their respective header name.
+PSR-7レスポンスオブジェクトの`getHeaders()`メソッドを使用して、すべてのHTTPレスポンスヘッダーを連想配列として取得できます。
+結果の連想配列のキーはヘッダー名であり、その値はそれぞれのヘッダー名の文字列値を持った数値配列です。
 
 <figure markdown="1">
 ```php
@@ -102,9 +96,8 @@ foreach ($headers as $name => $values) {
 
 ### Get One Header
 
-You can get a single header's value(s) with the PSR-7 Response object's
-`getHeader($name)` method. This returns an array of values for the given header
-name. Remember, _a single HTTP header may have more than one value!_
+PSR-7レスポンスオブジェクトの`getHeader($name)`メソッドを使用して、単一のヘッダーの値を取得できます。
+これは、指定されたヘッダー名の値の配列を返します。単一のHTTPヘッダーに複数の値がある場合もあるので注意してください！
 
 <figure markdown="1">
 ```php
@@ -113,9 +106,8 @@ $headerValueArray = $response->getHeader('Vary');
 <figcaption>Figure 6: Get values for a specific HTTP header.</figcaption>
 </figure>
 
-You may also fetch a comma-separated string with all values for a given header
-with the PSR-7 Response object's `getHeaderLine($name)` method. Unlike the
-`getHeader($name)` method, this method returns a comma-separated string.
+PSR-7レスポンスオブジェクトの`getHeaderLine($name)`メソッドを使用して、特定のヘッダーのすべての値を含むカンマ区切り文字列を取得することもできます。
+`getHeader($name)`メソッドとは異なり、このメソッドはカンマ区切りの文字列を返します。
 
 <figure markdown="1">
 ```php
@@ -126,8 +118,7 @@ $headerValueString = $response->getHeaderLine('Vary');
 
 ### Detect Header
 
-You can test for the presence of a header with the PSR-7 Response object's
-`hasHeader($name)` method.
+PSR-7レスポンスオブジェクトの`hasHeader($name)`メソッドを使用して、ヘッダーの存在を確認できます。
 
 <figure markdown="1">
 ```php
@@ -140,8 +131,7 @@ if ($response->hasHeader('Vary')) {
 
 ### Set Header
 
-You can set a header value with the PSR-7 Response object's
-`withHeader($name, $value)` method.
+ヘッダー値は、PSR-7レスポンスオブジェクトの`withHeader($name, $value)`メソッドで設定できます。
 
 <figure markdown="1">
 ```php
@@ -151,19 +141,16 @@ $newResponse = $oldResponse->withHeader('Content-type', 'application/json');
 </figure>
 
 <div class="alert alert-info">
-    <div><strong>Reminder</strong></div>
+    <div><strong>注意</strong></div>
     <div>
-        The Response object is immutable. This method returns a <em>copy</em> of
-        the Response object that has the new header value. <strong>This method is
-        destructive</strong>, and it <em>replaces</em> existing header
-        values already associated with the same header name.
+    レスポンスオブジェクトは不変です。このメソッドは、新しいヘッダー値を持つResponseオブジェクトの<em>コピー</em>を返します。
+    このメソッドは破壊的であり、同じヘッダー名で既に関連付けられている既存のヘッダー値を置き換えます。
     </div>
 </div>
 
 ### Append Header
 
-You can append a header value with the PSR-7 Response object's
-`withAddedHeader($name, $value)` method.
+PSR-7レスポンスオブジェクトの`withAddedHeader($name, $value)`メソッドでヘッダー値を追加できます。
 
 <figure markdown="1">
 ```php
@@ -173,18 +160,16 @@ $newResponse = $oldResponse->withAddedHeader('Allow', 'PUT');
 </figure>
 
 <div class="alert alert-info">
-    <div><strong>Reminder</strong></div>
+    <div><strong>注意</strong></div>
     <div>
-        Unlike the <code>withHeader()</code> method, this method <em>appends</em>
-        the new value to the set of values that already exist for the same header
-        name. The Response object is immutable. This method returns a
-        <em>copy</em> of the Response object that has the appended header value.
+    <code>withHeader()</code>メソッドとは異なり、このメソッドは同じヘッダー名に既に存在する値のセットに新しい値を追加します。
+    レスポンスオブジェクトは不変です。このメソッドは、ヘッダー値が追加されたResponseオブジェクトのコピーを返却します。
     </div>
 </div>
 
 ### Remove Header
 
-You can remove a header with the Response object's `withoutHeader($name)` method.
+Responseオブジェクトの `withoutHeader($name)` メソッドでヘッダーを削除できます。
 
 <figure markdown="1">
 ```php
@@ -194,23 +179,19 @@ $newResponse = $oldResponse->withoutHeader('Allow');
 </figure>
 
 <div class="alert alert-info">
-    <div><strong>Reminder</strong></div>
+    <div><strong>注意</strong></div>
     <div>
-        The Response object is immutable. This method returns a <em>copy</em>
-        of the Response object that has the appended header value.
+        レスポンスオブジェクトは不変です。このメソッドは、ヘッダー値が削除されたレスポンスオブジェクトのコピーを返します。
     </div>
 </div>
 
 ## The Response Body
 
-An HTTP response typically has a body. Slim provides a PSR-7 Response object
-with which you can inspect and manipulate the eventual HTTP response's body.
+HTTPレスポンスには通常ボディがあります。 Slimは、最終的なHTTPレスポンスのボディを検査および操作できるPSR-7レスポンスオブジェクトを提供します。
 
-Just like the PSR-7 Request object, the PSR-7 Response object implements
-the body as an instance of `\Psr\Http\Message\StreamInterface`. You can get
-the HTTP response body `StreamInterface` instance with the PSR-7 Response
-object's `getBody()` method. The `getBody()` method is preferable if the
-outgoing HTTP response length is unknown or too large for available memory.
+PSR-7リクエストオブジェクトと同様に、PSR-7レスポンスオブジェクトは、`\Psr\Http\Message\StreamInterface`のインスタンスとしてボディを実装します。
+PSR-7レスポンスオブジェクトの`getBody()`メソッドを使用して、HTTPレスポンスボディの`StreamInterface`インスタンスを取得できます。
+`getBody()`メソッドは、送出されるHTTPレスポンスの長さが不明であるか、使用可能なメモリに対して大きすぎる場合に適しています。
 
 <figure markdown="1">
 ```php
@@ -219,8 +200,7 @@ $body = $response->getBody();
 <figcaption>Figure 12: Get HTTP response body</figcaption>
 </figure>
 
-The resultant `\Psr\Http\Message\StreamInterface` instance provides the following
-methods to read from, iterate, and write to its underlying PHP `resource`.
+処理結果の`\Psr\Http\Message\StreamInterface`インスタンスは、ベースとなるPHP`resource`の読み取り、反復、書き込みを行う次のメソッドを提供します。
 
 * `getSize()`
 * `tell()`
@@ -235,8 +215,7 @@ methods to read from, iterate, and write to its underlying PHP `resource`.
 * `getContents()`
 * `getMetadata($key = null)`
 
-Most often, you'll need to write to the PSR-7 Response object. You can write
-content to the `StreamInterface` instance with its `write()` method like this:
+ほとんどの場合、PSR-7レスポンスオブジェクトに書き込む必要があります。次のような`write()`メソッドを使用して、`StreamInterface`インスタンスにコンテンツを書き込むことができます。
 
 <figure markdown="1">
 ```php
@@ -246,12 +225,10 @@ $body->write('Hello');
 <figcaption>Figure 13: Write content to the HTTP response body</figcaption>
 </figure>
 
-You can also _replace_ the PSR-7 Response object's body with an entirely new
-`StreamInterface` instance. This is particularly useful when you want to pipe
-content from a remote destination (e.g. the filesystem or a remote API) into
-the HTTP response. You can replace the PSR-7 Response object's body with
-its `withBody(StreamInterface $body)` method. Its argument **MUST** be an
-instance of `\Psr\Http\Message\StreamInterface`.
+PSR-7レスポンスオブジェクトのボディをまったく新しい`StreamInterface`インスタンスに置き換えることもできます。
+これは、コンテンツをリモート先（ファイルシステムやリモートAPIなど）からHTTPレスポンスにパイプする場合でとくに便利です。
+またPSR-7レスポンスオブジェクトのボディを`withBody(StreamInterface $body)`メソッドに置き換えることができます。
+引数は`\Psr\Http\Message\StreamInterface`のインスタンスでなければなりません。
 
 <figure markdown="1">
 ```php
@@ -264,18 +241,18 @@ $newResponse = $oldResponse->withBody($newStream);
 <div class="alert alert-info">
     <div><strong>Reminder</strong></div>
     <div>
-        The Response object is immutable. This method returns a <em>copy</em>
-        of the Response object that contains the new body.
+        レスポンスオブジェクトは不変です。このメソッドは、新しいボディを含むレスポンスオブジェクトのコピーを返します。
     </div>
 </div>
 
 ## Returning JSON
 
-Slim's Response object has a custom method `withJson($data, $status, $encodingOptions)` to help simplify the process of returning JSON data.
+Slimのレスポンスオブジェクトには、`withJson($data, $status, $encodingOptions)`を使用したカスタムメソッドがあり、JSONデータを返すプロセスを簡素化します。
 
-The `$data` parameter contains the data structure you wish returned as JSON. `$status` is optional, and can be used to return a custom HTTP code. `$encodingOptions` is optional, and are the same encoding options used for [`json_encode()`][json_encode].
+`$data`パラメーターには、あなたが希望するデータ構造の返却用JSONが含まれます。`$status`はオプションであり、カスタムHTTPコードを返すために使用できます。
+ `$encodingOptions`もオプションであり、 [`json_encode()`][json_encode]に使用されるのと同じエンコードオプションです。
 
-In it's simplest form, JSON data can be returned with a default 200 HTTP status code.
+単純なフォームでは、JSONデータはデフォルトの200 HTTPステータスコードで返されます。
 
 <figure markdown="1">
 ```php
@@ -285,7 +262,7 @@ $newResponse = $oldResponse->withJson($data);
 <figcaption>Figure 15: Returning JSON with a 200 HTTP status code.</figcaption>
 </figure>
 
-We can also return JSON data with a custom HTTP status code.
+カスタムHTTPステータスコードでJSONデータを返すこともできます。
 
 <figure markdown="1">
 ```php
@@ -295,16 +272,16 @@ $newResponse = $oldResponse->withJson($data, 201);
 <figcaption>Figure 16: Returning JSON with a 201 HTTP status code.</figcaption>
 </figure>
 
-The `Content-Type` of the Response is automatically set to `application/json;charset=utf-8`.
+レスポンスの`Content-Type`は、`application/json;charset=utf-8`に自動的に設定されます。
 
-If there is a problem encoding the data to JSON, a `\RuntimeException($message, $code)` is thrown containing the values of [`json_last_error_msg()`][json_last_error_msg] as the `$message` and [`json_last_error()`][json_last_error] as the `$code`.
+データをJSONにエンコードする際、問題がある場合は[`json_last_error_msg()`][json_last_error_msg]の値を`$message`として、[`json_last_error()`][json_last_error]を`$code`として含む `\RuntimeException($message, $code)`がスローされます。
 
 <div class="alert alert-info">
     <div><strong>Reminder</strong></div>
     <div>
-        The Response object is immutable. This method returns a <em>copy</em> of
-        the Response object that has a new Content-Type header. <strong>This method is
-        destructive</strong>, and it <em>replaces</em> the existing Content-Type header. The Status is also replaced if a $status was passed when <code>withJson()</code> was called.
+        レスポンスオブジェクトは不変です。このメソッドは、新しいContent-Typeヘッダーを持つレスポンスオブジェクトのコピーを返します。
+        このメソッドは破壊的であり、既存のContent-Typeヘッダーを置き換えます。
+        また、<code>withJson()</code>が呼び出されたときに$statusが渡された場合、Statusも置き換えられます。
     </div>
 </div>
 
@@ -314,7 +291,9 @@ If there is a problem encoding the data to JSON, a `\RuntimeException($message, 
 
 ## Returning a Redirect
 
-Slim's Response object has a custom method `withRedirect($url, $status = null)` when you wish to return a redirect to another URL. You provide the `$url` where you wish the client to be redirected to along with an optional `$status` code. The status code defaults to `302` if not provided.
+Slimのレスポンスオブジェクトには、リダイレクトを別のURLに返したい場合のために、 `withRedirect($url, $status = null)`のカスタムメソッドがあります。
+オプションの`$status`コードとともに、クライアントをリダイレクトする場所の`$url`を指定します。
+指定されていない場合のステータスコードは、デフォルトの`302`です。
 
 <figure markdown="1">
 ```php
