@@ -2,17 +2,13 @@
 title: Request
 ---
 
-Your Slim app's routes and middleware are given a PSR-7 request object that
-represents the current HTTP request received by your web server. The request
-object implements the [PSR-7 ServerRequestInterface][psr7] with which you can
-inspect and manipulate the HTTP request method, headers, and body.
-
+Slimアプリのルートとミドルウェアには、Webサーバーが受信したHTTPリクエストを表すPSR-7リクエストオブジェクトが与えられます。
+リクエストオブジェクトは、HTTPリクエストメソッド、ヘッダー、およびボディを検査および操作できる[PSR-7 ServerRequestInterface][psr7]を実装します。
 [psr7]: http://www.php-fig.org/psr/psr-7/#3-2-1-psr-http-message-serverrequestinterface
 
 ## How to get the Request object
 
-The PSR-7 request object is injected into your Slim application routes as the
-first argument to the route callback like this:
+PSR-7リクエストオブジェクトは、次のようにルートコールバックの最初の引数としてSlimアプリケーションルートに注入されます。
 
 <figure markdown="1">
 ```php
@@ -31,8 +27,7 @@ $app->run();
 <figcaption>Figure 1: Inject PSR-7 request into application route callback.</figcaption>
 </figure>
 
-The PSR-7 request object is injected into your Slim application _middleware_
-as the first argument of the middleware callable like this:
+PSR-7リクエストオブジェクトは、次のようにミドルウェアcallableの最初の引数としてSlimアプリケーションミドルウェアに注入されます。
 
 <figure markdown="1">
 ```php
@@ -54,7 +49,7 @@ $app->run();
 
 ## The Request Method
 
-Every HTTP request has a method that is typically one of:
+すべてのHTTPリクエストには、通常次のいずれかのメソッドがあります。
 
 * GET
 * POST
@@ -64,16 +59,13 @@ Every HTTP request has a method that is typically one of:
 * PATCH
 * OPTIONS
 
-You can inspect the HTTP request's method with the Request object method
-appropriately named `getMethod()`.
+`getMethod()`というRequestオブジェクトメソッドを使用して、HTTPリクエストのメソッドを検査できます。
 
 ```php
 $method = $request->getMethod();
 ```
 
-Because this is a common task, Slim's
-built-in PSR-7 implementation also provides these proprietary methods that return
-`true` or `false`.
+これは一般的なタスクであるため、SlimのビルトインPSR-7実装は、trueまたはfalseを返すこれらの独自のメソッドも提供します。
 
 * `$request->isGet()`
 * `$request->isPost()`
@@ -83,13 +75,11 @@ built-in PSR-7 implementation also provides these proprietary methods that retur
 * `$request->isPatch()`
 * `$request->isOptions()`
 
-It is possible to fake or _override_ the HTTP request method. This is
-useful if, for example, you need to mimic a `PUT` request using a traditional
-web browser that only supports `GET` or `POST` requests.
+HTTPリクエストメソッドのフェイクを作成、またはメソッドのオーバーライドができます。
+これは、たとえば、 `GET`または`POST`リクエストのみをサポートする従来のWebブラウザーを使用して`PUT`リクエストを模倣する必要がある場合に役立ちます。
 
-There are two ways to override the HTTP request method. You can include a
-`_METHOD` parameter in a `POST` request's body. The HTTP request must use the
-`application/x-www-form-urlencoded` content type.
+HTTPリクエストメソッドをオーバーライドするには、2つの方法があります。`POST`リクエストの本文に`_METHOD`パラメーターを含めることができます。 
+HTTPリクエストでは、`application/x-www-form-urlencoded` コンテンツタイプを使用する必要があります。
 
 <figure markdown="1">
 ```
@@ -103,9 +93,8 @@ data=value&_METHOD=PUT
 <figcaption>Figure 3: Override HTTP method with _METHOD parameter.</figcaption>
 </figure>
 
-You can also override the HTTP request method with a custom
-`X-Http-Method-Override` HTTP request header. This works with any HTTP request
-content type.
+カスタム`X-Http-Method-Override`HTTPリクエストヘッダーでHTTPリクエストメソッドをオーバーライドすることもできます。
+これは、すべてのHTTPリクエストコンテンツタイプで機能します。
 
 <figure markdown="1">
 ```
@@ -119,6 +108,8 @@ X-Http-Method-Override: PUT
 ```
 <figcaption>Figure 4: Override HTTP method with X-Http-Method-Override header.</figcaption>
 </figure>
+
+`getOriginalMethod()`というPSR-7 Requestオブジェクトのメソッドを使用して、元の（オーバーライドされていない）HTTPメソッドを取得できます。
 
 You can fetch the _original_ (non-overridden) HTTP method with the PSR-7 Request
 object's method named `getOriginalMethod()`.
