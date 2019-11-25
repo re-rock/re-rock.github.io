@@ -2,15 +2,15 @@
 title: System Error Handler
 ---
 
-Things go wrong. You can't predict errors, but you can anticipate them. Each Slim Framework application has an error handler that receives all uncaught PHP exceptions. This error handler also receives the current HTTP request and response objects, too. The error handler must prepare and return an appropriate Response object to be returned to the HTTP client.
+物事がうまくいかない。エラーを予言することはできませんが、予測することはできます。各Slimフレームワークアプリケーションには、キャッチされなかったすべてのPHPの例外を受け取るエラーハンドラーがあります。このエラーハンドラーは、現在のHTTPリクエストおよびレスポンスオブジェクトも受け取ります。エラーハンドラーは、HTTPクライアントに返される適切なResponseオブジェクトを準備し、そして返す必要があります。
 
 ## Default error handler
 
-The default error handler is very basic. It sets the Response status code to `500`, it sets the Response content type to `text/html`, and appends a generic error message into the Response body.
+デフォルトのエラーハンドラーは非常に基本的なものです。レスポンスステータスコードを`500`に設定し、レスポンスコンテンツタイプを `text/html`に設定し、一般的なエラーメッセージをレスポンスボディに追加します。
 
-This is _probably_ not appropriate for production applications. You are strongly encouraged to implement your own Slim application error handler.
+これはおそらく実際に運用するアプリケーションには適していません。独自のスリムアプリケーションエラーハンドラーを実装することを強くオススメします。
 
-The default error handler can also include detailed error diagnostic information. To enable this you need to set the `displayErrorDetails` setting to true:
+デフォルトのエラーハンドラーには、詳細な診断エラー情報を含めることもできます。これを有効にするには、`displayErrorDetails`設定をtrueに設定する必要があります。
 
 ```php
 $configuration = [
@@ -24,9 +24,9 @@ $app = new \Slim\App($c);
 
 ## Custom error handler
 
-A Slim Framework application's error handler is a Pimple service. You can substitute your own error handler by defining a custom Pimple factory method with the application container.
+Slim FrameworkアプリケーションのエラーハンドラーはPimpleサービスです。アプリケーションコンテナーでカスタムPimpleファクトリメソッドを定義することにより、独自のエラーハンドラーに置き換えることができます。
 
-There are two ways to inject handlers:
+ハンドラーを注入する方法は2つあります。
 
 ### Pre App
 
@@ -56,17 +56,17 @@ $c['errorHandler'] = function ($c) {
 };
 ```
 
-In this example, we define a new `errorHandler` factory that returns a callable. The returned callable accepts three arguments:
+この例では、callbleを返す新しい`errorHandler`ファクトリーを定義します。返却されるcallableは3つの引数を受け入れます。
 
-1. A `\Psr\Http\Message\ServerRequestInterface` instance
-2. A `\Psr\Http\Message\ResponseInterface` instance
-3. A `\Exception` instance
+1. `\Psr\Http\Message\ServerRequestInterface`インスタンス
+2. `\Psr\Http\Message\ResponseInterface`インスタンス
+3. `\Exception`インスタンス
 
-The callable **MUST** return a new `\Psr\Http\Message\ResponseInterface` instance as is appropriate for the given exception.
+callableは、指定された例外に適した新しい`\Psr\Http\Message\ResponseInterface` インスタンスを返さなければなりません。
 
 ### Class-based error handler
 
-Error handlers may also be defined as an invokable class.
+エラーハンドラーは、呼び出し可能なクラスとして定義することもできます。
 
 ```php
 class CustomHandler {
@@ -79,7 +79,7 @@ class CustomHandler {
 }
 ```
 
-and attached like so:
+そして次のように添付します
 
 ```php
 $app = new \Slim\App();
@@ -89,25 +89,24 @@ $c['errorHandler'] = function ($c) {
 };
 ```
 
-This allows us to define more sophisticated handlers or extend/override the
-built-in `Slim\Handlers\*` classes.
+これにより、より洗練されたハンドラーを定義したり、組み込みの`Slim\Handlers\*`クラスを拡張/オーバーライドしたりできます。
 
 ### Handling other errors
 
-**Please note**: The following four types of exceptions will not be handled by a custom `errorHandler`:
+注：次の4種類の例外は、カスタム`errorHandler`では処理されません。
 
-- `Slim\Exception\MethodNotAllowedException`: This can be handled via a custom [`notAllowedHandler`](/docs/v3/handlers/not-allowed.html).
-- `Slim\Exception\NotFoundException`: This can be handled via a custom [`notFoundHandler`](/docs/v3/handlers/not-found.html).
-- Runtime PHP errors (PHP 7+ only): This can be handled via a custom [`phpErrorHandler`](/docs/v3/handlers/php-error.html).
-- `Slim\Exception\SlimException`: This type of exception is internal to Slim, and its handling cannot be overridden.
+- `Slim\Exception\MethodNotAllowedException`: これはカスタム[`notAllowedHandler`](/docs/v3/handlers/not-allowed.html)を介して処理できます。
+- `Slim\Exception\NotFoundException`: これはカスタム[`notFoundHandler`](/docs/v3/handlers/not-found.html)を介して処理できます。
+- Runtime PHP errors (PHP 7+ only): これはカスタム[`phpErrorHandler`](/docs/v3/handlers/php-error.html)を介して処理できます。
+- `Slim\Exception\SlimException`: このタイプの例外はSlim内部にあり、その処理をオーバーライドすることはできません。
 
 ### Disabling
 
-To completely disable Slim's error handling, simply remove the error handler from the container:
+Slimのエラー処理を完全に無効にするには、コンテナーからエラーハンドラーを削除するだけです
 
 ```php
 unset($app->getContainer()['errorHandler']);
 unset($app->getContainer()['phpErrorHandler']);
 ```
 
-You are now responsible for handling any exceptions that occur in your application as they will not be handled by Slim.
+これによってアプリケーションで発生した例外はSlimによって処理されなくなるため、代わりに例外処理行う責任が発生します。

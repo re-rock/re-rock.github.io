@@ -266,8 +266,6 @@ $app->get('/users/{id:[0-9]+}', function ($request, $response, $args) {
 アプリケーションルートには名前を割り当てることができます。これは、ルーターの `pathFor()` メソッドを使用し、特定のルートへのURLをプログラムで生成する場合に便利です。
 上記の各ルーティングメソッドは `\Slim\Route` オブジェクトを返し、このオブジェクトは `setName()` メソッドが公開されます。
 
-Each routing method described above returns a `\Slim\Route` object, and this object exposes a `setName()` method.
-
 ```php
 $app = new \Slim\App();
 $app->get('/hello/{name}', function ($request, $response, $args) {
@@ -340,7 +338,7 @@ $app->group('', function(App $app) {
 
  - `container_key:method`
  - `Class:method`
- - 呼び出し可能なクラス
+ - 呼び出しクラス
  - `container_key`
 
 この機能は、SlimのCallableリゾルバークラスによって有効になります。文字列のエントリーをメソッドの呼び出しに変換します。
@@ -356,7 +354,7 @@ $app->get('/', '\HomeController:home');
 $app->get('/', \HomeController::class . ':home');
 ```
 
-上記のコードでは `/` ルートを定義し、 `HomeController` クラスの `home()` メソッドを実行するようSlimに指示しています。
+上記のコードでは `/` ルートを定義し、`HomeController` クラスの `home()` メソッドを実行するようSlimに指示しています。
 
 最初にSlimはコンテナーの`HomeController`のエントリーを探します。見つかった場合はそのインスタンスを使用し、
 それ以外の場合は、コンテナーを最初の引数としてコンストラクターを呼び出します。クラスのインスタンスが作成されると、
