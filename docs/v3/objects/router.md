@@ -2,7 +2,7 @@
 title: Router
 ---
 
-Slim Frameworkのルーターは[nikic/fastroute](https://github.com/nikic/FastRoute)コンポーネントの上に構築されており、非常に高速で安定しています。
+Slim Frameworkのルーターは[nikic/fastroute](https://github.com/nikic/FastRoute)コンポーネント上に構築されており、非常に高速で安定しています。
 
 ## How to create routes
 
@@ -173,25 +173,22 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
 
 ## Redirect helper
 
-You can add a route that redirects `GET` HTTP requests to a different URL with
-the Slim application's `redirect()` method. It accepts three arguments:
+Slimアプリケーションの`redirect()`メソッドを使用して、`GET`HTTPリクエストを別のURLにリダイレクトするルートを追加できます。次の3つの引数を受け入れます。
 
-1. The route pattern (with optional named placeholders) to redirect **from**
-2. The location to redirect **to**, which may be a `string` or a
-   [`Psr\Http\Message\UriInterface`](https://www.php-fig.org/psr/psr-7/#35-psrhttpmessageuriinterface)
-3. The HTTP status code to use (optional; `302` if unset)
+1. リダイレクト元のルートパターン（オプションとしてプレースホルダー）
+2. リダイレクト先のパス。文字列または[`Psr\Http\Message\UriInterface`](https://www.php-fig.org/psr/psr-7/#35-psrhttpmessageuriinterface)
+3. 使用するHTTPステータスコード（オプション。設定されていない場合は`302`）
 
 ```php
 $app = new \Slim\App();
 $app->redirect('/books', '/library', 301);
 ```
 
-`redirect()` routes respond with the status code requested and a `Location`
-header set to the second argument.
+`redirect()`ルートは、リクエストされたステータスコードと2番目の引数に設定された`Location`ヘッダーに対して応答します。
 
 ## Route strategies
 
-The route callback signature is determined by a route strategy. By default, Slim expects route callbacks to accept the request, response, and an array of route placeholder arguments. This is called the RequestResponse strategy. However, you can change the expected route callback signature by simply using a different strategy. As an example, Slim provides an alternative strategy called RequestResponseArgs that accepts request and response, plus each route placeholder as a separate argument. Here is an example of using this alternative strategy; simply replace the `foundHandler` dependency provided by the default `\Slim\Container`:
+ルートコールバックのシグネチャは、ルートストラテジによって決定されます。デフォルトでは、Slimはルートコールバックがリクエスト、レスポンス、およびルートプレースホルダー引数の配列を受け入れることを想定しています。これはRequestResponseストラテジと呼ばれます。ただし、代替ストラテジを使用するだけで、期待されるルートコールバックシグネチャを変更できます。例として、SlimはRequestResponse引数と呼ばれる代替ストラテジを提供します。このストラテジは、リクエストとレスポンスに加えて、各ルートプレースホルダーを個別の引数として受け入れます。この代替ストラテジの使用例を次に示します。デフォルトの`\Slim\Container`によって提供される`foundHandler`DIに置き換えるだけです。
 
 ```php
 $c = new \Slim\Container();
@@ -204,16 +201,15 @@ $app->get('/hello/{name}', function ($request, $response, $name) {
     return $response->write($name);
 });
 ```
-
-You can provide your own route strategy by implementing the `\Slim\Interfaces\InvocationStrategyInterface`.
+`\Slim\Interfaces\InvocationStrategyInterface`を実装することにより、独自のルートストラテジを提供できます。
 
 ## Route placeholders
 
-Each routing method described above accepts a URL pattern that is matched against the current HTTP request URI. Route patterns may use named placeholders to dynamically match HTTP request URI segments.
+上記で紹介した各ルーティング方法は、HTTPリクエストURIと照合されるURLパターンを受け入れます。ルートパターンは、名前付きプレースホルダーを使用して、HTTPリクエストURIセグメントを動的に一致させることができます。
 
 ### Format
 
-A route pattern placeholder starts with a `{`, followed by the placeholder name, ending with a `}`. This is an example placeholder named `name`:
+ルートパターンのプレースホルダーは `{` で始まり、その後にプレースホルダー名が続き、`}` で終わります。この例では `name` という名前のプレースホルダーです。
 
 ```php
 $app = new \Slim\App();
@@ -224,17 +220,16 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
 
 ### Optional segments
 
-To make a section optional, simply wrap in square brackets:
+URLのセクションをオプションにするには、角かっこで囲みます。
 
 ```php
 $app->get('/users[/{id}]', function ($request, $response, $args) {
-    // responds to both `/users` and `/users/123`
-    // but not to `/users/`
+    // OK : `/users` and `/users/123`
+    // NG : `/users/`
 });
 ```
 
-
-Multiple optional parameters are supported by nesting:
+ネストにより、複数のオプションパラメーターもサポートされます。
 
 ```php
 $app->get('/news[/{year}[/{month}]]', function ($request, $response, $args) {
@@ -242,7 +237,7 @@ $app->get('/news[/{year}[/{month}]]', function ($request, $response, $args) {
 });
 ```
 
-For "Unlimited" optional parameters, you can do this:
+「無制限」のオプションパラメーターもサポートされています。
 
 ```php
 $app->get('/news[/{params:.*}]', function ($request, $response, $args) {
@@ -252,14 +247,12 @@ $app->get('/news[/{params:.*}]', function ($request, $response, $args) {
 });
 ```
 
-In this example, a URI of `/news/2016/03/20` would result in the `$params` array
-containing three elements: `['2016', '03', '20']`.
+この例では、`/news/2016/03/20`のURIは、3つの要素を含む$ `$params`配列になります： `['2016', '03', '20']`。
 
 
 ### Regular expression matching
 
-By default the placeholders are written inside `{}` and can accept any
-values. However, placeholders can also require the HTTP request URI to match a particular regular expression. If the current HTTP request URI does not match a placeholder regular expression, the route is not invoked. This is an example placeholder named `id` that requires one or more digits.
+デフォルトでは、プレースホルダーは `{}` 内に記述され、任意の値を受け入れます。またプレースホルダーは、特定の正規表現に一致するHTTPリクエストURIを要求することもできます。HTTPリクエストURIがプレースホルダーの正規表現と一致しない場合、ルートは呼び出されません。下記は1つ以上の数値を必要とする`id`という名前のプレースホルダーの例です。
 
 ```php
 $app = new \Slim\App();
@@ -270,7 +263,10 @@ $app->get('/users/{id:[0-9]+}', function ($request, $response, $args) {
 
 ## Route names
 
-Application routes can be assigned a name. This is useful if you want to programmatically generate a URL to a specific route with the router's `pathFor()` method. Each routing method described above returns a `\Slim\Route` object, and this object exposes a `setName()` method.
+アプリケーションルートには名前を割り当てることができます。これは、ルーターの `pathFor()` メソッドを使用し、特定のルートへのURLをプログラムで生成する場合に便利です。
+上記の各ルーティングメソッドは `\Slim\Route` オブジェクトを返し、このオブジェクトは `setName()` メソッドが公開されます。
+
+Each routing method described above returns a `\Slim\Route` object, and this object exposes a `setName()` method.
 
 ```php
 $app = new \Slim\App();
@@ -279,7 +275,7 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
 })->setName('hello');
 ```
 
-You can generate a URL for this named route with the application router's `pathFor()`  method.
+アプリケーションルーターの `pathFor()` メソッドを使用して、この名前付きルートのURLを生成できます。
 
 ```php
 echo $app->getContainer()->get('router')->pathFor('hello', [
@@ -288,14 +284,14 @@ echo $app->getContainer()->get('router')->pathFor('hello', [
 // Outputs "/hello/Josh"
 ```
 
-The router's `pathFor()` method accepts two arguments:
+ルーターの`pathFor()`メソッドは2つの引数を受け入れます。
 
-1. The route name
-2. Associative array of route pattern placeholders and replacement values
+1. ルート名
+2. ルートパターンのプレースホルダー配列と、置換用の値
 
 ## Route groups
 
-To help organize routes into logical groups, the `\Slim\App` also provides a `group()` method. Each group's route pattern is prepended to the routes or groups contained within it, and any placeholder arguments in the group pattern are ultimately made available to the nested routes:
+ルートをグループにまとめられるように、`\Slim\App`は `group()` メソッドも用意しています。各グループのルートパターンは、その中に含まれるルートまたはグループの先頭に追加され、グループパターンのプレースホルダー引数はすべて、ネストされたルートで最終的に使用可能になります。
 
 ```php
 $app = new \Slim\App();
@@ -310,7 +306,7 @@ $app->group('/users/{id:[0-9]+}', function (App $app) {
 });
 ```
 
-The group pattern can be empty, enabling the logical grouping of routes that do not share a common pattern.
+グループパターンを空にして、共通のパターンを共有しないルートを論理的にグループ化できます。
 
 ```php
 $app->group('', function(App $app) {
@@ -323,51 +319,53 @@ $app->group('', function(App $app) {
 })->add( new SharedMiddleware() );
 ```
 
-Note inside the group closure, `$this` can be used instead of `$app`. Slim binds the closure to the application instance for you, just like it is the case with route callback binds with container instance.
+グループクロージャ内で、`$app`の代わりに`$this`を使用できます。コンテナインスタンスを使用したルートコールバックバインドの場合と同様に、Slimはクロージャーをアプリケーションインスタンスにバインドします。
 
-* inside group closure, `$this` is bound to the instance of `Slim\App`
-* inside route closure, `$this` is bound to the instance of `Slim\Container`
+* グループクロージャ内で、`$this`は`Slim\App`のインスタンスにバインドされます
+* ルートクロージャ内で、`$this`は`Slim\App`のインスタンスにバインドされます
 
 ## Route middleware
 
-You can also attach middleware to any route or route group. [Learn more](/docs/v3/concepts/middleware.html).
+ミドルウェアを任意のルートまたはルートグループに接続することもできます。[もっと詳しく](/docs/v3/concepts/middleware.html)。
 
 ## Router caching
 
-It's possible to enable router cache by setting valid filename in default Slim settings. [Learn more](/docs/v3/objects/application.html#slim-default-settings).
+デフォルトのSlimの設定で、有効なファイル名を設定することにより、ルーターのキャッシュを有効にできます。[もっと詳しく](/docs/v3/objects/application.html#slim-default-settings)。
 
 ## Container Resolution
 
-You are not limited to defining a function for your routes. In Slim there are a few different ways to define your route action functions.
+ルートメソッドを定義するだけでなく、Slimにはさらにルートアクションメソッドを定義するいくつかの方法があります。
 
-In addition to a function, you may use:
+メソッドに加えて、次のものも使用できます。
 
  - `container_key:method`
  - `Class:method`
- - An invokable class
+ - 呼び出し可能なクラス
  - `container_key`
 
-This functionality is enabled by Slim's Callable Resolver Class. It translates a string entry into a function call.
-Example:
+この機能は、SlimのCallableリゾルバークラスによって有効になります。文字列のエントリーをメソッドの呼び出しに変換します。
+例：
 
 ```php
 $app->get('/', '\HomeController:home');
 ```
 
-Alternatively, you can take advantage of PHP's `::class` operator which works well with IDE lookup systems and produces the same result:
+あるいは、PHPの`::class` 演算子を利用することもできます。この演算子はIDEルックアップシステムでうまく機能し、同様の結果を生成します。
 
 ```php
 $app->get('/', \HomeController::class . ':home');
 ```
 
-In this code above we are defining a `/` route and telling Slim to execute the `home()` method on the `HomeController` class.
+上記のコードでは `/` ルートを定義し、 `HomeController` クラスの `home()` メソッドを実行するようSlimに指示しています。
 
-Slim first looks for an entry of `HomeController` in the container, if it's found it will use that instance otherwise it will call it's constructor with the container as the first argument. Once an instance of the class is created it will then call the specified method using whatever Strategy you have defined.
+最初にSlimはコンテナーの`HomeController`のエントリーを探します。見つかった場合はそのインスタンスを使用し、
+それ以外の場合は、コンテナーを最初の引数としてコンストラクターを呼び出します。クラスのインスタンスが作成されると、
+定義したストラテジを使用して指定されたメソッドを呼び出します。
 
 ### Registering a controller with the container
 
-Create a controller with the `home` action method. The constructor should accept
-the dependencies that are required. For example:
+`home`アクションメソッドでコントローラーを作成します。コンストラクターは、必要なDIを受け入れる必要があります。
+例：
 
 ```php
 class HomeController
@@ -385,7 +383,7 @@ class HomeController
 }
 ```
 
-Create a factory in the container that instantiates the controller with the dependencies:
+DIを使用してコントローラーをインスタンス化するコンテナーにファクトリーを作成します。
 
 ```php
 $container = $app->getContainer();
@@ -395,15 +393,12 @@ $container['HomeController'] = function($c) {
 };
 ```
 
-This allows you to leverage the container for dependency injection and so you can
-inject specific dependencies into the controller.
-
+これにより、コンテナーをDIに利用できるため、特定の依存性をコントローラーに注入できます。
 
 ### Allow Slim to instantiate the controller
 
-Alternatively, if the class does not have an entry in the container, then Slim
-will pass the container's instance to the constructor. You can construct controllers
-with many actions instead of an invokable class which only handles one action.
+あるいはクラスのコンテナーにエントリーがない場合、Slimはコンテナーのインスタンスをコンストラクターに渡します。 
+1つのアクションのみを処理する呼び出しクラスの代わりに、多くのアクションを持つコントローラーを構築できます。
 
 ```php
 use Psr\Container\ContainerInterface;
@@ -431,7 +426,7 @@ class HomeController
 }
 ```
 
-You can use your controller methods like so.
+下記のようなコントローラーメソッドを使用できます。
 
 ```php
 $app->get('/', \HomeController::class . ':home');
@@ -440,7 +435,7 @@ $app->get('/contact', \HomeController::class . ':contact');
 
 ### Using an invokable class
 
-You do not have to specify a method in your route callable and can just set it to be an invokable class such as:
+ルートcallableでメソッドを指定する必要はなく、次のような呼び出しクラスに設定するだけです。
 
 ```php
 use Psr\Container\ContainerInterface
@@ -461,12 +456,10 @@ class HomeAction
 }
 ```
 
-You can use this class like so.
+このクラスは次のように使用できます。
 
 ```php
 $app->get('/', \HomeAction::class);
 ```
 
-Again, as with controllers, if you register the class name with the container, then you
-can create a factory and inject just the specific dependencies that you require into your
-action class.
+繰り返しますが、コントローラーと同様にコンテナーにクラス名を登録すると、ファクトリーを作成し必要な特定の依存関係のみをアクションクラスに注入できます。
