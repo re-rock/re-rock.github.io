@@ -2,15 +2,17 @@
 title: 404 Not Found Handler
 ---
 
-If your Slim Framework application does not have a route that matches the current HTTP request URI, the application invokes its Not Found handler and returns a `HTTP/1.1 404 Not Found` response to the HTTP client.
+Slim FrameworkアプリケーションにHTTPリクエストURIと一致するルートがない場合、アプリケーションはNot Foundハンドラーを呼び出し、HTTPクライアントに`HTTP/1.1 404 Not Found`レスポンスを返します。
 
 ## Default Not Found handler
 
-Each Slim Framework application has a default Not Found handler. This handler sets the Response status to `404`, it sets the content type to `text/html`, and it writes a simple explanation to the Response body.
+Slim FrameworkアプリケーションのNot FoundハンドラーはPimpleサービスです。 Appオブジェクトをインスタンス化する前に、アプリケーションコンテナーでカスタムPimpleファクトリメソッドを定義することにより、独自のNot Foundハンドラーに置き換えることができます。
+
+各Slim FrameworkアプリケーションにはデフォルトのNot Foundハンドラーがあります。このハンドラーは、レスポンスステータスを`404`に、コンテンツタイプを`text/html`に設定し、レスポンスボディに簡単な説明を書き込みます。
 
 ## Custom Not Found handler
 
-A Slim Framework application's Not Found handler is a Pimple service. You can substitute your own Not Found handler by defining a custom Pimple factory method with the application container *before* you instantiate the App object.
+Slim FrameworkアプリケーションのNot FoundハンドラーはPimpleサービスです。 Appオブジェクトをインスタンス化する前に、アプリケーションコンテナーでカスタムPimpleファクトリメソッドを定義することにより、独自のNot Foundハンドラーに置き換えることができます。
 
 ```php
 $c = new \Slim\Container(); //Create Your container
@@ -30,14 +32,14 @@ $app = new \Slim\App($c);
 //... Your code
 ```
 
-In this example, we define a new `notFoundHandler` factory that returns a callable. The returned callable accepts two arguments:
+この例では、callbleオブジェクトを返す新しい`notFoundHandler`ファクトリーを定義します。返却されるcallableは2つの引数を受け入れます。
 
-1. A `\Psr\Http\Message\ServerRequestInterface` instance
-2. A `\Psr\Http\Message\ResponseInterface` instance
+1. `\Psr\Http\Message\ServerRequestInterface`インスタンス
+2. `\Psr\Http\Message\ResponseInterface`インスタンス
 
-The callable **MUST** return an appropriate `\Psr\Http\Message\ResponseInterface` instance.
+callableは適切な`\Psr\Http\Message\ResponseInterface`インスタンスを返さなければなりません。
 
-If you wish to override the default Not Found handler *after* you instantiate the App object you can `unset` the default handler then overwrite it.
+Appオブジェクトをインスタンス化した後にデフォルトのNot Foundハンドラーをオーバーライドしたい場合は、デフォルトハンドラーの設定を`unset`メソッドで解除してから上書きできます。
 
 ```php
 $c = new \Slim\Container(); //Create Your container
