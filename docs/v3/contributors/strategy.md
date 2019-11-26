@@ -2,4 +2,5 @@
 title: Branching Strategy
 ---
 
-The Slim Framework uses a simple branching strategy. There is a `3.x` branch, and the `3.x` branch `HEAD` reference points to the latest unstable code. Each stable release is denoted with a numeric tag (e.g., `3.0.0`).
+Slim Frameworkはシンプルなブランチ戦略を使用します。 `3.x`ブランチがあり、`3.x`ブランチのHEADは最新の開発用コードを参照します。
+各安定リリースは、数値によるタグ（`3.0.0`など）で示されます。

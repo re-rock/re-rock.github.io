@@ -2,7 +2,7 @@
 title: PHP Error Handler
 ---
 
-Slimフレームワークアプリケーションが[PHP Runtime error](http://php.net/manual/en/class.error.php)（PHP7+）をスローした場合、アプリケーションはPHPエラーハンドラーを呼び出し、HTTPクライアントに`HTTP/1.1 500 Internal Server Error`レスポンスを返します。
+Slimフレームワークアプリケーションが[PHP Runtime error](http://php.net/manual/en/class.error.php)(PHP7+)をスローした場合、アプリケーションはPHPエラーハンドラーを呼び出し、HTTPクライアントに`HTTP/1.1 500 Internal Server Error`レスポンスを返します。
 
 `Warnings`と`Notices`はデフォルトではキャッチされないことに注意してください。それらがが発生したときにアプリケーションでエラーページを表示したい場合は、アプリを起動する前に次のコードを実行する必要があります。ほとんどの場合、これは`index.php`の最上部に追加することを意味します。
 

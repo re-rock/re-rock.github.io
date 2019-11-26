@@ -2,28 +2,28 @@
 title: Contributor Guidelines
 ---
 
-I encourage everyone to contribute to the Slim Framework project. You can find the latest code on GitHub at <https://github.com/slimphp/Slim>.
+Slim Frameworkプロジェクトに貢献することを皆に奨励します。 GitHubの最新のコードは <https://github.com/slimphp/Slim>にあります。
 
 ## Issue Tracker
 
-You can find outstanding issues on the [GitHub Issue Tracker](https://github.com/slimphp/Slim/issues). If you intend to work on a specific issue, leave a comment on the appropriate thread to inform other project contributors.
+[GitHub Issue Tracker](https://github.com/slimphp/Slim/issues)で未解決の問題を見つけることができます。特定の問題に取り組む場合は、適切なスレッドにコメントを残して、他のプロジェクトの貢献者に知らせてください。
 
 ## Pull Requests
 
-* Each pull request should contain only one new feature or improvement.
-* Pull requests should be submitted to the `master` branch
+* 各プルリクエストに含められる新しい機能または改善点は、1つだけにする必要があります。
+* プルリクエストは`master`ブランチに対して行う必要があります
 
 ## Code Style
 
-All pull requests must use the [PSR-2](http://www.php-fig.org/psr/psr-2/) code style.
+すべてのプルリクエストは[PSR-2](http://www.php-fig.org/psr/psr-2/)を適用する必要があります。
 
-* Code MUST use the [PSR-1](http://www.php-fig.org/psr/psr-1/) code style.
-* Code MUST use 4 spaces for indenting, not tabs.
-* There MUST NOT be a hard limit on line length; the soft limit MUST be 120 characters; lines SHOULD be 80 characters or less.
-* There MUST be one blank line after the namespace declaration, and there MUST be one blank line after the block of use declarations.
-* Opening braces for classes MUST go on the next line, and closing braces MUST go on the next line after the body.
-* Opening braces for methods MUST go on the next line, and closing braces MUST go on the next line after the body.
-* Visibility MUST be declared on all properties and methods; abstract and final MUST be declared before the visibility; static MUST be declared after the visibility.
-* Control structure keywords MUST have one space after them; method and function calls MUST NOT.
-* Opening braces for control structures MUST go on the same line, and closing braces MUST go on the next line after the body.
-* Opening parentheses for control structures MUST NOT have a space after them, and closing parentheses for control structures MUST NOT have a space before.
+* コードは[PSR-1](http://www.php-fig.org/psr/psr-1/)コードスタイルを使用する必要があります。 
+* インデントは、タブではなく4つのスペースで行う必要があります。
+* 行の長さに絶対的な制限を設けてはいけません。制限の目安としては120文字以内ですが、80文字以下であることが推奨されています。
+* 名前空間の宣言の後に空白行を1行設ける必要があり、`use`宣言のブロックの後にも空白行を1行空ける必要があります。 
+* クラスの開き中括弧は次の行に記述し、閉じ中括弧は本文の次の行に記述する必要があります。
+* メソッドの開き中括弧は次の行に記述し、閉じ中括弧は本文の次の行に記述する必要があります。
+* すべてのプロパティとメソッドでアクセス修飾子を宣言する必要があります。`abstract`および`final`はアクセス修飾子の前に宣言し、`static`はアクセス修飾子の後に宣言する必要があります。例:`final public static function getInstance(){}`
+* `if`や`foreach`などの制御構造のキーワードには、後ろにスペースが1つ必要です。メソッドおよび関数呼び出しは禁止です。 
+* 制御構造の開き中かっこ`{`は同じ行に記述する必要があり、閉じ中かっこ`}`は本体の次の行にに記述する必要があります。 
+* 制御構造の開き括弧`(`の後にスペースがあってはならず、制御構造の閉じ括弧`)`の前にもスペースがあってはなりません。
