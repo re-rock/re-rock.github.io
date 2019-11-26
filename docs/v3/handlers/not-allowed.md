@@ -34,6 +34,6 @@ $c['notAllowedHandler'] = function ($c) {
 
 1. `\Psr\Http\Message\ServerRequestInterface`インスタンス
 2. `\Psr\Http\Message\ResponseInterface`インスタンス
-3. 許可されるHTTPメソッド名を要素に持つ配列
+3. 許可されたHTTPメソッド名を要素に持つ配列
 
 callableは適切な`\Psr\Http\Message\ResponseInterface`インスタンスを返さなければなりません。
