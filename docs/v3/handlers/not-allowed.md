@@ -2,15 +2,16 @@
 title: 405 Not Allowed Handler
 ---
 
-If your Slim Framework application has a route that matches the current HTTP request URI **but NOT the HTTP request method**, the application invokes its Not Allowed handler and returns a `HTTP/1.1 405 Not Allowed` response to the HTTP client.
+Slimフレームワークアプリケーションで、HTTPリクエストURIには一致するがHTTPリクエストメソッドに一致しないルートがあった場合、アプリケーションはNot Allowedハンドラーを呼び出し、HTTPクライアントに `HTTP/1.1 405 Not Allowed`レスポンスを返します。
 
 ## Default Not Allowed handler
 
-Each Slim Framework application has a default Not Allowed handler. This handler sets the Response status to `405`, it sets the content type to `text/html`, it adds a `Allowed:` HTTP header with a comma-delimited list of allowed HTTP methods, and it writes a simple explanation to the Response body.
+各Slim Frameworkアプリケーションには、デフォルトのNot Allowedハンドラーがあります。このハンドラーは、レスポンスステータスを`405`に、コンテンツタイプを`text/html`に設定し、
+許可されているHTTPメソッドのカンマ区切りのリストとともに`Allowed:`をHTTPヘッダーに追加し、簡単な説明をレスポンスボディに書き込みます。
 
 ## Custom Not Allowed handler
 
-A Slim Framework application's Not Allowed handler is a Pimple service. You can substitute your own Not Allowed handler by defining a custom Pimple factory method with the application container.
+Slim FrameworkアプリケーションのNot Allowedハンドラーは、Pimpleサービスです。アプリケーションコンテナーでカスタムPimpleファクトリメソッドを定義することにより、独自のNot Allowedハンドラーに置き換えることができます。
 
 ```php
 // Create Slim
@@ -27,12 +28,12 @@ $c['notAllowedHandler'] = function ($c) {
 };
 ```
 
-> **N.B** Check out [Not Found](/docs/v3/handlers/not-found.html) docs for pre-slim creation method using a new instance of `\Slim\Container`
+> 備考 `\Slim\Container`の新しいインスタンスを使用したpre-slim作成メソッドは[Not Found](/docs/v3/handlers/not-found.html)ドキュメントで確認してください
 
-In this example, we define a new `notAllowedHandler` factory that returns a callable. The returned callable accepts three arguments:
+この例では、callbleオブジェクトを返す新しい`notAllowedHandler`ファクトリーを定義します。返されるcallableは3つの引数を受け入れます。
 
-1. A `\Psr\Http\Message\ServerRequestInterface` instance
-2. A `\Psr\Http\Message\ResponseInterface` instance
-3. A numeric array of allowed HTTP method names
+1. `\Psr\Http\Message\ServerRequestInterface`インスタンス
+2. `\Psr\Http\Message\ResponseInterface`インスタンス
+3. 許可されるHTTPメソッド名を要素に持つ配列
 
-The callable **MUST** return an appropriate `\Psr\Http\Message\ResponseInterface` instance.
+callableは適切な`\Psr\Http\Message\ResponseInterface`インスタンスを返さなければなりません。
