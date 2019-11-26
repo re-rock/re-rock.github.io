@@ -2,7 +2,7 @@
 title: Using Eloquent with Slim
 ---
 
-You can use a database ORM such as [Eloquent](https://laravel.com/docs/eloquent) to connect your SlimPHP application to a database.
+[Eloquent](https://laravel.com/docs/eloquent)などのデータベースORMを使用して、SlimPHPアプリケーションをデータベースに接続できます。
 
 ## Adding Eloquent to your application
 
@@ -15,7 +15,7 @@ composer require illuminate/database "~5.1"
 
 ## Configure Eloquent
 
-Add the database settings to Slim's settings array.
+データベース設定をSlimの`settings`配列に追加します。
 
 <figure markdown="1">
 ```php
@@ -41,7 +41,7 @@ return [
 <figcaption>Figure 2: Settings array.</figcaption>
 </figure>
 
-In your `dependencies.php` or wherever you add your Service Factories:
+`dependencies.php` またはサービスファクトリーでの追加箇所
 
 <figure markdown="1">
 ```php
@@ -60,6 +60,7 @@ $container['db'] = function ($container) {
 </figure>
 
 ## Pass a controller an instance of your table
+コントローラーにテーブルのインスタンスを渡す
 
 <figure markdown="1">
 ```php
@@ -74,6 +75,7 @@ $container[App\WidgetController::class] = function ($c) {
 </figure>
 
 ## Query the table from a controller
+コントローラーからテーブルを照会する
 
 <figure markdown="1">
 ```php
@@ -119,6 +121,7 @@ class WidgetController
 </figure>
 
 ### Query the table with where
+クエリの`where`条件設定
 
 <figure markdown="1">
 ```php
@@ -130,6 +133,7 @@ $records = $this->table->where('name', 'like', '%foo%')->get();
 </figure>
 
 ### Query the table by id
+`id`指定のクエリ
 
 <figure markdown="1">
 ```php
