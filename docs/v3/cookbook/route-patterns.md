@@ -2,9 +2,11 @@
 title: Trailing / in route patterns
 ---
 
-Slim treats a URL pattern with a trailing slash as different to one without. That is, `/user` and `/user/` are different and so can have different callbacks attached.
+Slimは、末尾のスラッシュがあるURLパターンを、ないパターンとでは異なるものとして扱います。つまり、`/user`と`/user/`は異なるため、異なるコールバックを適用できます。
 
-For GET requests a permanent redirect is fine, but for other request methods like POST or PUT the browser will send the second request with the GET method. To avoid this you simply need to remove the trailing slash and pass the manipulated url to the next middleware.
+GETリクエストの場合、永続的なリダイレクトは問題ありませんが、POSTやPUTなどの他のリクエストメソッドの場合、ブラウザはGETメソッドを使用してそれらのリクエストを送信します。これを回避するには、末尾のスラッシュを削除して、独自に修正したURLを次のミドルウェアに渡すだけです。
+
+末尾が`/`で終わるURLと`/`がないURLとで同様にリダイレクト/リライトしたい場合は、このミドルウェアを追加できます。
 
 If you want to redirect/rewrite all URLs that end in a `/` to the non-trailing `/` equivalent, then you can add this middleware:
 
@@ -32,10 +34,10 @@ $app->add(function (Request $request, Response $response, callable $next) {
 });
 ```
 
-Alternatively, consider [oscarotero/psr7-middlewares' TrailingSlash](//github.com/oscarotero/psr7-middlewares#trailingslash) middleware which also allows you to force a trailing slash to be appended to all URLs:
+または、[oscarotero/psr7-middlewares' TrailingSlash](//github.com/oscarotero/psr7-middlewares#trailingslash)ミドルウェアを検討してください。これにより、すべてのURLに末尾のスラッシュを強制的に追加することもできます。
 
 ```php
 use Psr7Middlewares\Middleware\TrailingSlash;
 
-$app->add(new TrailingSlash(true)); // true adds the trailing slash (false removes it)
+$app->add(new TrailingSlash(true)); // trueで末尾にスラッシュを追加します (falseは逆に削除します)
 ```

@@ -2,17 +2,15 @@
 title: Retrieving IP address
 ---
 
-The best way to retrieve the current IP address of the client is via middleware using
-a component such as [ip-address-middleware](https://github.com/akrabat/ip-address-middleware/).
+クライアントの現在のIPアドレスを取得する最良の方法は、[ip-address-middleware](https://github.com/akrabat/ip-address-middleware/)などのコンポーネントを使用するミドルウェアを使用することです。
 
-This component can be installed via composer:
+このコンポーネントは、composerを介してインストールできます。
 
 ```bash
 composer require akrabat/ip-address-middleware
 ```
 
-To use it, register the middleware with the <code>App</code>, providing a list
-of trusted proxies (e.g. varnish servers) if you are using them.:
+プロキシ環境での使い方は、信頼できるプロキシ（varnishサーバーなど）のリストを、<code>App</code>内のミドルウェアに登録します。
 
 ```php
 $checkProxyHeaders = true;
@@ -26,5 +24,4 @@ $app->get('/', function ($request, $response, $args) {
 });
 ```
 
-The middleware stores the client's IP address in a request attribute, so access
-is via <code>$request->getAttribute('ip_address')</code>.
+ミドルウェアはクライアントのIPアドレスをリクエスト属性に保存するため、アクセスは<code>$request->getAttribute('ip_address')</code>を介して行われます。

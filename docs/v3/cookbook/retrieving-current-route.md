@@ -2,11 +2,12 @@
 title: Retrieving Current Route
 ---
 
-If you ever need to get access to the current route within your application all you have to do is call the request class' `getAttribute` method with an argument of `'route'` and it will return the current route, which is an instance of the `Slim\Route` class.
+アプリケーション内の現在のルートへのアクセスを取得する必要がある場合、`'route'`引数を指定したリクエストクラスの`getAttribute`メソッドを呼び出すだけで、現在のルート（`Slim\Route`クラスのインスタンス）が返されます。
 
-From there you can get the route's name by using `getName()` or get the methods supported by this route via `getMethods()`, etc.
+そこから、`getName()`を使用してルートの名前の取得や、`getMethods()`などで、ルートでサポートされているメソッドを取得できます。
 
- Note: If you need to access the route from within your app middleware you must set `'determineRouteBeforeAppMiddleware'` to true in your configuration otherwise `getAttribute('route')` will return null. Also `getAttribute('route')` will return null on non existent routes.
+注：アプリのミドルウェア内からルートにアクセスする必要がある場合、ミドルウェア構成箇所で`'determineRouteBeforeAppMiddleware'`をtrueに設定する必要があります。
+そうしないと、`getAttribute('route')`はnullを返します。また`getAttribute('route')`は存在しないルートでもnullを返します。
 
 Example:
 ```php
