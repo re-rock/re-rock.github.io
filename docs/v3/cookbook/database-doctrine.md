@@ -2,11 +2,11 @@
 title: Using Doctrine with Slim
 ---
 
-This cookbook entry describes how to integrate from scratch the widely used [Doctrine ORM](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/) into a Slim application.
+このクックブックのでは、広く使用されている[Doctrine ORM](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/)をSlimアプリケーションにゼロから統合する方法を説明しています。
 
 ## Adding Doctrine to your application
 
-The first step is importing the library into the `vendor` directory of your project using [composer](https://getcomposer.org/).
+最初の手順は、[composer](https://getcomposer.org/)を使用してライブラリをプロジェクトの`vendor` ディレクトリにインポートすることです。
 
 <figure markdown="1">
 ```bash
@@ -17,8 +17,7 @@ composer require doctrine/orm:^2
 
 ## Provide database credentials
 
-
-Next, add the Doctrine settings alongside your Slim configuration.
+次に、Slimの構成箇所でDoctrineの設定を追加します。
 
 <figure markdown="1">
 ```php
@@ -34,14 +33,14 @@ return [
         'determineRouteBeforeAppMiddleware' => false,
 
         'doctrine' => [
-            // if true, metadata caching is forcefully disabled
+            // trueの場合、メタデータのキャッシュは強制的に無効になります
             'dev_mode' => true,
 
-            // path where the compiled metadata info will be cached
-            // make sure the path exists and it is writable
+            // コンパイルされたメタデータ情報がキャッシュされるパス
+            // 存在するパスで、書き込み可能であることを確認してください。
             'cache_dir' => APP_ROOT . '/var/doctrine',
 
-            // you should add any other path containing annotated entity classes
+            // エンティティとして設定されたクラスのパスを追加する必要があります
             'metadata_dirs' => [APP_ROOT . '/src/Domain'],
 
             'connection' => [
@@ -62,10 +61,7 @@ return [
 
 ## Define the EntityManager service
 
-Now we define the `EntityManager` service, which is the primary way to interact with Doctrine.
-Here we show how to configure the metadata reader to work with PHP annotations, which is at the
-same time the most used mode and the most tricky to set up. Alternatively, XML or YAML can also
-be used to describe the database schema.
+`EntityManager`サービスを定義します。これは、Doctrineとやり取りするための基本となる方法です。ここでは、メタデータリーダーをPHPアノテーションで動作するように構成する方法を示します。PHPアノテーションは、現時点で最も使用される設定モードであり、セットアップも難しいです。かわりにXMLまたはYAMLを使用してデータベーススキーマを記述することもできます。
 
 <figure markdown="1">
 ```php
@@ -116,9 +112,7 @@ return $container;
 
 ## Create the Doctrine console
 
-To run database migrations, validate class annotations and so on you will use the `doctrine` CLI application that is
-already present at `vendor/bin`. But in order to work, this script needs a [`cli-config.php`](http://docs.doctrine-project.org/en/latest/reference/configuration.html#setting-up-the-commandline-tool)
-file at the root of the project telling it how to find the `EntityManager` we just set up:
+データベースの移行を実行するには、クラスアノテーションを検証するなどして、 `vendor/bin`に存在する `doctrine`CLIアプリケーションを使用します。ただしこのスクリプトを機能させるには、セットアップした`EntityManager`の場所が設定されたプロジェクトルートにある[`cli-config.php`](http://docs.doctrine-project.org/en/latest/reference/configuration.html#setting-up-the-commandline-tool)ファイルが必要です。
 
 <figure markdown="1">
 ```php
@@ -140,8 +134,7 @@ ConsoleRunner::run(
 <figcaption>Figure 4: Enabling Doctrine's console app.</figcaption>
 </figure>
 
-Take a moment to verify that the console app works. When properly configured, its output will look more or less like this:
-
+コンソールアプリが機能することを確認してください。適切に設定されていれば出力は次のようになります。
 
 <figure markdown="1">
 ```bash
@@ -187,11 +180,11 @@ Available commands:
 <figcaption>Figure 5: Test-driving Docrine's console application.</figcaption>
 </figure>
 
-If it works, you can now create your database and load the schema by running `php vendor/bin/doctrine orm:schema-tool:update`
+設定が終わり問題なく動作する場合は、データベースを作成し、`php vendor/bin/doctrine orm:schema-tool:update`を実行してスキーマをロードできます。
 
 ## Using the EntityManager in our own code
 
-Congratulations! Now you can already manage your database from the command line, and use the `EntityManager` wherever you need it.
+おめでとうございます！これで、コマンドラインからデータベースを管理でき、`EntityManager`を必要な場所で使用できます。
 
 <figure markdown="1">
 ```php
@@ -231,4 +224,4 @@ class UserRepository
 ## Other resources
 
 - The [official Doctrine ORM documentation](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/).
-- [A full example](https://github.com/1ma/Slim-Doctrine-Demo) of the above configuration in a small, functioning project.
+- 上記の設定構成を使用した、[小規模なプロジェクト](https://github.com/1ma/Slim-Doctrine-Demo)を作成する
