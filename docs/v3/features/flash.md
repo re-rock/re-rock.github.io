@@ -4,50 +4,50 @@ title: Flash Messages
 
 ## Install
 
-Via Composer
+Composerでインストールします。
 
 ``` bash
 $ composer require slim/flash
 ```
 
-Requires Slim 3.0.0 or newer.
+利用するにはSlim 3.0.0以上である必要があります。
 
 ## Usage
 
 ```php
-// Start PHP session
-session_start(); //by default requires session storage
+// PHPセッション開始
+session_start(); //デフォルトではセッションストレージが必要です
 
 $app = new \Slim\App();
 
-// Fetch DI Container
+// DIコンテナーの取得
 $container = $app->getContainer();
 
-// Register provider
+// プロバイダーを登録
 $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
 
 $app->get('/foo', function ($req, $res, $args) {
-    // Set flash message for next request
+    // 次のリクエストのフラッシュメッセージを設定する
     $this->flash->addMessage('Test', 'This is a message');
 
-    // Redirect
+    // リダイレクト
     return $res->withStatus(302)->withHeader('Location', '/bar');
 });
 
 $app->get('/bar', function ($req, $res, $args) {
-    // Add message to be used in current request
+    // 現在のリクエストで使用されるメッセージを追加します
     $this->flash->addMessageNow('Test', 'This is another message');
 
-    // Get flash messages from previous request
+    // 前のリクエストからフラッシュメッセージを取得する
     $messages = $this->flash->getMessages();
 
-    // Returns both flash messages
+    // 両方のフラッシュメッセージを返します
     print_r($messages);
 });
 
 $app->run();
 ```
 
-Please note that a message could be a string, object or array. Please check what your storage can handle.
+メッセージは文字列、オブジェクト、または配列である可能性があることに注意してください。ストレージが処理できるものを確認してください。

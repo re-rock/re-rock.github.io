@@ -2,14 +2,13 @@
 title: HTTP Caching
 ---
 
-Slim 3 uses the optional standalone [slimphp/Slim-HttpCache](https://github.com/slimphp/Slim-HttpCache) PHP component
-for HTTP caching. You can use this component to create and return responses that
-contain `Cache`, `Expires`, `ETag`, and `Last-Modified` headers that control
-when and how long application output is retained by client-side caches. You may have to set your php.ini setting "session.cache_limiter" to an empty string in order to get this working without interferences.
+Slim3は、HTTPキャッシングにオプションのスタンドアロンPHPコンポーネントの[slimphp/Slim-HttpCache](https://github.com/slimphp/Slim-HttpCache)を使用します。
+このコンポーネントを使用して、アプリケーションのアウトプットがクライアント側キャッシュに保持される時期と期間を制御する`Cache`、`Expires`、`ETag`、そして `Last-Modified`ヘッダーを含むレスポンスを作成して返すことができます。
+支障なくこの機能を使用するには、php.iniの設定で"session.cache_limiter"を空の文字列で設定する必要があります。
 
 ## Installation
 
-Execute this bash command from your project's root directory:
+プロジェクトのルートディレクトリから次のbashコマンドを実行します。
 
 ```bash
 composer require slim/http-cache
@@ -17,8 +16,7 @@ composer require slim/http-cache
 
 ## Usage
 
-The `slimphp/Slim-HttpCache` component contains a service provider and an application
-middleware. You should add both to your application like this:
+`slimphp/Slim-HttpCache`コンポーネントには、サービスプロバイダーとアプリケーションミドルウェアが含まれています。次のように両方をアプリケーションに追加する必要があります。
 
 ```php
 // Register service provider with the container
@@ -39,9 +37,8 @@ $app->run();
 
 ## ETag
 
-Use the service provider's `withEtag()` method to create a Response object
-with the desired `ETag` header. This method accepts a PSR7 response object,
-and it returns a cloned PSR7 response with the new HTTP header.
+サービスプロバイダーの`withEtag()`メソッドを使用して、希望するの`ETag`ヘッダーを持つResponseオブジェクトを作成します。
+このメソッドはPSR7レスポンスオブジェクトを受け入れ、新しいHTTPヘッダーを含むクローン化されたPSR7レスポンスを返します。
 
 ```php
 $app->get('/foo', function ($req, $res, $args) {
@@ -53,9 +50,8 @@ $app->get('/foo', function ($req, $res, $args) {
 
 ## Expires
 
-Use the service provider's `withExpires()` method to create a Response object
-with the desired `Expires` header. This method accepts a PSR7 response object,
-and it returns a cloned PSR7 response with the new HTTP header.
+サービスプロバイダーの`withExpires()`メソッドを使用して、希望するの`Expires`ヘッダーを持つResponseオブジェクトを作成します。
+このメソッドはPSR7レスポンスオブジェクトを受け入れ、新しいHTTPヘッダーを含むクローン化されたPSR7レスポンスを返します。
 
 ```php
 $app->get('/bar',function ($req, $res, $args) {
@@ -67,9 +63,8 @@ $app->get('/bar',function ($req, $res, $args) {
 
 ## Last-Modified
 
-Use the service provider's `withLastModified()` method to create a Response object
-with the desired `Last-Modified` header. This method accepts a PSR7 response object,
-and it returns a cloned PSR7 response with the new HTTP header.
+サービスプロバイダーの`withLastModified()`メソッドを使用して、目的の`Last-Modified`ヘッダーを持つResponseオブジェクトを作成します。
+このメソッドはPSR7レスポンスオブジェクトを受け入れ、新しいHTTPヘッダーを含むクローン化されたPSR7レスポンスを返します。
 
 ```php
 //Example route with LastModified
