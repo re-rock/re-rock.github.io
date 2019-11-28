@@ -177,5 +177,3 @@ For more information on how to use Atlas to its greatest extent, be sure to
 - [ローレベルのダイレクトクエリ](http://atlasphp.io/cassini/orm/direct.html)
 
 - カスタムマッパーメソッド、シングルテーブルの継承、多対多のリレーション、自動検証など[その他のトピック](http://atlasphp.io/cassini/orm/other.html)
-
-エンジョイ!

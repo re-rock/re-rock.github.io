@@ -2,21 +2,18 @@
 title: Templates
 ---
 
-Slim does not have a view layer like traditional MVC frameworks. Instead,
-Slim's "view" _is the HTTP response_. Each Slim application route is responsible
-for preparing and returning an appropriate PSR-7 response object.
+Slimには、従来のMVCフレームワークのようなビューレイヤーがありません。代わりに、Slimの"ビュー"はHTTPレスポンスです。
+各Slimアプリケーションルートは、適切なPSR-7レスポンスオブジェクトの準備と、それを返す役割を果たします。
 
-> Slim's "view" is the HTTP response.
+> Slimの"ビュー"はHTTPレスポンス.
 
-That being said, the Slim project provides the [Twig-View](#the-slimtwig-view-component) and
-[PHP-View](#the-slimphp-view-component) components to help you render templates to a PSR7
-Response object.
+そうは言っても、SlimプロジェクトはテンプレートをPSR7 Responseオブジェクトをレンダリングするのに役立つ
+[Twig-View](#the-slimtwig-view-component)および[PHP-View](#the-slimphp-view-component)コンポーネントを提供します。
 
 ## The slim/twig-view component
 
-The [Twig-View][twigview] PHP component helps you render [Twig][twig]
-templates in your application. This component is available on Packagist, and
-it's easy to install with Composer like this:
+[Twig-View][twigview]PHPコンポーネントは、アプリケーションで[Twig][twig]テンプレートをレンダリングするのに役立ちます。
+このコンポーネントはPackagistで利用でき、Composerを使用すると次のように簡単にインストールできます。
 
 [twigview]: https://github.com/slimphp/Twig-View
 [twig]: http://twig.sensiolabs.org/
@@ -28,25 +25,24 @@ composer require slim/twig-view
 <figcaption>Figure 1: Install slim/twig-view component.</figcaption>
 </figure>
 
-Next, you need to register the component as a service on the Slim app's
-container like this:
+次に、下記のようにSlimアプリのコンテナーにサービスとしてコンポーネントを登録する必要があります。
 
 <figure markdown="1">
 ```php
 <?php
-// Create app
+// アプリケーション作成
 $app = new \Slim\App();
 
-// Get container
+// コンテナー取得
 $container = $app->getContainer();
 
-// Register component on container
+// コンテナーをコンポーネントに登録
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('path/to/templates', [
         'cache' => 'path/to/cache'
     ]);
 
-    // Instantiate and add Slim specific extension
+    // Slimの拡張機能のインスタンス化と追加
     $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));
     $view->addExtension(new \Slim\Views\TwigExtension($router, $uri));
@@ -57,10 +53,10 @@ $container['view'] = function ($container) {
 <figcaption>Figure 2: Register slim/twig-view component with container.</figcaption>
 </figure>
 
-Note : "cache" could be set to false to disable it, see also 'auto_reload' option, useful in development environment. For more information, see [Twig environment options](http://twig.sensiolabs.org/doc/2.x/api.html#environment-options)
+注："cache"をfalseに設定して無効にすることができます。開発環境で役立つ"auto_reload"オプションも参照してください。
+詳細は[Twig environment options](http://twig.sensiolabs.org/doc/2.x/api.html#environment-options)で参照できます。
 
-Now you can use the `slim/twig-view` component service inside an app route
-to render a template and write it to a PSR-7 Response object like this:
+これでアプリルート内で`slim/twig-view`コンポーネントサービスを使用して、次のようにテンプレートをレンダリングし、PSR-7 Responseオブジェクトに書き込むことができます。
 
 <figure markdown="1">
 ```php
@@ -77,26 +73,19 @@ $app->run();
 <figcaption>Figure 3: Render template with slim/twig-view container service.</figcaption>
 </figure>
 
-In this example, `$this->view` invoked inside the route callback is a reference
-to the `\Slim\Views\Twig` instance returned by the `view` container service.
-The `\Slim\Views\Twig` instance's `render()` method accepts a PSR-7 Response
-object as its first argument, the Twig template path as its second argument,
-and an array of template variables as its final argument. The `render()` method
-returns a new PSR-7 Response object whose body is the rendered Twig template.
+この例では、ルートコールバック内で呼び出される$`$this->view`は、`view`コンテナサービスによって返される`\Slim\Views\Twig`インスタンスへの参照です。
+`\Slim\Views\Twig`インスタンスの`render()`メソッドは、PSR-7 Responseオブジェクトを最初の引数として、Twigテンプレートパスを2番目の引数として、テンプレート変数の配列を最後の引数として受け入れます。`render()`メソッドは、ボディがたTwigテンプレートにレンダリングされた新しいPSR-7 Responseオブジェクトを返します。
 
 ### The path_for() method
 
-The `slim/twig-view` component exposes a custom `path_for()` function
-to your Twig templates. You can use this function to generate complete
-URLs to any named route in your Slim application. The `path_for()`
-function accepts two arguments:
+`slim/twig-view`コンポーネントは、カスタムの`path_for()`メソッドをTwigテンプレートに公開します。
+この関数を使用して、Slimアプリケーションの任意の名前付きルートへのURLを生成できます。`path_for()`メソッドは2つの引数を受け入れます。
 
-1. A route name
-2. A hash of route placeholder names and replacement values
+1. ルート名
+2. ルートプレースホルダー名とその置換値のハッシュ値
 
-The second argument's keys should correspond to the selected route's pattern
-placeholders. This is an example Twig template that draws a link URL
-for the "profile" named route shown in the example Slim application above.
+2番目の引数のキーは、選択されたルートのパターンプレースホルダーに対応する必要があります。
+これは、上記のSlimアプリケーションの例に示されている"profile"という名前のルートのリンクURLを描画するTwigテンプレートの例です。
 
 ```html
 {% raw %}
@@ -112,11 +101,9 @@ for the "profile" named route shown in the example Slim application above.
 ```
 
 ### Extending twig
-Twig can be extended with additional filters, functions, global variables, tags
-and more.
+Twigは、追加フィルター、メソッド、グローバル変数、タグなどで拡張できます。
 
-To register a filter, add the following after registering the view component
-with the container:
+フィルターを登録するには、コンテナーにビューコンポーネントを登録した後に以下を追加します。
 
 <figure markdown="1">
 ```php
@@ -129,7 +116,7 @@ $container->get('view')->getEnvironment()->addFilter($filter);
 <figcaption>Figure 4: Registering a filter with Twig</figcaption>
 </figure>
 
-This adds a "rot13" filter to twig:
+これは、twigに"rot13"フィルターを追加します
 
 ```html
 {% raw %}
@@ -138,8 +125,7 @@ This adds a "rot13" filter to twig:
 {% endraw %}
 ```
 
-To register a function, add the following after registering the view component
-with the container:
+メソッドを登録するには、コンテナーにビューコンポーネントを登録した後に次を追加します。
 
 <figure markdown="1">
 ```php
@@ -152,7 +138,7 @@ $container->get('view')->getEnvironment()->addFunction($function);
 <figcaption>Figure 5: Registering a function with Twig</figcaption>
 </figure>
 
-This adds a "shortest" function to twig:
+これは、twigに"shortest"メソッドを追加します
 
 ```html
 {% raw %}
@@ -161,14 +147,12 @@ This adds a "shortest" function to twig:
 {% endraw %}
 ```
 
-The [twig documentation](https://twig.symfony.com/doc/2.x/advanced.html#creating-an-extension)
-contains more details on Twig extensions.
+[twig documentation](https://twig.symfony.com/doc/2.x/advanced.html#creating-an-extension)で、Twig拡張の詳細を参照できます。
 
 ## The slim/php-view component
 
-The [PHP-View][phpview] PHP component helps you render PHP templates.
-This component is available on Packagist and can be installed using
-Composer like this:
+[PHP-View][phpview]PHPコンポーネントは、PHPテンプレートのレンダリングに役立ちます。
+このコンポーネントはPackagistで利用可能で、次のようにComposerを使用してインストールできます。
 
 [phpview]: https://github.com/slimphp/PHP-View
 
@@ -179,7 +163,7 @@ composer require slim/php-view
 <figcaption>Figure 6: Install slim/php-view component.</figcaption>
 </figure>
 
-To register this component as a service on Slim App's container, do this:
+このコンポーネントをSlimアプリのコンテナーにサービスとして登録するには、次のようにします。
 
 <figure markdown="1">
 ```php
@@ -198,7 +182,7 @@ $container['view'] = function ($container) {
 <figcaption>Figure 7: Register slim/php-view component with container.</figcaption>
 </figure>
 
-Use the view component to render a PHP view like this:
+ビューコンポーネントを使用して、次のようにPHPビューをレンダリングします。
 
 <figure markdown="1">
 ```php
@@ -218,6 +202,5 @@ $app->run();
 
 ## Other template systems
 
-You are not limited to the `Twig-View` and `PHP-View` components. You
-can use any PHP template system provided that you ultimately write the rendered
-template output to the PSR-7 Response object's body.
+`Twig-View`および`PHP-View`コンポーネントに制限されません。
+最終的にレンダリングされたテンプレート出力をPSR-7 Responseオブジェクトのボディに書き込むことを条件に、任意のPHPテンプレートシステムを使用できます。

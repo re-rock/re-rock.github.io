@@ -108,4 +108,4 @@ $app->group('/api', function () {
 $app->run();
 ```
 
-この記事を提案してくれた[tuupola](https://github.com/tuupola) に感謝します！
+この記事を提供してくれた[tuupola](https://github.com/tuupola) に感謝します！
