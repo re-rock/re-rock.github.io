@@ -2,15 +2,17 @@
 title: Action-Domain-Responder with Slim
 ---
 
-In this post, I'll show how to refactor the Slim tutorial application to more closely follow the [Action-Domain-Responder](http://pmjones.io/adr) pattern.
+ここでは、Slimチュートリアルアプリケーションをリファクタリングして、[Action-Domain-Responder](http://pmjones.io/adr)パターンにさらに忠実に従う方法を紹介します。
 
-One nice thing about Slim (and most other [HTTP user interface frameworks](http://paul-m-jones.com/archives/6627)) is that they are already "action" oriented. That is, their routers do not presume a controller class with many action methods. Instead, they presume an action closure or a single-action invokable class.
+Slim（および他のほとんどの[HTTP user interface frameworks](http://paul-m-jones.com/archives/6627)）の良い点の1つは、それらが既に"action"指向であることです。
+つまり、ルーターは多くのアクションメソッドを持つコントローラークラスを想定していません。代わりに、アクションクロージャまたはシングルアクション呼び出しクラスを想定しています。
 
-So the Action part of Action-Domain-Responder already exists for Slim. All that is needed is to pull extraneous bits out of the Actions, to more clearly separate the Action behaviors from Domain and the Responder behaviors.
+そのため、SlimにはAction-Domain-ResponderのAction部分が既に存在します。必要なのは、アクションから無関係な処理を排除して、アクションの動作をドメインおよびレスポンダーの動作からより明確に分離することです。
 
 ## Extract Domain
 
-Let's begin by extracting the Domain logic. In the original tutorial, the Actions use two data-source mappers directly, and embed some business logic as well. We can create a Service Layer class called `TicketService` and move those operations from the Actions into the Domain. Doing so gives us this class:
+ドメインロジックを抽出することから始めましょう。元のチュートリアルでは、アクションは2つのデータソースマッパーを直接使用し、いくつかのビジネスロジックも埋め込みます。
+`TicketService`というサービス層クラスを作成し、それらの操作をアクションからドメインに移動できます。そうすると、このクラスを取得できます。
 
 ```php
 class TicketService
@@ -59,7 +61,7 @@ class TicketService
 }
 ```
 
-We create a container object for it in `index.php` like so:
+`index.php`で次のようにコンテナオブジェクトを作成します。
 
 ```php
 $container['ticket_service'] = function ($c) {
@@ -70,7 +72,7 @@ $container['ticket_service'] = function ($c) {
 };
 ```
 
-And now the Actions can use the `TicketService` instead of performing domain logic directly:
+こうするとアクションはドメインロジックを直接実行する代わりに`TicketService`を使用できます。
 
 ```php
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -112,7 +114,7 @@ $app->get('/ticket/{id}', function (Request $request, Response $response, $args)
 })->setName('ticket-detail');
 ```
 
-One benefit here is that we can now test the domain activities separately from the actions. We can begin to do something more like integration testing, even unit testing, instead of end-to-end system testing.
+ここでの利点の1つは、アクションとは分離してドメインアクティビティをテストできることです。エンドツーエンドのシステムテストではなく、統合テスト、単体テストなどを開始できます。
 
 ## Extract Responder
 
