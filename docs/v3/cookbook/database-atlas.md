@@ -2,14 +2,11 @@
 title: Using Atlas 3 with Slim
 ---
 
-This cookbook entry describes how to use the [Atlas 3](http://atlasphp.io) ORM
-and its command-line tooling with Slim.
-
+このクックブックエントリでは、[Atlas 3](http://atlasphp.io)ORMとそのコマンドラインツールをSlimで使用する方法について説明します。
 
 ## Installation
 
-Install Atlas using Composer. The ORM and CLI packages are delivered separately,
-since you are likely to need the command line tooling only in development:
+Composerを使用してAtlasをインストールします。 ORMパッケージとCLIパッケージは別々に提供されます。これは、コマンドラインツールは開発時にのみ必要になる可能性が高いためです。
 
 ```
 composer require atlas/orm ~3.0
@@ -18,8 +15,8 @@ composer require --dev atlas/cli ~2.0
 
 > **Note:**
 >
-> If you are using PHPStorm, you may wish to copy the IDE meta file to your
-> project to get full autocompletion on Atlas classes:
+> PHPStormを使用している場合は、IDEメタファイルをプロジェクトにコピーして、
+> Atlasクラスのフルオートコンプリートを取得できます。
 >
 > ```
 > cp ./vendor/atlas/orm/resources/phpstorm.meta.php ./.phpstorm.meta.php
@@ -27,8 +24,7 @@ composer require --dev atlas/cli ~2.0
 
 ## Settings and Configuration
 
-Now you need to add some database connection settings to your configuration.
-You can add them under any array key you like; the following example uses
+次に、いくつかのデータベース接続設定を構成に追加する必要があります。任意の配列キーに追加できます。次の例では、['settings'] ['atlas']を使用しています。
 `['settings']['atlas']`:
 
 ```php
@@ -51,37 +47,29 @@ return [
 ];
 ```
 
-The `pdo` elements are used as arguments for your
-[PDO connection](https://secure.php.net/manual/en/pdo.construct.php).
+`pdo`要素は、[PDO connection](https://secure.php.net/manual/en/pdo.construct.php)の引数として使用されます。
 
-The `namespace` and `directory` elements specify the namespace for your Atlas
-data source classes, and the directory where they will be saved by the skeleton
-generator. Your `composer.json` will need have a PSR autoloader entry for these;
-the above example corresponds to the Slim
-[tutorial application](https://github.com/slimphp/Tutorial-First-Application).
+`namespace`と`directory`要素は、Atlasデータソースクラスの名前空間と、スケルトンジェネレーターによって保存されるディレクトリを指定します。
+`composer.json`には、これらのPSRオートローダーエントリが必要です。上記の例は、Slim [tutorial application](https://github.com/slimphp/Tutorial-First-Application)に対応しています。
 
 ## Generating Skeleton Classes
 
-Now you can generate your skeleton data source classes with the Atlas CLI
-tooling. First, create the target directory, then issue the skeleton command:
+これで、Atlas CLIツールを使用してスケルトンデータソースクラスを生成できます。
+まず、ターゲットディレクトリを作成し、次にスケルトンコマンドを発行します。
 
 ```
 mkdir -p ./src/classes/DataSource
 php ./vendor/bin/atlas-skeleton.php ./config/settings.php settings.atlas
 ```
 
-The first argument to `atlas-skeleton` is the path to your Slim config file. The
-second argument is a dot-separated list of the keys leading to the Atlas array
-within the settings.
+最初の引数の`atlas-skeleton`は、Slim設定ファイルへのパスです。 2番目の引数は、settings内のAtlas配列のキーとなるドット区切りリストです。
 
-With that command, Atlas will examine your database and generate a series of
-classes and traits for each table in the schema. You can see the files generated
-for each table [here](http://atlasphp.io/cassini/skeleton/usage.html#1-2-1-2).
+そのコマンドを使用して、Atlasはデータベースを調べ、スキーマ内の各テーブルの一連のクラスと特性を生成します。
+各テーブルに対して生成されたファイルは[こちら](http://atlasphp.io/cassini/skeleton/usage.html#1-2-1-2)で確認できます。
 
 ## Container Service Definition
 
-With the data mapper classes in place, you can now add the Atlas ORM as a
-service in the Slim container:
+データマッパークラスを配置したら、Atlas ORMをスリムコンテナーのサービスとして追加できるようになります。
 
 ```php
 <?php
@@ -100,21 +88,20 @@ $container['atlas'] = function ($container) {
 };
 ```
 
-This uses the AtlasBuilder class to create and return a new ORM instance, with
-the PDO connection arguments from your settings configuration.
+これは、AtlasBuilderクラスを使用して、設定構成からのPDOコネクション引数を使用して、新しいORMインスタンスを作成して返します。
+
+このサービス定義は、特定のクラス構成のファクトリとしてコンテナを使用するようにAtlasに設定します。
+コンテナ内でAtlasのTableEventまたはMapperEventクラスのサービス定義がある場合、Atlasはコンテナを使用してそれらを構築します。
 
 > **Note:**
 >
-> This service definition tells Atlas to use the Container itself as a factory
-> for certain class constructions. If you have Atlas TableEvent or MapperEvent
-> classes defined as services in the Container, Atlas will use the Container
-> to build them for you.
+> このサービス定義は、特定のクラス構成のファクトリとしてコンテナを使用するようにAtlasに設定します。
+> コンテナ内でAtlasのTableEventまたはMapperEventクラスのサービス定義がある場合、Atlasはコンテナを使用してそれらを構築します。
 
 ## Using the ORM
 
-At this point, you can use the full power of the Atlas ORM in your action code.
-The following examples are adapted from the
-[tutorial application](https://github.com/slimphp/Tutorial-First-Application):
+この時点で、あなたの処理コードでAtlas ORMの全機能を使用できます。
+次の例は、[tutorial application](https://github.com/slimphp/Tutorial-First-Application)からの抜粋です。
 
 ```php
 <?php
@@ -168,28 +155,27 @@ $app->post('/ticket/new', function (Request $request, Response $response) {
 });
 ```
 
-That's it!
+以上になります。
+
+Atlasを最大限に活用する方法の詳細については、[公式ドキュメント](http://atlasphp.io/cassini/orm/)を必ずお読みください。
 
 For more information on how to use Atlas to its greatest extent, be sure to
 [read the official documentation](http://atlasphp.io/cassini/orm/):
 
-- [Defining relationships between mappers](http://atlasphp.io/cassini/orm/relationships.html)
+- [マッパー間のリレーション定義](http://atlasphp.io/cassini/orm/relationships.html)
 
-- [Fetching Records and RecordSets](http://atlasphp.io/cassini/orm/reading.html)
+- [レコードとレコードセットの取得](http://atlasphp.io/cassini/orm/reading.html)
 
-- Working with [Records](http://atlasphp.io/cassini/orm/records.html)
-  and [RecordSets](http://atlasphp.io/cassini/orm/record-sets.html)
+- [レコード](http://atlasphp.io/cassini/orm/records.html)と[レコードセット](http://atlasphp.io/cassini/orm/record-sets.html)の使用方法
 
-- [Managing transactions](http://atlasphp.io/cassini/orm/transactions.html)
+- [トランザクション管理](http://atlasphp.io/cassini/orm/transactions.html)
 
-- [Adding behaviors](http://atlasphp.io/cassini/orm/behavior.html)
+- [ビヘイビアの追加](http://atlasphp.io/cassini/orm/behavior.html)
 
-- [Handling events](http://atlasphp.io/cassini/orm/events.html)
+- [イベントハンドラー](http://atlasphp.io/cassini/orm/events.html)
 
-- [Direct lower-level queries](http://atlasphp.io/cassini/orm/direct.html)
+- [ローレベルのダイレクトクエリ](http://atlasphp.io/cassini/orm/direct.html)
 
-- [Other topics](http://atlasphp.io/cassini/orm/other.html) such as custom mapper
-  methods, single table inheritance, many-to-many relationships, and automated
-  validation
+- カスタムマッパーメソッド、シングルテーブルの継承、多対多のリレーション、自動検証など[その他のトピック](http://atlasphp.io/cassini/orm/other.html)
 
-Enjoy!
+エンジョイ!

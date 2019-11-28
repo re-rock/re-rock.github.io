@@ -224,4 +224,4 @@ class UserRepository
 ## Other resources
 
 - The [official Doctrine ORM documentation](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/).
-- 上記の設定構成を使用した、[小規模なプロジェクト](https://github.com/1ma/Slim-Doctrine-Demo)を作成例
+- 上記の設定構成を使用した、[小規模なプロジェクト](https://github.com/1ma/Slim-Doctrine-Demo)の作成例
