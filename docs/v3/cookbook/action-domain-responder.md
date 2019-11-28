@@ -118,9 +118,10 @@ $app->get('/ticket/{id}', function (Request $request, Response $response, $args)
 
 ## Extract Responder
 
-In the case of the tutorial application, the presentation work is so straightforward as to not require a separate Responder for each action. A relaxed variation of a Responder layer is perfectly suitable in this simple case, one where each Action uses a different method on a common Responder.
+このチュートリアルアプリケーションの場合、プレゼンテーションの処理は非常にシンプルなので、各アクションごとに個別のレスポンダーは必要としません。
+このようなシンプルなケースでは、各アクションが共通のレスポンダーで異なるメソッドを使用する、規制のゆるいレスポンダーレイヤーのバリエーションが最適です。
 
-Extracting the presentation work to a separate Responder, so that response-building is completely removed from the Action, looks like this:
+以下ように、プレゼンテーションの作業を別のレスポンダーに抽出し、レスポンスの構築がアクションから完全に排除されます。
 
 ```php
 use Psr\Http\Message\ResponseInterface as Response;
@@ -169,7 +170,7 @@ class TicketResponder
 }
 ```
 
-We can then add the `TicketResponder` object to the container in `index.php`:
+その後、`index.php`で`TicketResponder`オブジェクトをコンテナーに追加できます。
 
 ```php
 $container['ticket_responder'] = function ($c) {
@@ -177,7 +178,7 @@ $container['ticket_responder'] = function ($c) {
 };
 ```
 
-And finally we can refer to the Responder, instead of just the template system, in the Actions:
+最後には、テンプレートシステムの代わりにアクションでレススポンダーを参照できるようになります。
 
 ```php
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -212,22 +213,25 @@ $app->get('/ticket/{id}', function (Request $request, Response $response, $args)
 })->setName('ticket-detail');
 ```
 
-Now we can test the response-building work separately from the domain work.
+これで、ドメイン作業とは分離してレスポンス処理をテストできます。
 
-Some notes:
+メモ:
 
-Putting all the response-building in a single class with multiple methods, especially for simple cases like this tutorial, is fine to start with. For ADR, is not strictly necessary to have one Responder for each Action. What *is* necessary is to extract the response-building concerns out of the Action.
+とくにこのチュートリアルのようなシンプルなケースでは、すべてのレスポンス処理を複数のメソッドを持つ単一のクラスに配置することから始めてください。
+ADRの場合、各アクションごとにそれぞれレスポンダーを用意する必要はありません。必要なのは、アクションからレスポンス処理の問題を排除することです。
 
-But as the presentation logic complexity increases (content-type negotiation? status headers? etc.), and as dependencies become different for each kind of response being built, you will want to have a Responder for each Action.
+しかし、プレゼンテーションロジックの複雑さが増すと（コンテンツタイプネゴシエーション？ステータスヘッダー？など）、構築されたレスポンスの種類ごとに依存関係が異なるため、アクションごとにレスポンダーが必要になります。
 
-Alternatively, you might stick with a single Responder, but reduce its interface to a single method. In that case, you may find that using a [Domain Payload](http://paul-m-jones.com/archives/6043) (instead of "naked" domain results) has some significant benefits.
+またはレスポンダーは1つだけで、かつその単一のメソッドのインターフェイスを減らしたいとします。その場合は[Domain Payload](http://paul-m-jones.com/archives/6043)を通常のドメインリザルトに代わって使用するといくつかの大きな恩恵を受けられます。
 
 ## Conclusion
 
-At this point, the Slim tutorial application has been converted to ADR. We have separated the domain logic to a `TicketService`, and the presentation logic to a `TicketResponder`. And it's easy to see how each Action does pretty much the same thing:
+この時点で、SlimチュートリアルアプリケーションはADRに変換されました。ドメインロジックを`TicketService`に、プレゼンテーションロジックを`TicketResponder`分離しました。
+そして、各アクションがどのように同等の処理を行うか簡単に確認できます。
 
-- Marshals input and passes it into the Domain
-- Gets back a result from the Domain and passes it to the Responder
-- Invokes the Responder so it can build and return the Response
+- インプットを整理し、それをドメインに渡します
+- ドメインから結果を取得し、それをレスポンダーに渡します
+- レスポンダーを呼び出して、レスポンスを作成して返すことができます
 
-Now, for a simple case like this, using ADR (or even webbishy MVC) might seem like overkill. But simple cases become complex quickly, and this simple case shows how the ADR separation-of-concerns can be applied as a Slim-based application increases in complexity.
+さて、このような単純なケースで、ADR（またはwebbishy MVC）を使用するのはやり過ぎのように思えるかもしれません。
+しかし、シンプルなケースはすぐに複雑になり、このケースはSlimベースのアプリケーションの複雑さが増すにつれて、ADRの"関心の分離"をどのように適用できるかを示しています。
