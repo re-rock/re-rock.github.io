@@ -4,22 +4,21 @@ title: Setting up CORS
 
 CORS - Cross origin resource sharing
 
-A good flowchart for implementing CORS support Reference:
-
+CORSサポートを実装するための最適なフローチャート
 [CORS server flowchart](http://www.html5rocks.com/static/images/cors_server_flowchart.png)
 
-You can test your CORS Support here: http://www.test-cors.org/
+ここでCORSサポートをテストできます : http://www.test-cors.org/
 
-You can read the specification here: https://www.w3.org/TR/cors/
+仕様はこちらで読むことができます : https://www.w3.org/TR/cors/
 
 
 ## The simple solution
 
-For simple CORS requests, the server only needs to add the following header to its response:
+シンプルなCORSリクエストの場合、サーバーはそのレスポンスに次のヘッダーを追加するだけです。
 
 `Access-Control-Allow-Origin: <domain>, ... | *`
 
-The following code should enable lazy CORS.
+次のコードは、lazy CORSを有効にする必要があります。
 
 ```php
 $app->options('/{routes:.+}', function ($request, $response, $args) {
@@ -35,11 +34,11 @@ $app->add(function ($req, $res, $next) {
 });
 ```
 
-Add the following route as the last route:
+最後のルートとして下記のルート追加します。
 
 ```php
-// Catch-all route to serve a 404 Not Found page if none of the routes match
-// NOTE: make sure this route is defined last
+// 一致するルートがない場合、すべてのルートが404 Not Foundページに誘導されます
+// 注：このルートは最後に定義することを確認してください
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
     return $handler($req, $res);
@@ -49,23 +48,21 @@ $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($r
 
 ## Access-Control-Allow-Methods
 
-The following middleware can be used to query Slim's router and get a list of methods a particular pattern implements.
-
-Here is a complete example application:
+次のミドルウェアを使用して、Slimのルーターへクエリを行い、特定のパターンが実装するメソッドのリストを取得できます。
+下記はサンプルアプリケーションです
 
 ```php
 require __DIR__ . "/vendor/autoload.php";
 
-// This Slim setting is required for the middleware to work
+// このSlimの設定は、ミドルウェアを機能させるために必要です
 $app = new Slim\App([
     "settings"  => [
         "determineRouteBeforeAppMiddleware" => true,
     ]
 ]);
 
-// This is the middleware
-// It will add the Access-Control-Allow-Methods header to every request
-
+// これはミドルウェアです
+// Access-Control-Allow-Methodsヘッダーをすべてのリクエストに追加します
 $app->add(function($request, $response, $next) {
     $route = $request->getAttribute("route");
 
@@ -79,7 +76,7 @@ $app->add(function($request, $response, $next) {
                 $methods = array_merge_recursive($methods, $route->getMethods());
             }
         }
-        //Methods holds all of the HTTP Verbs that a particular route handles.
+        // メソッドは、特定のルートが処理するすべてのHTTP動詞を保持します。
     } else {
         $methods[] = $request->getMethod();
     }
@@ -99,9 +96,9 @@ $app->post("/api/{id}", function($request, $response, $arguments) {
 $app->map(["DELETE", "PATCH"], "/api/{id}", function($request, $response, $arguments) {
 });
 
-// Pay attention to this when you are using some javascript front-end framework and you are using groups in slim php
+// なにかしらjavascriptフロントエンドフレームワークを使用している場合、Slimでgroupを使用する場合は注意してください
 $app->group('/api', function () {
-    // Due to the behaviour of browsers when sending PUT or DELETE request, you must add the OPTIONS method. Read about preflight.
+  　// ブラウザの規定動作のため、PUTまたはDELETEリクエストを送信するときはOPTIONSメソッドを追加する必要があります。詳細はpreflightについてお読みください。
     $this->map(['PUT', 'OPTIONS'], '/{user_id:[0-9]+}', function ($request, $response, $arguments) {
         // Your code here...
     });
@@ -110,4 +107,4 @@ $app->group('/api', function () {
 $app->run();
 ```
 
-A big thank you to [tuupola](https://github.com/tuupola) for coming up with this!
+この記事を提案してくれた[tuupola](https://github.com/tuupola) に感謝します！
