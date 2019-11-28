@@ -2,7 +2,9 @@
 title: Getting and Mocking the Environment
 ---
 
-The Environment object encapsulates the `$_SERVER` superglobal array and decouples the Slim application from the PHP global environment. Decoupling the Slim application from the PHP global environment lets us create HTTP requests that may (or may not) resemble the global environment. This is particularly useful for unit testing and initiating sub-requests. You can fetch the current Environment object anywhere in your Slim application like this:
+Environmentオブジェクトは、`$_SERVER`スーパーグローバル配列にカプセル化され、SlimアプリケーションをPHPグローバル環境から分離します。
+SlimアプリケーションをPHPグローバル環境から切り離すことにより、グローバル環境に依頼（または依頼しない）HTTPリクエストを作成できます。
+これは、ユニットテストおよびサブリクエストの開始に特に役立ちます。次のように、Slimアプリケーションのどこからでも現在のEnvironmentオブジェクトを取得できます。
 
 ```php
 $container = $app->getContainer();
@@ -11,61 +13,62 @@ $environment = $container['environment'];
 
 ## Environment Properties
 
-Each Slim application has an Environment object with various properties that determine application behavior. Many of these properties mirror those found in the `$_SERVER` superglobal array. Some properties are required. Other properties are optional.
+各Slimアプリケーションには、アプリケーションの動作を決定するさまざまなプロパティを持つEnvironmentオブジェクトがあります。
+これらのプロパティの多くは、`$_SERVER`スーパーグローバル配列にあるプロパティを反映しています。プロパティには必須のものとオプションのものがあります。
 
-### Required Properties
+### 必須のプロパティ
 
 REQUEST_METHOD
-:   The HTTP request method. This must be one of "GET", "POST", "PUT", "DELETE", "HEAD", "PATCH", or "OPTIONS".
+:   HTTPリクエストメソッド。メソッドは次のものである必要があります。: "GET", "POST", "PUT", "DELETE", "HEAD", "PATCH", "OPTIONS"
 
 SCRIPT_NAME
-:   The absolute path name to the front-controller PHP script relative to your document root, disregarding any URL rewriting performed by your web server.
+:   ドキュメントルートに対してのフロントコントローラーPHPスクリプトへの絶対パス名。Webサーバーによって実行されるURL書き換えを無視します。
 
 REQUEST_URI
-:   The absolute path name of the HTTP request URI, including any URL rewriting changes performed by your web server.
+:   Webサーバーによって実行されるURL書き換えの変更を含む、HTTPリクエストURIの絶対パス名。
 
 QUERY_STRING
-:   The part of the HTTP request’s URI path after, but not including, the “?”. This may be an empty string if the current HTTP request does not specify a query string.
+:   HTTPリクエストのURIパス以降の部分。"?"は含まれません。現在のHTTPリクエストでクエリ文字列が指定されていない場合、空の文字列になる場合があります。
 
 SERVER_NAME
-:   The name of the server host under which the current script is executing. If the script is running on a virtual host, this will be the value defined for that virtual host.
+:   現在のスクリプトが実行されているサーバーホストの名前。スクリプトが仮想ホストで実行されている場合、これはその仮想ホストに定義された値になります。
 
 SERVER_PORT
-:   The port on the server machine being used by the web server for communication. For default setups, this will be '80'; using SSL, for instance, will change this to whatever your defined secure HTTP port is.
+:   Webサーバーが通信に使用しているサーバーマシンのポート。デフォルト設定の場合は'80'です。SSLを使用した場合、独自に定義済みのセキュアHTTPポートに変更されます。
 
 HTTPS
-:   Set to a non-empty value if the script was queried through the HTTPS protocol.
+:   スクリプトがHTTPSプロトコルを介して照会された場合、何かしらの値を設定します。
 
 ### Optional Properties
 
 CONTENT_TYPE
-:   The HTTP request content type (e.g., `application/json;charset=utf8`)
+:   HTTPリクエストのコンテンツタイプ（例：`application/json;charset=utf8`）
 
 CONTENT_LENGTH
-:   The HTTP request content length. This must be an integer if present.
+:   HTTPリクエストのコンテンツの長さ。これを設定する場合は整数でなければなりません。
 
 HTTP_*
-:   The HTTP request headers sent by the client. These values are identical to their counterparts in the `$_SERVER` superglobal array. If present, these values must retain the "HTTP_" prefix.
+:   クライアントによって送信されたHTTPリクエストヘッダー。これらの値は、`$_SERVER`スーパーグローバル配列の対応する値と同じです。設定する場合、これらの値は "HTTP_" プレフィックスを保持する必要があります。
 
 PHP_AUTH_USER
-:   The HTTP `Authentication` header's decoded username.
+:   HTTP`Authentication`ヘッダーのデコードされたユーザー名。
 
 PHP_AUTH_PW
-:   The HTTP `Authentication` header's decoded password.
+:   HTTP`Authentication`ヘッダーのデコードされたパスワード。
 
 PHP_AUTH_DIGEST
-:   The raw HTTP `Authentication` header as sent by the HTTP client.
+:   HTTPクライアントによって送信された素のHTTP`Authentication`ヘッダー。
 
 AUTH_TYPE
-:   The HTTP `Authentication` header's authentication type (e.g., "Basic" or "Digest").
+:   HTTP`Authentication`ヘッダーの認証タイプ（例："Basic", "Digest"）。
 
 slim.files
-:   array of implements `\Psr\Http\Message\UploadedFileInterface` 
-    (for example, native Slim Framework `\Slim\Http\UploadedFile`)
+:   実装の配列`\Psr\Http\Message\UploadedFileInterface`（たとえば、ネイティブのSlimフレームワークでは`\Slim\Http\UploadedFile`）
 
 ## Mock Environments
 
-Each Slim application instantiates an Environment object using information from the current global environment. However, you may also create mock environment objects with custom information. Mock Environment objects are only useful when writing unit tests.
+各Slimアプリケーションは、グローバル環境からの情報を使用して、Environmentオブジェクトをインスタンス化します。
+また、カスタム情報を使用してモック環境オブジェクトを作成することもできます。モックEnvironmentオブジェクトは、単体テストを作成するときにのみ役立ちます。
 
 ```php
 $env = \Slim\Http\Environment::mock([

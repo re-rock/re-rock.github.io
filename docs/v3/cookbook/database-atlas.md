@@ -2,7 +2,7 @@
 title: Using Atlas 3 with Slim
 ---
 
-このクックブックエントリでは、[Atlas 3](http://atlasphp.io)ORMとそのコマンドラインツールをSlimで使用する方法について説明します。
+このクックブックエントリでは、[Atlas 3](http://atlasphp.io) ORMとそのコマンドラインツールをSlimで使用する方法について説明します。
 
 ## Installation
 

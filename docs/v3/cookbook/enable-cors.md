@@ -98,7 +98,8 @@ $app->map(["DELETE", "PATCH"], "/api/{id}", function($request, $response, $argum
 
 // なにかしらjavascriptフロントエンドフレームワークを使用している場合、Slimでgroupを使用する場合は注意してください
 $app->group('/api', function () {
-  　// ブラウザの規定動作のため、PUTまたはDELETEリクエストを送信するときはOPTIONSメソッドを追加する必要があります。詳細はpreflightについてお読みください。
+    // ブラウザの規定動作のため、PUTまたはDELETEリクエストを送信するときはOPTIONSメソッドを追加する必要があります。
+    // 詳細はpreflightについてお読みください。
     $this->map(['PUT', 'OPTIONS'], '/{user_id:[0-9]+}', function ($request, $response, $arguments) {
         // Your code here...
     });
