@@ -2,36 +2,33 @@
 title: Uploading files using POST forms
 ---
 
-Files that are uploaded using forms in POST requests can be retrieved with the
-[`getUploadedFiles`](/docs/v3/objects/request.html#uploaded-files) method of the
-`Request` object.
+フォームのPOSTリクエストを使用してアップロードされたファイルは、`Request`オブジェクトの[`getUploadedFiles`](/docs/v3/objects/request.html#uploaded-files)メソッドで取得できます。
 
-When uploading files using a POST request, make sure your file upload form has the
-attribute `enctype="multipart/form-data"` otherwise `getUploadedFiles()` will return an empty array.
+POSTリクエストを使用してファイルをアップロードする場合、ファイルアップロードフォームに属性`enctype="multipart/form-data"`があることを確認してください。そうでないと`getUploadedFiles()`は空の配列を返します。
 
-If multiple files are uploaded for the same input name, add brackets after the input name in the HTML, otherwise
-only one uploaded file will be returned for the input name by `getUploadedFiles()`.
+同じ入力名に対して複数のファイルがアップロードされている場合は、HTMLの入力名の後に括弧を追加します。
+そうでないと`getUploadedFiles()`によって入力名に対してアップロードされたファイルが1つだけ返されます。
 
-Below is an example HTML form that contains both single and multiple file uploads.
+以下は、単一および複数のファイルアップロードの両方を含むHTMLフォームの例です。
 
 <figure markdown="1">
 ```php
-<!-- make sure the attribute enctype is set to multipart/form-data -->
+<!-- enctype属性がmultipart/form-dataに設定されていることを確認してください -->
 <form method="post" enctype="multipart/form-data">
-    <!-- upload of a single file -->
+    <!-- 単一ファイルのアップロード -->
     <p>
         <label>Add file (single): </label><br/>
         <input type="file" name="example1"/>
     </p>
 
-    <!-- multiple input fields for the same input name, use brackets -->
+    <!-- 同じインプット名に複数フィールドを設定する際は大括弧を使用してください -->
     <p>
         <label>Add files (up to 2): </label><br/>
         <input type="file" name="example2[]"/><br/>
         <input type="file" name="example2[]"/>
     </p>
 
-    <!-- one file input field that allows multiple files to be uploaded, use brackets -->
+    <!-- 単一のインプットフィールドでも、大括弧をしようして複数のファイルをアップロードできます -->
     <p>
         <label>Add files (multiple): </label><br/>
         <input type="file" name="example3[]" multiple="multiple"/>
@@ -45,8 +42,7 @@ Below is an example HTML form that contains both single and multiple file upload
 <figcaption>Figure 1: Example HTML form for file uploads</figcaption>
 </figure>
 
-Uploaded files can be moved to a directory using the `moveTo` method. Below is an example application
-that handles the uploaded files of the HTML form above.
+アップロードされたファイルは、`moveTo`メソッドを使用してディレクトリに移動できます。以下は、上記のHTMLフォームでアップロードされたファイルを処理するアプリケーションの例です。
 
 <figure markdown="1">
 ```php
@@ -68,7 +64,7 @@ $app->post('/', function(Request $request, Response $response) {
 
     $uploadedFiles = $request->getUploadedFiles();
 
-    // handle single input with single file upload
+    // 単一ファイルのアップロードの処理
     $uploadedFile = $uploadedFiles['example1'];
     if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
         $filename = moveUploadedFile($directory, $uploadedFile);
@@ -76,7 +72,7 @@ $app->post('/', function(Request $request, Response $response) {
     }
 
 
-    // handle multiple inputs with the same key
+    // 同一キーで複数のインプットがある場合の処理
     foreach ($uploadedFiles['example2'] as $uploadedFile) {
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
             $filename = moveUploadedFile($directory, $uploadedFile);
@@ -84,7 +80,7 @@ $app->post('/', function(Request $request, Response $response) {
         }
     }
 
-    // handle single input with multiple file uploads
+    // 単一のインプットで複数のファイルアップロードがある場合の処理
     foreach ($uploadedFiles['example3'] as $uploadedFile) {
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
             $filename = moveUploadedFile($directory, $uploadedFile);
@@ -93,14 +89,15 @@ $app->post('/', function(Request $request, Response $response) {
     }
 
 });
+アップロードされたファイルをアップロードディレクトリに移動し、既存のアップロードされたファイルの上書きを避けるため一意の名前を割り当てます
 
 /**
- * Moves the uploaded file to the upload directory and assigns it a unique name
- * to avoid overwriting an existing uploaded file.
+ * アップロードされたファイルをアップロードディレクトリに移動し、すでにアップロードされたファイルの
+ * 上書きを避けるため一意の名前を割り当てます。
  *
- * @param string $directory directory to which the file is moved
- * @param UploadedFile $uploadedFile file uploaded file to move
- * @return string filename of moved file
+ * @param string $directory ファイルの移動先のディレクトリ
+ * @param UploadedFile $uploadedFile アップロードされたファイル
+ * @return string 移動したファイルの名前
  */
 function moveUploadedFile($directory, UploadedFile $uploadedFile)
 {
