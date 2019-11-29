@@ -5,7 +5,7 @@ title: Upgrade Guide
 バージョン3からバージョン4にアップグレードする場合、以下で述べる重要な変更点に注意する必要があります。
 
 ## PHP Version Requirement
-Slim4はPHP7.1以上である必要があります。
+Slim4はPHP7.1以上で利用できます。
 
 ## Breaking changes to Slim\App constructor
 Slimのアプリ設定は、以前はコンテナーの一部でしたが、Slim4ではコンテナーから切り離されています。
@@ -33,7 +33,7 @@ $app = new App(...);
 
 ## Removed App Settings
 - `addContentLengthHeader` この設定の新しい実装については、[Content Length Middleware](/docs/v4/middleware/content-length.html)を参照してください。
-- `determineRouteBeforeAppMiddleware` ミドルウェアスタックの適切な位置に[Routing Middleware](/docs/v4/middleware/routing.html)を配置して、既存の動作を再現します。
+- `determineRouteBeforeAppMiddleware` ミドルウェアスタックの適切な位置に[Routing Middleware](/docs/v4/middleware/routing.html)を配置して既存の動作を再現します。
 - `outputBuffering` この設定の新しい実装については、[Output Buffering Middleware](/docs/v4/middleware/output-buffering.html)を参照してください。
 - `displayErrorDetails` この設定の新しい実装については、[Error Handling Middleware](/docs/v4/middleware/error-handling.html)参照してください。
 
